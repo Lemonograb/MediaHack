@@ -89,14 +89,8 @@ class SubtitleParser {
     }
 
     init?(text: String) {
-        let type = identifyFromText(text: text)
-
-        if type == .Unknown {
+        if !parseSubRip(text: text) {
             return nil
-        } else if type == .SubRip {
-            if !parseSubRip(text: text) {
-                return nil
-            }
         }
     }
 
@@ -135,24 +129,5 @@ class SubtitleParser {
         }
 
         return true
-    }
-
-    private func identifyFromText(text: String) -> SubtitleType {
-        let scanner = Scanner(string: text)
-
-        if scanner.scanInt(nil) {
-            var timeLine:NSString?
-
-            if scanner.scanCharacters(from: CharacterSet(charactersIn: "0123456789:.,-> "), into: &timeLine) {
-
-                if let timeLine = timeLine {
-                    if timeLine.components(separatedBy: " --> ").count == 2 {
-                        return .SubRip
-                    }
-                }
-            }
-        }
-
-        return .Unknown
     }
 }
