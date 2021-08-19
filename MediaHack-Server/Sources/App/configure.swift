@@ -7,4 +7,9 @@ public func configure(_ app: Application) throws {
 
     // register routes
     try routes(app)
+
+    let fileMiddleware = FileMiddleware(
+        publicDirectory: app.directory.publicDirectory
+    )
+    app.middleware.use(fileMiddleware)
 }
