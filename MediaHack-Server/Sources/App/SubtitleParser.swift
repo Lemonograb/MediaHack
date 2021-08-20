@@ -29,7 +29,7 @@ extension String {
     }
 }
 
-struct Time {
+struct Time: Encodable {
     var timeInSeconds: Double
     init(fromMilliseconds milliseconds: Int) {
         timeInSeconds = Double(milliseconds) / 1000.0
@@ -63,7 +63,7 @@ struct Time {
 class SubtitleParser {
     var subtitles: [Subtitle] = []
 
-    var length:Double {
+    var length: Double {
         get {
             if subtitles.count > 0 {
                 return subtitles.last!.end.timeInSeconds
@@ -77,7 +77,7 @@ class SubtitleParser {
         case SubRip, Unknown
     }
 
-    struct Subtitle {
+    struct Subtitle: Encodable {
         var start: Time, end: Time
         var text: [String] = []
 
@@ -101,8 +101,8 @@ class SubtitleParser {
     private func parseSubRip(text: String) -> Bool {
         let formatedText = text.replacingOccurrences(of: "\r", with: "")
         let subs = formatedText.components(separatedBy: "\n\n")
-
-        for sub in subs {
+        var needAddEndTimeToPrev: Bool = false
+        for (index, sub) in subs.enumerated() {
             let rows = sub.components(separatedBy: CharacterSet.newlines)
 
             if rows.count < 3 {
@@ -111,23 +111,40 @@ class SubtitleParser {
 
             if let id = Int(rows[0]) {
                 let times = rows[1].components(separatedBy: " --> ")
-
-                if times.count < 2 {
-                    continue
-                }
+                guard times.count > 0 else { continue }
 
                 if let startTime = Time(fromTimeStamp: times[0]) {
-                    if let endTime = Time(fromTimeStamp: times[1].components(separatedBy: " ")[0]) {
-
-                        let text = Array(rows[2...rows.count-1])
-                        let subtitle = Subtitle(start: startTime, end: endTime, text: text)
-
-                        subtitles.append(subtitle)
+                    if needAddEndTimeToPrev {
+                        subtitles[index - 1].end = Time(startTime.timeInSeconds - 1)
                     }
+                    let text = Array(rows[2...rows.count-1])
+                    var subtitle = Subtitle(start: startTime, end: .init(0), text: text)
+                    if let endTime = Time(fromTimeStamp: times[1].components(separatedBy: " ")[0]) {
+                        needAddEndTimeToPrev = false
+                        subtitle.end = endTime
+                    } else {
+                        needAddEndTimeToPrev = true
+                    }
+                    subtitles.append(subtitle)
                 }
+
             }
         }
 
         return true
+    }
+}
+
+extension SubtitleParser {
+    static func getSubtitles(from fileName: String) -> [Subtitle] {
+        let homeDirURL = FileManager.default.homeDirectoryForCurrentUser
+        let resourceURL = homeDirURL.appendingPathComponent("server_content/").appendingPathComponent(fileName, isDirectory: false)
+        if let data = try? Data(contentsOf: resourceURL),
+           let subtitles = String(data: data, encoding: .utf8) {
+            let parser = SubtitleParser(text: subtitles)
+            return parser?.subtitles ?? []
+        } else {
+            return []
+        }
     }
 }
