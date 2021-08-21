@@ -1,6 +1,7 @@
 import AVKit
 import SharedCode
 import UIKit
+import Networking
 
 // https://developer.apple.com/documentation/avfoundation/media_playback_and_selection/observing_the_playback_time
 
@@ -67,6 +68,21 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WSManager.shared.connectToWebSocket(type: .tv, id: "tv")
+        WSManager.shared.sendStatus(.start)
+        WSManager.shared.receiveData(completion: { text in
+            if let data = text.data(using: .utf8),
+               let status = try? JSONDecoder().decode(WSStatus.self, from: data) {
+                switch status {
+                case .start:
+                    self.playerView.player.play()
+                case .stop:
+                    self.playerView.player.pause()
+                case .play(let sec):
+                    break
+                }
+            }
+        })
         playerView.setup()
         view.addSubview(playerView)
         playerView.pinEdgesToSuperView()
@@ -76,6 +92,7 @@ class ViewController: UIViewController {
             queue: .main
         ) { [unowned self] offset in
             let sec = Int(offset.seconds)
+            WSManager.shared.sendStatus(.play(sec: sec))
             let label = self.labels[sec % self.labels.count]
             self.playerView.subtitlesView.text = label
         }

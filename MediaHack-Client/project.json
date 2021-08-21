@@ -68,6 +68,9 @@
         },
         {
           "target": "Player"
+        },
+        {
+          "target": "Networking_iOS"
         }
       ]
     },
@@ -95,6 +98,9 @@
       "dependencies": [
         {
           "target": "SharedCode_tvOS"
+        },
+        {
+          "target": "Networking_tvOS"
         }
       ]
     },
