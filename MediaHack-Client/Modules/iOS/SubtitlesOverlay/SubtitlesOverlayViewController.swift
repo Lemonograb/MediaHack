@@ -8,6 +8,11 @@ public final class SubtitlesOverlayViewController: BaseViewController {
         case header, subtitles
     }
 
+    private enum Item: Hashable {
+        case header(HeaderCell.Model)
+        case subtitle(SubtitleCell.Model)
+    }
+
     private struct Model: Hashable {
         let header: HeaderCell.Model
         let subtitles: [SubtitleCell.Model]
@@ -50,7 +55,7 @@ public final class SubtitlesOverlayViewController: BaseViewController {
     }
 
     private let collectionView: UICollectionView
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Model>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
 
     override public init() {
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: SubtitlesOverlayViewController.makeLayout())
@@ -64,37 +69,35 @@ public final class SubtitlesOverlayViewController: BaseViewController {
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
 
-        dataSource = UICollectionViewDiffableDataSource<Section, Model>(collectionView: collectionView) { cv, ip, model in
-            if ip.section == 0 {
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { cv, ip, model in
+            switch model {
+            case let .header(model):
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: HeaderCell.reuseIdentifier, for: ip), to: HeaderCell.self)
-                cell.configure(model: model.header)
+                cell.configure(model: model)
+                return cell
+            case let .subtitle(model):
+                let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: SubtitleCell.reuseIdentifier, for: ip), to: SubtitleCell.self)
+                cell.configure(model: model)
                 return cell
             }
-
-            let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: SubtitleCell.reuseIdentifier, for: ip), to: SubtitleCell.self)
-            cell.configure(model: model.subtitles[0])
-            return cell
         }
 
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Model>()
-        snapshot.appendSections([.header])
-        snapshot.appendItems([
-            Model(
-                header: HeaderCell.Model(
-                    imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                    movieName: "Pulp fiction"
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections([.header, .subtitles])
+        snapshot.appendItems(
+            [
+                .header(
+                    HeaderCell.Model(
+                        imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
+                        movieName: "Pulp fiction"
+                    )
                 ),
-                subtitles: []
-            ),
-        ])
-        snapshot.appendSections([.subtitles])
-        snapshot.appendItems([
-            Model(
-                header: HeaderCell.Model(
-                    imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                    movieName: "Pulp fiction"
-                ),
-                subtitles: [
+            ],
+            toSection: Section.subtitles
+        )
+        snapshot.appendItems(
+            [
+                .subtitle(
                     SubtitleCell.Model(
                         subtitle: WordsTokenizer.process(
                             text: [
@@ -104,17 +107,9 @@ public final class SubtitlesOverlayViewController: BaseViewController {
                         ),
                         isActive: false,
                         index: 0
-                    ),
-                ]
-            ),
-        ])
-        snapshot.appendItems([
-            Model(
-                header: HeaderCell.Model(
-                    imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                    movieName: "Pulp fiction"
+                    )
                 ),
-                subtitles: [
+                .subtitle(
                     SubtitleCell.Model(
                         subtitle: WordsTokenizer.process(
                             text: [
@@ -123,17 +118,9 @@ public final class SubtitlesOverlayViewController: BaseViewController {
                         ),
                         isActive: true,
                         index: 1
-                    ),
-                ]
-            ),
-        ])
-        snapshot.appendItems([
-            Model(
-                header: HeaderCell.Model(
-                    imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                    movieName: "Pulp fiction"
+                    )
                 ),
-                subtitles: [
+                .subtitle(
                     SubtitleCell.Model(
                         subtitle: "Неловкое молчание. Почему людям обязательно нужно сморозить какую-нибудь чушь, лишь бы не почувствовать себя в своей тарелке?"
                             .builder
@@ -142,17 +129,9 @@ public final class SubtitlesOverlayViewController: BaseViewController {
                             .result,
                         isActive: true,
                         index: 2
-                    ),
-                ]
-            ),
-        ])
-        snapshot.appendItems([
-            Model(
-                header: HeaderCell.Model(
-                    imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                    movieName: "Pulp fiction"
+                    )
                 ),
-                subtitles: [
+                .subtitle(
                     SubtitleCell.Model(
                         subtitle: WordsTokenizer.process(
                             text: [
@@ -162,27 +141,13 @@ public final class SubtitlesOverlayViewController: BaseViewController {
                         ),
                         isActive: false,
                         index: 3
-                    ),
-                ]
-            ),
-        ])
+                    )
+                ),
+            ],
+            toSection: Section.subtitles
+        )
         dataSource.apply(snapshot)
     }
-}
-
-protocol ReuseIdentifiable {
-    static var reuseIdentifier: String { get }
-}
-
-extension ReuseIdentifiable {
-    static var reuseIdentifier: String {
-        return String(describing: self)
-    }
-}
-
-protocol Configurable {
-    associatedtype Model
-    func configure(model: Model)
 }
 
 open class BaseCollectionViewCell: UICollectionViewCell {

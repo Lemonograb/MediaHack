@@ -116,8 +116,6 @@ public final class PlayerViewController: BaseViewController {
     }
 
     private func loadMovies() -> AnyPublisher<[CinemaListElement], Error> {
-        return Empty<[CinemaListElement], Error>().eraseToAnyPublisher()
-
         let session = URLSession.shared
         let url = URL(string: "http://178.154.197.24/cinemaList").unsafelyUnwrapped
         let decoder = JSONDecoder()
