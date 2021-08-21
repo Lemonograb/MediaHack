@@ -34,8 +34,10 @@ func routes(_ app: Application) throws {
         }
 
         let mxResult = mx.wait(timeout: DispatchTime.now() + .milliseconds(550))
-        if case .timedOut = mxResult {
+        defer {
             mx.signal()
+        }
+        if case .timedOut = mxResult {
             throw ServerError.couldntLoadSubtitles
         }
 
@@ -51,7 +53,6 @@ func routes(_ app: Application) throws {
 
         let result = String(data: data, encoding: .utf8) ?? ""
         subtitlesCache[prefix] = result
-        mx.signal()
         return result
     }
 
