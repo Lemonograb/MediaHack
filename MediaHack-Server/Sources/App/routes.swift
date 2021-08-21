@@ -85,16 +85,20 @@ func routes(_ app: Application) throws {
         struct TranslationResp: Decodable {
             struct Result: Decodable {
                 struct LexicalEntries: Decodable {
+                    struct Inflection: Decodable {
+                        var id: String
+                    }
                     struct Entries: Decodable {
                         struct Sense: Decodable {
                             struct Trancslation: Decodable {
                                 var text: String
                             }
-                            var translations: [Trancslation]
+                            var translations: [Trancslation]?
                         }
                         var senses: [Sense]
                     }
-                    var entries: [Entries]
+                    var entries: [Entries]?
+                    var inflectionOf: [Inflection]?
                 }
                 var lexicalEntries: [LexicalEntries]
             }
@@ -106,14 +110,23 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
         maxTransReq -= 1
-        return req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(word)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")]))
-//            .map({ $0.description })
-            .flatMapThrowing { res in
+        return req.client.get("https://od-api.oxforddictionaries.com/api/v2/lemmas/en/\(word)", headers: .init([("app_id", "d1735332"), ("app_key", "8a9c930b46824fc858db48ff23d63be6")]))
+            .flatMapThrowing({ res in
                 try res.content.decode(TranslationResp.self)
-            }
-            .map({ resp in
-                guard let data = try? JSONEncoder().encode(resp.results.first?.lexicalEntries.first?.entries.first?.senses.first?.translations.map(\.text) ?? []), let resp = String(data: data, encoding: .utf8) else { return "" }
-                return resp
+            })
+            .map({
+                return $0.results.first?.lexicalEntries.first?.inflectionOf?.first?.id ?? ""
+            })
+            .flatMap({ wordId in
+                req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(wordId)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")]))
+//                    .map({ $0.description })
+                    .flatMapThrowing { res in
+                        try res.content.decode(TranslationResp.self)
+                    }
+                    .map({ resp in
+                        guard let data = try? JSONEncoder().encode(resp.results.first?.lexicalEntries.first?.entries?.first?.senses.first?.translations?.map(\.text) ?? []), let resp = String(data: data, encoding: .utf8) else { return "" }
+                        return resp
+                    })
             })
     }
 }
