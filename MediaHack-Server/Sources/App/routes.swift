@@ -5,6 +5,7 @@ private let mx = DispatchSemaphore(value: 1)
 
 enum ServerError: Error {
     case noSubtitlesForId
+    case couldntLoadSubtitlesnoTranslation
     case couldntLoadSubtitles
 }
 
@@ -101,15 +102,18 @@ func routes(_ app: Application) throws {
         }
 
         guard maxTransReq > 0,
-            let word: String = req.query["word"] else {
+              let word: String = req.query["word"] else {
             throw Abort(.badRequest)
         }
         maxTransReq -= 1
-        return req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(word)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")])).flatMapThrowing { res in
-            try res.content.decode(TranslationResp.self)
-        }.map({ resp in
-            guard let data = try? JSONEncoder().encode(resp.results.first?.lexicalEntries.first?.entries.first?.senses.first?.translations.map(\.text) ?? []), let resp = String(data: data, encoding: .utf8) else { return "" }
-            return resp
-        })
+        return req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(word)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")]))
+//            .map({ $0.description })
+            .flatMapThrowing { res in
+                try res.content.decode(TranslationResp.self)
+            }
+            .map({ resp in
+                guard let data = try? JSONEncoder().encode(resp.results.first?.lexicalEntries.first?.entries.first?.senses.first?.translations.map(\.text) ?? []), let resp = String(data: data, encoding: .utf8) else { return "" }
+                return resp
+            })
     }
 }
