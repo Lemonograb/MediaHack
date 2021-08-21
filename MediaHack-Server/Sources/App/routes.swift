@@ -1,13 +1,22 @@
 import Vapor
 
+private var subtitlesCache: [String: String] = [:]
+private let mx = DispatchSemaphore(value: 1)
+
+enum ServerError: Error {
+    case noSubtitlesForId
+    case couldntLoadSubtitles
+}
+
 func routes(_ app: Application) throws {
     let webSocketManager = WebSocketManager(eventLoop: app.eventLoopGroup.next())
-    var maxTransReq = 50
-    app.get { req in
-        return "It works!"
+    var maxTransReq = 30
+
+    app.get { _ in
+        "It works!"
     }
 
-    app.get("cinemaList") { req -> String in
+    app.get("cinemaList") { _ -> String in
         let data = try JSONEncoder().encode(cinimas)
         return String(data: data, encoding: .utf8) ?? ""
     }
@@ -18,26 +27,49 @@ func routes(_ app: Application) throws {
             let en: [SubtitleParser.Subtitle]
         }
 
-        guard let id: String = req.query["id"], let prefix = cinimasSubtitle[id] else { return "" }
+        guard
+            let id: String = req.query["id"],
+            let prefix = cinimasSubtitle[id]
+        else {
+            throw ServerError.noSubtitlesForId
+        }
+
+        let mxResult = mx.wait(timeout: DispatchTime.now() + .milliseconds(550))
+        defer {
+            mx.signal()
+        }
+        if case .timedOut = mxResult {
+            throw ServerError.couldntLoadSubtitles
+        }
+
+        if let cached = subtitlesCache[prefix] {
+            return cached
+        }
 
         let data = try JSONEncoder().encode(
-            CinimaSubtitles(ru: SubtitleParser.getSubtitles(from: "\(prefix)_ru.srt"),
-                            en: SubtitleParser.getSubtitles(from: "\(prefix)_en.srt")))
+            CinimaSubtitles(
+                ru: SubtitleParser.getSubtitles(from: "\(prefix)_ru.srt"),
+                en: SubtitleParser.getSubtitles(from: "\(prefix)_en.srt")
+            ))
 
-        return String(data: data, encoding: .utf8) ?? ""
+        let result = String(data: data, encoding: .utf8) ?? ""
+        subtitlesCache[prefix] = result
+        return result
     }
 
     app.webSocket("webSocket", "connect") { req, ws in
-        guard let id: String = req.query["id"],
-              let typeStr: String = req.query["type"],
-              let type = WebSocketManager.ClientType.init(rawValue: typeStr) else {
+        guard
+            let id: String = req.query["id"],
+            let typeStr: String = req.query["type"],
+            let type = WebSocketManager.ClientType(rawValue: typeStr)
+        else {
             return
         }
         webSocketManager.add(client: .init(id: .init(type: type, id: id), socket: ws))
     }
 
-    app.get("webSocket", "list") { req -> String in
-        return webSocketManager.connectedClient.values.map(\.id.id).joined(separator: "\n")
+    app.get("webSocket", "list") { _ -> String in
+        webSocketManager.connectedClient.values.map(\.id.id).joined(separator: "\n")
     }
 
     app.get("webSocket", "send") { req -> String in

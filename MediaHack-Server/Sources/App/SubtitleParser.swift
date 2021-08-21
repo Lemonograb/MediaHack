@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Vitalii Stikhurov on 16.08.2021.
 //
@@ -14,13 +14,13 @@ extension String {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.dotMatchesLineSeparators)
 
-            let numberOfMatches = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, self.count))
+            let numberOfMatches = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, count))
 
             if numberOfMatches != 1 {
                 return nil
             }
 
-            let dottedString = self.replacingOccurrences(of: ",", with: ".", options: String.CompareOptions.literal, range: nil)
+            let dottedString = replacingOccurrences(of: ",", with: ".", options: String.CompareOptions.literal, range: nil)
 
             return strtod(dottedString, nil)
         } catch {
@@ -32,15 +32,16 @@ extension String {
 struct Time: Encodable {
     var timeInSeconds: Double
     init(fromMilliseconds milliseconds: Int) {
-        timeInSeconds = Double(milliseconds) / 1000.0
+        self.timeInSeconds = Double(milliseconds) / 1000.0
     }
+
     init?(fromTimeStamp timeStamp: String) {
-        timeInSeconds = 0.0
+        self.timeInSeconds = 0.0
 
         var components = timeStamp.components(separatedBy: ":")
 
         if let seconds = components.last?.toDouble() {
-            timeInSeconds = seconds
+            self.timeInSeconds = seconds
 
             components.removeLast()
             if let last = components.last, let minutes = Int(last) {
@@ -55,8 +56,9 @@ struct Time: Encodable {
             return nil
         }
     }
+
     init(_ seconds: Double) {
-        timeInSeconds = seconds
+        self.timeInSeconds = seconds
     }
 }
 
@@ -64,12 +66,10 @@ class SubtitleParser {
     var subtitles: [Subtitle] = []
 
     var length: Double {
-        get {
-            if subtitles.count > 0 {
-                return subtitles.last!.end.timeInSeconds
-            } else {
-                return 0.0
-            }
+        if !subtitles.isEmpty {
+            return subtitles.last!.end.timeInSeconds
+        } else {
+            return 0.0
         }
     }
 
@@ -82,9 +82,7 @@ class SubtitleParser {
         var text: [String] = []
 
         var length: Double {
-            get {
-                return end.timeInSeconds - start.timeInSeconds
-            }
+            return end.timeInSeconds - start.timeInSeconds
         }
     }
 
@@ -111,13 +109,13 @@ class SubtitleParser {
 
             if let id = Int(rows[0]) {
                 let times = rows[1].components(separatedBy: " --> ")
-                guard times.count > 0 else { continue }
+                guard !times.isEmpty else { continue }
 
                 if let startTime = Time(fromTimeStamp: times[0]) {
                     if needAddEndTimeToPrev {
                         subtitles[index - 1].end = Time(startTime.timeInSeconds - 1)
                     }
-                    let text = Array(rows[2...rows.count-1])
+                    let text = Array(rows[2 ... rows.count - 1])
                     var subtitle = Subtitle(start: startTime, end: .init(0), text: text)
                     if let endTime = Time(fromTimeStamp: times[1].components(separatedBy: " ")[0]) {
                         needAddEndTimeToPrev = false
@@ -127,7 +125,6 @@ class SubtitleParser {
                     }
                     subtitles.append(subtitle)
                 }
-
             }
         }
 
@@ -137,14 +134,17 @@ class SubtitleParser {
 
 extension SubtitleParser {
     static func getSubtitles(from fileName: String) -> [Subtitle] {
-        let homeDirURL = FileManager.default.homeDirectoryForCurrentUser
-        let resourceURL = homeDirURL.appendingPathComponent("server_content/").appendingPathComponent(fileName, isDirectory: false)
-        if let data = try? Data(contentsOf: resourceURL),
-           let subtitles = String(data: data, encoding: .utf8) {
-            let parser = SubtitleParser(text: subtitles)
-            return parser?.subtitles ?? []
-        } else {
+        guard let folder = String(utf8String: getenv("SUBTITLES_FOLDER")) else {
             return []
         }
+        let dir = URL(fileURLWithPath: folder)
+        guard
+            let data = try? Data(contentsOf: dir.appendingPathComponent(fileName)),
+            let subtitles = String(data: data, encoding: .utf8),
+            let parser = SubtitleParser(text: subtitles)
+        else {
+            return []
+        }
+        return parser.subtitles
     }
 }

@@ -9,12 +9,12 @@ struct Movie {
     let lowerboundToSubtitle: [(key: Double, value: Subtitle)]
 }
 
-public final class PlayerViewController: UIViewController {
+public final class PlayerViewController: BaseViewController {
     private var playerView: PlayerView!
     private var bag = Set<AnyCancellable>()
 
-    public init() {
-        super.init(nibName: nil, bundle: nil)
+    override public init() {
+        super.init()
         self.playerView = PlayerView(
             model: PlayerView.Model(
                 subtitlesViewModel: SubtitlesView.Model(
@@ -27,16 +27,32 @@ public final class PlayerViewController: UIViewController {
         )
     }
 
-    @available(*, unavailable)
-    public required init?(coder: NSCoder) {
-        return nil
-    }
+    private let blurLabel = UILabel()
 
-    override public func viewDidLoad() {
-        super.viewDidLoad()
+    override public func setup() {
         view.addSubview(playerView)
         playerView.pinEdgesToSuperView()
         playerView.subtitlesView.isHidden = true
+
+        blurLabel.backgroundColor = .clear
+        blurLabel.numberOfLines = 0
+        blurLabel.attributedText =
+            "Uncomfortable silences. Why do we feel it's necessary\nto yak about bullshit in order to be comfortable?"
+                .builder
+                .font(UIFont.systemFont(ofSize: 18, weight: .medium))
+                .foregroundColor(#colorLiteral(red: 0.8695564866, green: 0.5418210626, blue: 0, alpha: 1)).result
+
+        view.addSubview(blurLabel)
+        blurLabel.pinCenter(to: view)
+
+        blurLabel.layoutIfNeeded()
+        blurLabel.blur(radius: 2)
+//        let visualEffectView = VisualEffectView(frame: blurLabel.bounds)
+//        visualEffectView.colorTint = #colorLiteral(red: 0.1960784314, green: 0.2, blue: 0.2392156863, alpha: 1)
+//        visualEffectView.colorTintAlpha = 0.2
+//        visualEffectView.blurRadius = 1
+//        visualEffectView.scale = 1
+//        blurLabel.addSubview(visualEffectView)
 
         loadMovies()
             .map { cinemaList in
@@ -72,44 +88,9 @@ public final class PlayerViewController: UIViewController {
         }?.value
     }
 
-    @inline(__always)
-    private func process(subtitle: Subtitle) -> NSAttributedString {
-        let punc = [",", ".", ";", "'", "-", "\"", "–", "?", "!"]
-        let result = NSMutableAttributedString()
-        let font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-
-        for (i, line) in subtitle.text.enumerated() {
-            for word in line.split(separator: " ") {
-                let s = String(word)
-                var toCheck = s.lowercased()
-                for x in punc {
-                    toCheck = toCheck.replacingOccurrences(of: x, with: "")
-                }
-                toCheck = toCheck.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                if toCheck.isEmpty || badWords.contains(toCheck) {
-                    let part = "\(s)\(String.nbsp)\(String.nbsp)".builder
-                        .font(font)
-                        .foregroundColor(.white)
-                        .result
-                    result.append(part)
-                } else {
-                    let part = "\(s)\(String.nbsp)\(String.nbsp)".builder
-                        .font(font)
-                        .foregroundColor(#colorLiteral(red: 0.8695564866, green: 0.5418210626, blue: 0, alpha: 1))
-                        .result
-                    result.append(part)
-                }
-            }
-            if i != subtitle.text.endIndex - 1 {
-                result.append(NSAttributedString(string: "\n"))
-            }
-        }
-        return result
-    }
-
     private func setupPlayer(with movie: Movie) {
         if let first = findSubtitle(for: 0, in: movie) {
-            playerView.subtitlesView.text = process(subtitle: first)
+            playerView.subtitlesView.text = WordsTokenizer.process(text: first.text)
         }
         view.setNeedsLayout()
         view.layoutIfNeeded()
@@ -123,7 +104,7 @@ public final class PlayerViewController: UIViewController {
                 return
             }
 
-            let text = process(subtitle: entry)
+            let text = WordsTokenizer.process(text: entry.text)
             self.playerView.subtitlesView.text = text
         }
         playerView.subtitlesView.isHidden = false
