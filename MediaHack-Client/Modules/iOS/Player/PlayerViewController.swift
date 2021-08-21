@@ -10,8 +10,27 @@ struct Movie {
 }
 
 public final class PlayerViewController: UIViewController {
-    private let playerView = PlayerView()
+    private var playerView: PlayerView!
     private var bag = Set<AnyCancellable>()
+
+    public init() {
+        super.init(nibName: nil, bundle: nil)
+        self.playerView = PlayerView(
+            model: PlayerView.Model(
+                subtitlesViewModel: SubtitlesView.Model(
+                    onWordSelected: { [unowned self] w in
+                        self.playerView.isPlaying = false
+                        self.translateWord(w)
+                    }
+                )
+            )
+        )
+    }
+
+    @available(*, unavailable)
+    public required init?(coder: NSCoder) {
+        return nil
+    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +101,7 @@ public final class PlayerViewController: UIViewController {
                 }
             }
             if i != subtitle.text.endIndex - 1 {
-                result.append(NSAttributedString(string: "\n\n"))
+                result.append(NSAttributedString(string: "\n"))
             }
         }
         return result
@@ -109,9 +128,9 @@ public final class PlayerViewController: UIViewController {
         }
         playerView.subtitlesView.isHidden = false
         DispatchQueue.main.async { [self] in
-            playerView.player.seek(to: CMTime(value: CMTimeValue(0.5), timescale: CMTimeScale(NSEC_PER_SEC)))
+            playerView.player.seek(to: CMTime(value: CMTimeValue(0), timescale: CMTimeScale(NSEC_PER_SEC)))
             // playerView.player.playImmediately(atRate: 0.25)
-            // playerView.player.play()
+            playerView.player.play()
         }
     }
 
@@ -127,6 +146,8 @@ public final class PlayerViewController: UIViewController {
             }
             .eraseToAnyPublisher()
     }
+
+    private func translateWord(_ word: String) {}
 }
 
 // MARK: - CinemaListElement
