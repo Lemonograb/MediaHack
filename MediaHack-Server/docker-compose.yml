@@ -16,7 +16,6 @@ version: '3.7'
 
 x-shared_environment: &shared_environment
   LOG_LEVEL: ${LOG_LEVEL:-debug}
-  SUBTITLES_FOLDER: "/home/media/server_content"
 
 services:
   app:
@@ -24,8 +23,11 @@ services:
     build:
       context: .
     restart: unless-stopped
+    volumes:
+        - /home/media/server_content:/server_content
     environment:
       <<: *shared_environment
+      - SUBTITLES_FOLDER: /server_content
     ports:
       - '8080:8080'
     # user: '0' # uncomment to run as root for testing purposes even though Dockerfile defines 'vapor' user.
