@@ -18,7 +18,12 @@
     "SWIFT_VERSION": "5.0",
     "PRODUCT_NAME": "$(TARGET_NAME)"
   },
-  "packages": {},
+  "packages": {
+    "Nuke": {
+      "github": "kean/Nuke",
+      "branch": "master"
+    }
+  },
   "targets": {
     "MediaHack": {
       "type": "application",
@@ -58,7 +63,7 @@
             "UIInterfaceOrientationLandscapeRight"
           ],
           "NSAppTransportSecurity": {
-              "NSAllowsArbitraryLoads": true
+            "NSAllowsArbitraryLoads": true
           }
         }
       },
@@ -69,8 +74,14 @@
         {
           "target": "Player"
         },
-        {
+		{
           "target": "Networking_iOS"
+        },
+        {
+          "target": "SubtitlesOverlay"
+        },
+        {
+          "package": "Nuke"
         }
       ]
     },
@@ -91,7 +102,7 @@
             "arm64"
           ],
           "NSAppTransportSecurity": {
-              "NSAllowsArbitraryLoads": true
+            "NSAllowsArbitraryLoads": true
           }
         }
       },
@@ -130,6 +141,20 @@
       "dependencies": [
         {
           "target": "SharedCode_iOS"
+        }
+      ]
+    },
+    "SubtitlesOverlay": {
+      "type": "library.static",
+      "platform": "iOS",
+      "sources": "Modules/iOS/SubtitlesOverlay",
+      "requiresObjCLinking": false,
+      "dependencies": [
+        {
+          "target": "SharedCode_iOS"
+        },
+        {
+          "package": "Nuke"
         }
       ]
     }
