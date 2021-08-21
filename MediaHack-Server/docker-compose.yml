@@ -22,6 +22,7 @@ services:
     image: media-hack--server:latest
     build:
       context: .
+    restart: unless-stopped
     environment:
       <<: *shared_environment
     ports:
