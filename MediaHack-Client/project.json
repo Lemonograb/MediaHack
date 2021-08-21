@@ -1,0 +1,131 @@
+{
+  "name": "MediaHack",
+  "include": [
+    "/usr/local/xcodegen/SettingPresets/base.yml"
+  ],
+  "options": {
+    "createIntermediateGroups": true,
+    "bundleIdPrefix": "nan.mediahack.ios",
+    "groupSortPosition": "top",
+    "deploymentTarget": {
+      "iOS": "13.0",
+      "tvOS": "13.0"
+    }
+  },
+  "settings": {
+    "CODE_SIGN_STYLE": "Manual",
+    "CODE_SIGN_IDENTITY": "iPhone Developer",
+    "SWIFT_VERSION": "5.0",
+    "PRODUCT_NAME": "$(TARGET_NAME)"
+  },
+  "packages": {},
+  "targets": {
+    "MediaHack": {
+      "type": "application",
+      "platform": "iOS",
+      "sources": "MediaHack",
+      "info": {
+        "path": "MediaHack/Resource/Info.plist",
+        "properties": {
+          "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
+          "CFBundleIdentifier": "nan.mediahack.ios",
+          "CFBundleShortVersionString": "1.1.1",
+          "CFBundleVersion": "3",
+          "LSRequiresIPhoneOS": true,
+          "UIApplicationSupportsIndirectInputEvents": true,
+          "UILaunchStoryboardName": "LaunchScreen",
+          "UIRequiredDeviceCapabilities": [
+            "armv7"
+          ],
+          "UIApplicationSceneManifest": {
+            "UIApplicationSupportsMultipleScenes": false,
+            "UISceneConfigurations": {
+              "UIWindowSceneSessionRoleApplication": [
+                {
+                  "UISceneConfigurationName": "MediaHack",
+                  "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
+                }
+              ]
+            }
+          },
+          "UISupportedInterfaceOrientations": [
+            "UIInterfaceOrientationPortrait"
+          ],
+          "UISupportedInterfaceOrientations~ipad": [
+            "UIInterfaceOrientationPortrait",
+            "UIInterfaceOrientationPortraitUpsideDown",
+            "UIInterfaceOrientationLandscapeLeft",
+            "UIInterfaceOrientationLandscapeRight"
+          ],
+          "NSAppTransportSecurity": {
+              "NSAllowsArbitraryLoads": true
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "target": "SharedCode_iOS"
+        },
+        {
+          "target": "Player"
+        }
+      ]
+    },
+    "MediaHack-TV": {
+      "type": "application",
+      "platform": "tvOS",
+      "sources": "MediaHack-TV",
+      "info": {
+        "path": "MediaHack-TV/Resource/Info.plist",
+        "properties": {
+          "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
+          "CFBundleIdentifier": "nan.mediahack.tv",
+          "CFBundleShortVersionString": "1.1.1",
+          "CFBundleVersion": "3",
+          "LSRequiresIPhoneOS": true,
+          "UILaunchStoryboardName": "LaunchScreen",
+          "UIRequiredDeviceCapabilities": [
+            "arm64"
+          ],
+          "NSAppTransportSecurity": {
+              "NSAllowsArbitraryLoads": true
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "target": "SharedCode_tvOS"
+        }
+      ]
+    },
+    "SharedCode": {
+      "type": "library.static",
+      "platform": [
+        "iOS",
+        "tvOS"
+      ],
+      "sources": "Modules/Shared/SharedCode",
+      "requiresObjCLinking": false
+    },
+    "Networking": {
+      "type": "library.static",
+      "platform": [
+        "iOS",
+        "tvOS"
+      ],
+      "sources": "Modules/Shared/Networking",
+      "requiresObjCLinking": false
+    },
+    "Player": {
+      "type": "library.static",
+      "platform": "iOS",
+      "sources": "Modules/iOS/Player",
+      "requiresObjCLinking": false,
+      "dependencies": [
+        {
+          "target": "SharedCode_iOS"
+        }
+      ]
+    }
+  }
+}
