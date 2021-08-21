@@ -37,6 +37,13 @@ let reviews: [Review] = [
            dateStr: "4 августа"),
 ]
 
+let cinimasSubtitle: [String: String] = [
+    "1": "pulp_fiction",
+    "2": "pulp_fiction",
+    "3": "pulp_fiction",
+    "4": "pulp_fiction",
+]
+
 let cinimas: [Cinema] = [
     Cinema(
         id: "1",
@@ -44,8 +51,8 @@ let cinimas: [Cinema] = [
         url: "https://3b92cc61-de74-40bc-aa1b-8e320c15508b.ams-static-01.cdntogo.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTQxNDY4MyZoPUgzU0tTOEtKTjFyX0pJSzFXYlVHY1EmZT0xNjI5NTAxMDgz/5/d0/P30e5RYq9PKCDTAVJ.mp4/master-v1a1.m3u8",
         photoUrl: "https://cdn.service-kp.com/poster/item/big/392.jpg",
         description: "Двое бандитов Винсент Вега и Джулс Винфилд ведут философские беседы в перерывах между разборками и решением проблем с должниками криминального босса Марселласа Уоллеса. В первой истории Винсент проводит незабываемый вечер с женой Марселласа Мией. Во второй рассказывается о боксёре Бутче Кулидже, купленном Уоллесом, чтобы сдать бой. В третьей истории Винсент и Джулс по нелепой случайности попадают в неприятности.",
-        ruSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_ru.srt"),
-        engSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_en.srt"),
+        ruSubtitles: [],
+        engSubtitles: [],
         rating: 9.8,
         tags: ["#Криминал", "#Сложный"],
         dictionary: [
@@ -77,8 +84,8 @@ let cinimas: [Cinema] = [
 
         Третий сезон. Действие разворачивается в районе известнякового плато Озарк, расположенного одновременно в нескольких штатах. Детектив Уэйн Хейз совместно со следователем из Арканзаса Роландом Уэстом пытаются разобраться в загадочном преступлении, растянувшемся на три десятилетия.
         """,
-        ruSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_ru.srt"),
-        engSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_en.srt"),
+        ruSubtitles: [],
+        engSubtitles: [],
         rating: 9.8,
         tags: ["#Криминал", "#Сложный"],
         dictionary: [
@@ -106,8 +113,8 @@ let cinimas: [Cinema] = [
         description: """
         Школьный учитель химии Уолтер Уайт узнаёт, что болен раком лёгких. Учитывая сложное финансовое состояние дел семьи, а также перспективы, Уолтер решает заняться изготовлением метамфетамина. Для этого он привлекает своего бывшего ученика Джесси Пинкмана, когда-то исключённого из школы при активном содействии Уайта. Пинкман сам занимался «варкой мета», но накануне, в ходе рейда ОБН, он лишился подельника и лаборатории…
         """,
-        ruSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_ru.srt"),
-        engSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_en.srt"),
+        ruSubtitles: [],
+        engSubtitles: [],
         rating: 9.8,
         tags: ["#Криминал", "#Средний"],
         dictionary: [
@@ -137,8 +144,8 @@ let cinimas: [Cinema] = [
 
         Но вот собственная семья немного подкачала: дети от рук отбились, брак - под угрозой, мамаша - пилит. Он надеется на помощь психиатра, но как тому рассказать обо всех своих проблемах, если связан «Омертой» - обетом молчания, нарушать который нельзя под страхом смерти?
         """,
-        ruSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_ru.srt"),
-        engSubtitles: SubtitleParser.getSubtitles(from: "pulp_fiction_en.srt"),
+        ruSubtitles: [],
+        engSubtitles: [],
         rating: 9.8,
         tags: ["#Криминал", "#Легкий"],
         dictionary: [
