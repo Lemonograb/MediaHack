@@ -2,7 +2,7 @@ import Vapor
 
 func routes(_ app: Application) throws {
     let webSocketManager = WebSocketManager(eventLoop: app.eventLoopGroup.next())
-
+    var maxTransReq = 50
     app.get { req in
         return "It works!"
     }
@@ -48,23 +48,36 @@ func routes(_ app: Application) throws {
         return "ok" + webSocketManager.connectedClient.values.map(\.id.id).joined(separator: "\n")
     }
 
-//    app.get("translate") { req -> EventLoopFuture<String> in
-//        guard let word: String = req.query["word"] else {
-//            throw Abort(.badRequest)
-//        }
-//        var comp = URLComponents()
-//        comp.host = "translate.yandex.net/api/v1.5/tr.json/translate"
-//        comp.queryItems = [
-//            .init(name: "key", value: "trnsl.1.1.20170318T084928Z.175a69db0153769f.b364b30c9ef444d8891c42c86eb035766f7e2ef7"),
-//            .init(name: "text", value: word),
-//            .init(name: "lang", value: "en-ru")
-//        ]
-//        guard let url = comp.url?.absoluteString else {
-//            throw Abort(.badRequest)
-//        }
-//        URI(scheme: .https, host: "translate.yandex.net", port: nil, path: "/api/v1.5/tr.json/translate", query: "key=", fragment: <#T##String?#>)
-//        return req.client.post(URI(scheme: "https", path: url)).map({ res in
-//            return ""
-//        })
-//    }
+    app.get("translate") { req -> EventLoopFuture<String> in
+        struct TranslationResp: Decodable {
+            struct Result: Decodable {
+                struct LexicalEntries: Decodable {
+                    struct Entries: Decodable {
+                        struct Sense: Decodable {
+                            struct Trancslation: Decodable {
+                                var text: String
+                            }
+                            var translations: [Trancslation]
+                        }
+                        var senses: [Sense]
+                    }
+                    var entries: [Entries]
+                }
+                var lexicalEntries: [LexicalEntries]
+            }
+            var results: [Result]
+        }
+
+        guard maxTransReq > 0,
+            let word: String = req.query["word"] else {
+            throw Abort(.badRequest)
+        }
+        maxTransReq -= 1
+        return req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(word)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")])).flatMapThrowing { res in
+            try res.content.decode(TranslationResp.self)
+        }.map({ resp in
+            guard let data = try? JSONEncoder().encode(resp.results.first?.lexicalEntries.first?.entries.first?.senses.first?.translations.map(\.text) ?? []), let resp = String(data: data, encoding: .utf8) else { return "" }
+            return resp
+        })
+    }
 }
