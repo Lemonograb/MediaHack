@@ -10,4 +10,9 @@ func routes(_ app: Application) throws {
         let data = try JSONEncoder().encode(cinimas)
         return String(data: data, encoding: .utf8) ?? ""
     }
+
+    app.webSocket("echo") { req, ws in
+        // Connected WebSocket.
+        print(ws)
+    }
 }
