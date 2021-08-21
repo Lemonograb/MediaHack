@@ -33,7 +33,7 @@ func routes(_ app: Application) throws {
             throw ServerError.noSubtitlesForId
         }
 
-        let mxResult = mx.wait(timeout: DispatchTime.now() + .milliseconds(150))
+        let mxResult = mx.wait(timeout: DispatchTime.now() + .milliseconds(550))
         if case .timedOut = mxResult {
             mx.signal()
             throw ServerError.couldntLoadSubtitles
