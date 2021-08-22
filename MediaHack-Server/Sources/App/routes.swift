@@ -119,7 +119,6 @@ func routes(_ app: Application) throws {
             })
             .flatMap({ wordId in
                 req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(wordId)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")]))
-//                    .map({ $0.description })
                     .flatMapThrowing { res in
                         try res.content.decode(TranslationResp.self)
                     }

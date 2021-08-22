@@ -7,7 +7,7 @@ final class AppRouter {
     func setup(in window: UIWindow) {
         let root: UIViewController
         if Device.isPhone {
-            root = SubtitlesOverlayViewController()
+            root = NavigationMenuBaseController()
         } else {
             root = PlayerViewController()
         }
