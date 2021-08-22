@@ -2,6 +2,7 @@ import AVKit
 import Combine
 import Foundation
 import Networking
+import OverplayPanel_tvOS
 import SharedCode
 
 final class PlayerInteractor {
@@ -27,6 +28,10 @@ final class PlayerInteractor {
         let ru: [TimeToSubtitle]
     }
 
+    var model: Model {
+        return modelSubject.value
+    }
+
     var modelPublisher: AnyPublisher<Model, Never> {
         return modelSubject.eraseToAnyPublisher()
     }
@@ -35,10 +40,12 @@ final class PlayerInteractor {
         return playerModelSubject.eraseToAnyPublisher()
     }
 
+    private static let adjustment: Double = 2586.5
+
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
 
-    private let timeToSubtitleSubject = PassthroughSubject<SubtitlesHolder, Never>()
+    private let timeToSubtitleSubject = CurrentValueSubject<SubtitlesHolder, Never>(.init(eng: [], ru: []))
     private let playerTimeSubject = PassthroughSubject<CMTime, Never>()
     private var bag = Set<AnyCancellable>()
 
@@ -62,7 +69,7 @@ final class PlayerInteractor {
                 var lowerboundToSubtitle: [TimeToSubtitle] = []
                 lowerboundToSubtitle.reserveCapacity(model.count)
                 for subtitle in model {
-                    let adjustedKey = subtitle.start.timeInSeconds - 2586.5
+                    let adjustedKey = subtitle.start.timeInSeconds - PlayerInteractor.adjustment
                     lowerboundToSubtitle.append((key: adjustedKey, value: subtitle))
                 }
                 return lowerboundToSubtitle
@@ -103,6 +110,76 @@ final class PlayerInteractor {
 
     func set(time: CMTime) {
         playerTimeSubject.send(time)
+    }
+
+    func overlayModel(for time: CMTime) -> OverlayPanelViewController.Model? {
+        let sec = time.seconds
+        let all = timeToSubtitleSubject.value
+        guard
+            let content = model.content,
+            let nearestEnIndex = all.eng.firstIndex(where: { k, v in
+                k >= sec && sec <= v.end.timeInSeconds
+            })
+        else {
+            return nil
+        }
+
+        let thisItem: Networking.Subtitle = all.eng[nearestEnIndex].value
+        var itemsBefore: [Networking.Subtitle] = []
+        var itemsAfter: [Networking.Subtitle] = []
+
+        if nearestEnIndex > 0 {
+            let numItemsBefore = nearestEnIndex
+            let lowerBoundIndex = nearestEnIndex.advanced(by: -min(numItemsBefore, 10))
+            itemsBefore = Array(all.eng[lowerBoundIndex ..< nearestEnIndex].map(\.value))
+        }
+
+        let nextIndex = nearestEnIndex.advanced(by: 1)
+        let numItemsAfter = all.eng.endIndex - nextIndex
+        if numItemsAfter > 0 {
+            let upperBoundIndex = nearestEnIndex.advanced(by: min(numItemsAfter, 10))
+            itemsAfter = Array(all.eng[nextIndex ... upperBoundIndex].map(\.value))
+        }
+
+        func ruSubtitle(for en: Networking.Subtitle) -> Networking.Subtitle? {
+            return all.ru.first { _, v in
+                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.2
+            }?.value
+        }
+
+        var subtitles: [OverlayPanelViewController.Model.Subtitle] = []
+        subtitles.reserveCapacity(itemsBefore.count + itemsAfter.count + 1)
+        itemsBefore.forEach { (en: Networking.Subtitle) in
+            let model = OverlayPanelViewController.Model.Subtitle(
+                en: en,
+                ru: ruSubtitle(for: en),
+                isActive: false
+            )
+            subtitles.append(model)
+        }
+
+        subtitles.append(
+            OverlayPanelViewController.Model.Subtitle(
+                en: thisItem,
+                ru: ruSubtitle(for: thisItem),
+                isActive: true
+            )
+        )
+
+        itemsAfter.forEach { (en: Networking.Subtitle) in
+            let model = OverlayPanelViewController.Model.Subtitle(
+                en: en,
+                ru: ruSubtitle(for: en),
+                isActive: false
+            )
+            subtitles.append(model)
+        }
+
+        return OverlayPanelViewController.Model(
+            movieName: content.movie.name,
+            imageURL: URL(string: content.movie.photoURL).unsafelyUnwrapped,
+            subtitles: subtitles
+        )
     }
 }
 

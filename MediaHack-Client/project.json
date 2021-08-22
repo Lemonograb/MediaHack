@@ -34,6 +34,7 @@
         "properties": {
           "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
           "CFBundleIdentifier": "nan.mediahack.ios",
+          "PRODUCT_BUNDLE_IDENTIFIER": "nan.mediahack.ios",
           "CFBundleShortVersionString": "1.1.1",
           "CFBundleVersion": "3",
           "LSRequiresIPhoneOS": true,
@@ -94,6 +95,7 @@
         "properties": {
           "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
           "CFBundleIdentifier": "nan.mediahack.tv",
+          "PRODUCT_BUNDLE_IDENTIFIER": "nan.mediahack.tv",
           "CFBundleShortVersionString": "1.1.1",
           "CFBundleVersion": "3",
           "LSRequiresIPhoneOS": true,
@@ -115,6 +117,12 @@
         },
         {
             "target": "Player_tvOS"
+        },
+        {
+            "target": "OverplayPanel_tvOS"
+        },
+        {
+          "package": "Nuke"
         }
       ]
     },
@@ -155,6 +163,9 @@
       "dependencies": [
         {
           "target": "SharedCode_tvOS"
+        },
+        {
+            "target": "OverplayPanel_tvOS"
         }
       ]
     },
@@ -166,6 +177,20 @@
       "dependencies": [
         {
           "target": "SharedCode_iOS"
+        },
+        {
+          "package": "Nuke"
+        }
+      ]
+    },
+    "OverplayPanel_tvOS": {
+      "type": "library.static",
+      "platform": "tvOS",
+      "sources": "Modules/tvOS/OverlayPanel",
+      "requiresObjCLinking": false,
+      "dependencies": [
+        {
+          "target": "SharedCode_tvOS"
         },
         {
           "package": "Nuke"

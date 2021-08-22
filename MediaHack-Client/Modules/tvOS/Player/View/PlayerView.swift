@@ -49,15 +49,9 @@ final class PlayerView: BaseView {
         subtitlesView.pin(.left).to(safeAreaLayoutGuide, .left).const(24).greaterThanOrEqual()
         subtitlesView.pin(.right).to(safeAreaLayoutGuide, .right).const(-24).lessThanOrEqual()
         subtitlesView.setupLayout()
-
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tap)
     }
-
-    @objc
-    private func handleTap() {
+    
+    func togglePlaying() {
         isPlaying = !isPlaying
     }
 }
-
-// https://developer.apple.com/documentation/avfoundation/media_playback_and_selection/observing_the_playback_time
