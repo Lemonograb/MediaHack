@@ -12,7 +12,7 @@ public struct Movie: Codable {
     public let id: String
 
     enum CodingKeys: String, CodingKey {
-        case rating, tags, dictionary, url
+        case rating, tags, dictionary, url 
         case relevantCinemaIDS = "relevantCinemaIds"
         case reviews, name
         case movieListDescription = "description"

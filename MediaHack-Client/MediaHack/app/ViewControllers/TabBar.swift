@@ -19,7 +19,10 @@ class NavigationMenuBaseController: UITabBarController {
     }
 
     func loadTabBar() {
-        viewControllers = [MainViewController(), MainScreenVC()]
+        let mainNav = UINavigationController(rootViewController: MainScreenVC())
+        mainNav.isNavigationBarHidden = true
+
+        viewControllers = [MainViewController(), mainNav]
         selectedIndex = 1
         tabBar.isHidden = true
         tabBarView.isUserInteractionEnabled = true

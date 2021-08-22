@@ -10,6 +10,7 @@ import Networking
 import Player_iOS
 import UIKit
 
+var allMovies: [Movie] = []
 class MainScreenVC: UIViewController {
     private var bag = Set<AnyCancellable>()
     let stack = UIStackView()
@@ -26,6 +27,7 @@ class MainScreenVC: UIViewController {
                     assertionFailure(err.localizedDescription)
                 }
             }, receiveValue: { [weak self] movies in
+                allMovies = movies
                 self?.setupViews(movies: movies)
             })
             .store(in: &bag)
@@ -34,7 +36,6 @@ class MainScreenVC: UIViewController {
     private func setupViews(movies: [Movie]) {
         view.addSubview(scrollView)
         scrollView.pinEdgesToSuperView()
-//        scrollView.
         scrollView.addSubview(stack)
         stack.axis = .vertical
         stack.spacing = 16
@@ -52,7 +53,7 @@ class MainScreenVC: UIViewController {
             let views = movies.map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
-                    self?.openFilm(movie: element)
+                    self?.openFilm(movie: element, relevant: movies)
                 }
                 return view
             }
@@ -89,7 +90,7 @@ class MainScreenVC: UIViewController {
             let views = movies.map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
-                    self?.openFilm(movie: element)
+                    self?.openFilm(movie: element, relevant: movies)
                 }
                 return view
             }
@@ -109,7 +110,7 @@ class MainScreenVC: UIViewController {
             let views = movies.map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
-                    self?.openFilm(movie: element)
+                    self?.openFilm(movie: element, relevant: movies)
                 }
                 return view
             }
@@ -190,7 +191,11 @@ class MainScreenVC: UIViewController {
         return wrapper
     }
 
-    private func openFilm(movie: Movie) {}
+    private func openFilm(movie: Movie, relevant: [Movie]) {
+        let vc = MovieCard()
+        vc.movie = movie
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
     private func openTag(tag: String) {}
 
@@ -202,26 +207,33 @@ class MainScreenVC: UIViewController {
 }
 
 extension UIImageView {
+    static var imageCach: [String: UIImage] = [:]
     convenience init(urlString: String) {
         self.init()
-        guard let url = URL(string: urlString) else { return }
-        var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10)
-        request.httpMethod = "GET"
-
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { [weak self] data, _, error -> Void in
-            if let error = error {
-                print(error)
-            } else {
-                guard let data = data else { return }
-                let image = UIImage(data: data)
-                DispatchQueue.main.async {
-                    self?.image = image
-                }
+        if let image = Self.imageCach[urlString] {
+            DispatchQueue.main.async { [weak self] in
+                self?.image = image
             }
-        })
+        } else {
+            guard let url = URL(string: urlString) else { return }
+            var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10)
+            request.httpMethod = "GET"
 
-        dataTask.resume()
+            let session = URLSession.shared
+            let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { [weak self] data, _, error -> Void in
+                if let error = error {
+                    print(error)
+                } else {
+                    guard let data = data else { return }
+                    let image = UIImage(data: data)
+                    Self.imageCach[urlString] = image
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            })
+            dataTask.resume()
+        }
     }
 }
 
@@ -231,5 +243,15 @@ extension UIView {
         view.addSubview(self)
         pinEdgesToSuperView(edges: inset)
         return view
+    }
+}
+
+extension UILabel {
+    convenience init(text: String, font: UIFont, color: UIColor, numberOfLines: Int = 0) {
+        self.init()
+        self.text = text
+        self.font = font
+        self.textColor = color
+        self.numberOfLines = numberOfLines
     }
 }
