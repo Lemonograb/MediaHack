@@ -12,7 +12,7 @@ public enum API {
             try decoder.decode([Movie].self, from: data)
         }.eraseToAnyPublisher()
     }
-    
+
     public static func getSubtitle(movie: Movie) -> AnyPublisher<MovieSubtitles, Error> {
         var endpoint = baseURL.appendingPathComponent("subtitle")
         endpoint = endpoint.appending("id", value: movie.id)
@@ -20,16 +20,22 @@ public enum API {
             try decoder.decode(MovieSubtitles.self, from: data)
         }.eraseToAnyPublisher()
     }
+
+    public static func define(word: String) -> AnyPublisher<[String], Error> {
+        var endpoint = baseURL.appendingPathComponent("translate")
+        endpoint = endpoint.appending("word", value: word)
+        return session.dataTaskPublisher(for: endpoint).tryMap { (data: Data, _: URLResponse) in
+            try decoder.decode([String].self, from: data)
+        }.eraseToAnyPublisher()
+    }
 }
 
 extension URL {
-
     func appending(_ queryItem: String, value: String?) -> URL {
-
         guard var urlComponents = URLComponents(string: absoluteString) else { return absoluteURL }
 
         // Create array of existing query items
-        var queryItems: [URLQueryItem] = urlComponents.queryItems ??  []
+        var queryItems: [URLQueryItem] = urlComponents.queryItems ?? []
 
         // Create query item
         let queryItem = URLQueryItem(name: queryItem, value: value)
