@@ -37,15 +37,9 @@ final class OverlayPanelInteractor {
     private let playingTimeSubject = PassthroughSubject<Double, Never>()
     private let definitionResultSubject = PassthroughSubject<[String], Never>()
 
-    init() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) {
-            self.playingTimeSubject.send(0)
-        }
-    }
-
-    func startWS(id: String) {
+    init(wsID: String) {
         let decoder = JSONDecoder()
-        WSManager.shared.connectToWebSocket(type: .phone, id: id)
+        WSManager.shared.connectToWebSocket(type: .phone, id: wsID)
         WSManager.shared.receiveData(completion: { [weak self] text in
             if
                 let data = text.data(using: .utf8),
@@ -94,13 +88,12 @@ final class OverlayPanelInteractor {
     func play(time: Double) {
         WSManager.shared.sendStatus(.playAt(sec: time - Self.adjustment))
     }
-    
+
     func continuePlay() {
         WSManager.shared.sendStatus(.start)
     }
 
     func define(word: String) -> AnyPublisher<[String], Never> {
-        let word = "forgetting"
         WSManager.shared.sendStatus(.stop)
         return API.define(word: word)
             .replaceError(with: [])

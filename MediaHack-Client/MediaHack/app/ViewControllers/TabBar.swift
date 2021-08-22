@@ -11,6 +11,7 @@ import UIKit
 class NavigationMenuBaseController: UITabBarController {
     var tabBarHeight: CGFloat = 96.0
     let tabBarView = UIImageView(image: .init(named: "tabBarFrame"))
+    private unowned var overlayVC: UIViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +19,8 @@ class NavigationMenuBaseController: UITabBarController {
     }
 
     func loadTabBar() {
-        viewControllers = [MainViewController(), MainScreenVC(), OverlayPanelViewController()]
-        selectedIndex = 2
+        viewControllers = [MainViewController(), MainScreenVC()]
+        selectedIndex = 1
         tabBar.isHidden = true
         tabBarView.isUserInteractionEnabled = true
         view.addSubview(tabBarView)
@@ -51,16 +52,34 @@ class NavigationMenuBaseController: UITabBarController {
         ex.pin(.trailing).to(home, .leading).const(-40).equal()
         dict.pin(.leading).to(home, .trailing).const(40).equal()
 
-        home.addTapHandler { [weak self] in
-            self?.selectedIndex = 1
-        }
-
         ex.addTapHandler { [weak self] in
             self?.selectedIndex = 0
         }
 
+        home.addTapHandler { [unowned self] in
+            let currentIndex = self.selectedIndex
+            if currentIndex == 1 {
+                if self.overlayVC != nil {
+                    self.selectedIndex = 2
+                } else {
+                    let codeVc = QRCodeScannerViewController()
+                    self.present(codeVc, animated: true)
+                    codeVc.onCode = { code in
+                        let overlayVC = OverlayPanelViewController(wsID: code)
+                        self.viewControllers?.append(overlayVC)
+                        self.overlayVC = overlayVC
+                        self.selectedIndex = 2
+                        codeVc.dismiss(animated: true, completion: nil)
+                    }
+                }
+            } else {
+                self.selectedIndex = 1
+            }
+        }
+
         dict.addTapHandler { [weak self] in
-            self?.selectedIndex = 2
+            print("todo dictionary")
+            // self?.selectedIndex = 2
         }
     }
 }
