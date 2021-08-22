@@ -29,8 +29,19 @@ final class OverlayPanelInteractor {
         return playingTimeSubject.eraseToAnyPublisher()
     }
 
+    var definitionResult: AnyPublisher<[String], Never> {
+        return definitionResultSubject.eraseToAnyPublisher()
+    }
+
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playingTimeSubject = PassthroughSubject<Double, Never>()
+    private let definitionResultSubject = PassthroughSubject<[String], Never>()
+
+    init() {
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) {
+            self.playingTimeSubject.send(0)
+        }
+    }
 
     func startWS(id: String) {
         let decoder = JSONDecoder()
@@ -82,5 +93,17 @@ final class OverlayPanelInteractor {
 
     func play(time: Double) {
         WSManager.shared.sendStatus(.playAt(sec: time - Self.adjustment))
+    }
+    
+    func continuePlay() {
+        WSManager.shared.sendStatus(.start)
+    }
+
+    func define(word: String) -> AnyPublisher<[String], Never> {
+        let word = "forgetting"
+        WSManager.shared.sendStatus(.stop)
+        return API.define(word: word)
+            .replaceError(with: [])
+            .eraseToAnyPublisher()
     }
 }

@@ -40,6 +40,10 @@ final class PlayerInteractor {
         return playerModelSubject.eraseToAnyPublisher()
     }
 
+    var playingStatusPublisher: AnyPublisher<Bool, Never> {
+        return playingStatusSubject.eraseToAnyPublisher()
+    }
+
     var adjustPlayerTimePublisher: AnyPublisher<CMTime, Never> {
         return adjustedPlayerTimeSubject.eraseToAnyPublisher()
     }
@@ -53,6 +57,7 @@ final class PlayerInteractor {
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
 
+    private let playingStatusSubject = PassthroughSubject<Bool, Never>()
     private let qrCodeSubject = PassthroughSubject<UIImage, Never>()
     private let timeToSubtitleSubject = CurrentValueSubject<SubtitlesHolder, Never>(.init(eng: [], ru: []))
     private let playerTimeSubject = PassthroughSubject<CMTime, Never>()
@@ -68,7 +73,11 @@ final class PlayerInteractor {
                 let status = try? decoder.decode(WSStatus.self, from: data)
             {
                 switch status {
-                case .start, .stop, .play:
+                case .start:
+                    self?.playingStatusSubject.send(true)
+                case .stop:
+                    self?.playingStatusSubject.send(false)
+                case .play:
                     break
                 case let .playAt(sec):
                     self?.adjustedPlayerTimeSubject.send(CMTime(seconds: sec, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
@@ -115,7 +124,7 @@ final class PlayerInteractor {
             return PlayerModel(enSubtitle: WordsTokenizer.process(text: enSubtitle.text))
         }.compactMap { $0 }.subscribe(playerModelSubject).store(in: &bag)
     }
-    
+
     func requestQRCode() {
         if let id = WSManager.shared.deviceId, let image = generateQRCode(from: id) {
             qrCodeSubject.send(image)

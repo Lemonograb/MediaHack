@@ -29,6 +29,12 @@ public final class PlayerViewController: BaseViewController {
             .sink { [unowned self] model in
                 self.updatePlayer(with: model)
             }.store(in: &bag)
+        
+        interactor.playingStatusPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] shouldPlay in
+                self.playerView?.isPlaying = shouldPlay
+            }.store(in: &bag)
 
         interactor.adjustPlayerTimePublisher
             .receive(on: DispatchQueue.main)

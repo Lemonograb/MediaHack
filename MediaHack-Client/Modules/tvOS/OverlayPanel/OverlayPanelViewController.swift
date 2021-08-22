@@ -5,13 +5,13 @@ import SharedCode
 import UIKit
 
 open class FocusibleView: BaseView {
-    open override var canBecomeFocused: Bool {
+    override open var canBecomeFocused: Bool {
         return true
     }
 }
 
 open class FocusibleCollectionView: UICollectionView {
-    open override var canBecomeFocused: Bool {
+    override open var canBecomeFocused: Bool {
         return true
     }
 }
@@ -105,9 +105,9 @@ public final class OverlayPanelViewController: BaseViewController {
         self.collectionView = FocusibleCollectionView(frame: .zero, collectionViewLayout: OverlayPanelViewController.makeLayout())
         super.init()
     }
-    
-    public override func loadView() {
-        self.view = FocusibleView()
+
+    override public func loadView() {
+        view = FocusibleView()
         super.loadView()
     }
 
@@ -117,7 +117,7 @@ public final class OverlayPanelViewController: BaseViewController {
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
     }
-    
+
     public func update() {
         var selectedIndexPath: IndexPath?
 

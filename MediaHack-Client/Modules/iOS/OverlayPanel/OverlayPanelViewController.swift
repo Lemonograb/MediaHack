@@ -77,6 +77,8 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     private var bag = Set<AnyCancellable>()
 
+    private unowned var cellRequestedDefinition: SubtitleCell?
+
     override public init() {
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: OverlayPanelViewController.makeLayout())
         super.init()
@@ -88,6 +90,15 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
             .sink { [unowned self] time in
                 self.update(with: time)
             }.store(in: &bag)
+        interactor.definitionResult
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] result in
+                if result.isEmpty {
+                    self.interactor.continuePlay()
+                } else {
+                    self.cellRequestedDefinition?.show(definition: result)
+                }
+            }.store(in: &bag)
     }
 
     override public func setup() {
@@ -95,8 +106,7 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
         collectionView.pinEdgesToSuperView()
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
-
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { cv, ip, model in
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { [unowned self] cv, ip, model in
             switch model {
             case let .header(model):
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: HeaderCell.reuseIdentifier, for: ip), to: HeaderCell.self)
@@ -105,13 +115,31 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
             case let .subtitle(model):
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: SubtitleCell.reuseIdentifier, for: ip), to: SubtitleCell.self)
                 cell.configure(model: SubtitleCell.Model(text: WordsTokenizer.process(text: model.en), isActive: model.isActive))
+                cell.onWordSelected = { [unowned self] word in
+                    if let prev = self.cellRequestedDefinition, prev !== cell {
+                        _ = prev.removeDefinition()
+                    }
+                    self.cellRequestedDefinition = cell
+                    self.interactor
+                        .define(word: word)
+                        .receive(on: DispatchQueue.main)
+                        .sink { [unowned self] result in
+                            self.cellRequestedDefinition?.show(definition: result)
+                        }.store(in: &self.bag)
+                }
                 return cell
             }
         }
+        view.addGestureRecognizer { [unowned self] (_: UITapGestureRecognizer) in
+            if let cell = cellRequestedDefinition, cell.removeDefinition() {
+                self.interactor.continuePlay()
+                self.cellRequestedDefinition = nil
+            }
+        }
     }
-    
+
     private var gotCode = false
-    public override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard !gotCode else {
             return
@@ -237,17 +265,98 @@ final class SubtitleCell: BaseCollectionViewCell, ReuseIdentifiable, Configurabl
         let isActive: Bool
     }
 
+    var onWordSelected: ((String) -> Void)?
     private let contentLabel = UILabel()
 
     override func setup() {
         contentLabel.numberOfLines = 0
+        contentLabel.lineBreakMode = .byWordWrapping
         contentView.addSubview(contentLabel)
         contentLabel.pinEdgesToSuperView()
+
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(_:)))
+        longTap.minimumPressDuration = 0.35
+        contentView.addGestureRecognizer(longTap)
     }
 
     func configure(model: Model) {
         contentLabel.attributedText = model.text
         contentLabel.alpha = model.isActive ? 1 : 0.3
+    }
+
+    private var selectedWord: String?
+    private var lastTouchLocation: CGPoint?
+    private var tooltip: ToolTipView?
+
+    func show(definition: [String]) {
+        UIView.animate(withDuration: 0.3) {
+            self.tooltip?.removeFromSuperview()
+        }
+        if let word = selectedWord, let location = lastTouchLocation {
+            let tooltip = ToolTipView(word: word, definition: definition)
+            contentView.addSubview(tooltip)
+            tooltip.bounds.size.width = 228
+            tooltip.bounds.size.height = 64
+            tooltip.cornerRadius = 6
+            tooltip.fillColor = #colorLiteral(red: 1, green: 0.6687215567, blue: 0, alpha: 1).withAlphaComponent(0.96)
+            tooltip.strokeColor = .clear
+            tooltip.lineWidth = 0
+            tooltip.backgroundColor = .clear
+            tooltip.layoutIfNeeded()
+            tooltip.alpha = 0
+            tooltip.frame.origin.x = location.x - (tooltip.bounds.size.width / 2)
+            tooltip.frame.origin.y = location.y - tooltip.bounds.height
+            UIView.animate(withDuration: 0.3) {
+                tooltip.alpha = 1
+            }
+            self.tooltip = tooltip
+        }
+    }
+
+    func removeDefinition() -> Bool {
+        guard let view = tooltip else {
+            return false
+        }
+        UIView.animate(withDuration: 0.3) {
+            view.removeFromSuperview()
+        }
+        selectedWord = nil
+        lastTouchLocation = nil
+        return true
+    }
+
+    @objc
+    private func handleLongTap(_ r: UILongPressGestureRecognizer) {
+        guard let chIndex = r.tappedCharacterIndex(label: contentLabel), r.state == .began else {
+            return
+        }
+        lastTouchLocation = r.location(in: contentView)
+
+        let plain = contentLabel.attributedText.unsafelyUnwrapped.string
+        var lowerBoundIndex = plain.index(plain.startIndex, offsetBy: chIndex)
+        var upperBoundIndex = plain.index(plain.startIndex, offsetBy: chIndex)
+
+        let indices = plain.indices
+        var allowedSet = CharacterSet.letters
+        allowedSet.formUnion(CharacterSet(charactersIn: "'"))
+
+        for idx in plain.indices[indices.startIndex ..< lowerBoundIndex].reversed() {
+            if CharacterSet(charactersIn: String(plain[idx])).isSubset(of: allowedSet) {
+                lowerBoundIndex = idx
+            } else {
+                break
+            }
+        }
+        for idx in plain.indices[upperBoundIndex ..< indices.endIndex] {
+            if CharacterSet(charactersIn: String(plain[idx])).isSubset(of: allowedSet) {
+                upperBoundIndex = idx
+            } else {
+                break
+            }
+        }
+        let str = String(plain[lowerBoundIndex ... upperBoundIndex])
+        selectedWord = str
+        onWordSelected?(str)
     }
 }
 
@@ -345,5 +454,134 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
+    }
+}
+
+extension UILongPressGestureRecognizer {
+    func tappedCharacterIndex(label: UILabel) -> Int? {
+        let layoutManager = NSLayoutManager()
+        let textContainer = NSTextContainer(size: CGSize.zero)
+        let textStorage = NSTextStorage(attributedString: label.attributedText.unsafelyUnwrapped)
+
+        // Configure layoutManager and textStorage
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+
+        // Configure textContainer
+        textContainer.lineFragmentPadding = 0.0
+        textContainer.lineBreakMode = label.lineBreakMode
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        let labelSize = label.bounds.size
+        textContainer.size = labelSize
+
+        let locationOfTouchInLabel = location(in: label)
+        let textBoundingBox = layoutManager.usedRect(for: textContainer)
+
+        let textContainerOffset = CGPoint(
+            x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x,
+            y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y
+        )
+        let locationOfTouchInTextContainer = CGPoint(
+            x: locationOfTouchInLabel.x - textContainerOffset.x,
+            y: locationOfTouchInLabel.y - textContainerOffset.y
+        )
+        if !textBoundingBox.contains(locationOfTouchInTextContainer) {
+            return nil
+        }
+
+        return layoutManager.characterIndex(for: locationOfTouchInTextContainer, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+    }
+}
+
+private final class ToolTipView: BaseView {
+    private var shapeLayer: CALayer?
+    private let wordLabel = UILabel()
+    private let definitionLabel = UILabel()
+    private let iconImageView = UIImageView(image: UIImage(named: "ic_plus"))
+
+    var lineWidth: CGFloat = 1 { didSet { setNeedsDisplay() } }
+    var cornerRadius: CGFloat = 4 { didSet { setNeedsDisplay() } }
+    var calloutSize: CGFloat = 8 { didSet { setNeedsDisplay() } }
+    var fillColor: UIColor = .clear { didSet { setNeedsDisplay() } }
+    var strokeColor: UIColor = .clear { didSet { setNeedsDisplay() } }
+
+    init(word: String, definition: [String]) {
+        super.init()
+        addSubview(wordLabel)
+        addSubview(definitionLabel)
+        addSubview(iconImageView)
+
+        wordLabel.attributedText = word.capitalized.builder
+            .font(UIFont.systemFont(ofSize: 13, weight: .medium))
+            .foregroundColor(#colorLiteral(red: 0.1960550249, green: 0.1960947812, blue: 0.1960498393, alpha: 1)).result
+
+        wordLabel.pin(.height).const(18).equal()
+        wordLabel.pin(.top).to(self).const(8).equal()
+        wordLabel.pin(.left).to(self).const(8).equal()
+
+        definitionLabel.pin(.height).const(18).equal()
+        definitionLabel.pin(.top).to(wordLabel, .bottom).equal()
+        definitionLabel.pin(.left).to(self).const(8).equal()
+
+        iconImageView.pin(.width).const(16).equal()
+        iconImageView.pin(.height).const(16).equal()
+        iconImageView.pin(.top).to(self).const(8).equal()
+        iconImageView.pin(.right).to(self).const(-8).equal()
+
+        definitionLabel.attributedText = definition[0].capitalized.builder
+            .font(UIFont.systemFont(ofSize: 13, weight: .bold))
+            .foregroundColor(.white).result
+    }
+
+    override func draw(_ rect: CGRect) {
+        let rect = bounds.insetBy(dx: lineWidth / 2, dy: lineWidth / 2)
+        let path = UIBezierPath()
+
+        // lower left corner
+        path.move(to: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY - calloutSize))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX, y: rect.maxY - calloutSize - cornerRadius),
+            controlPoint: CGPoint(x: rect.minX, y: rect.maxY - calloutSize)
+        )
+
+        // left
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + cornerRadius))
+
+        // upper left corner
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY),
+            controlPoint: CGPoint(x: rect.minX, y: rect.minY)
+        )
+
+        // top
+        path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY))
+
+        // upper right corner
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.minY + cornerRadius),
+            controlPoint: CGPoint(x: rect.maxX, y: rect.minY)
+        )
+
+        // right
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - calloutSize - cornerRadius))
+
+        // lower right corner
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY - calloutSize),
+            controlPoint: CGPoint(x: rect.maxX, y: rect.maxY - calloutSize)
+        )
+
+        // bottom (including callout)
+        path.addLine(to: CGPoint(x: rect.midX + calloutSize, y: rect.maxY - calloutSize))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX - calloutSize, y: rect.maxY - calloutSize))
+        path.close()
+
+        fillColor.setFill()
+        path.fill()
+
+        strokeColor.setStroke()
+        path.lineWidth = lineWidth
+        path.stroke()
     }
 }
