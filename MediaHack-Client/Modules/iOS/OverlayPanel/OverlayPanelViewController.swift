@@ -1,21 +1,29 @@
 import Combine
+import Networking
 import Nuke
 import SharedCode
 import UIKit
 
-public final class SubtitlesOverlayViewController: BaseViewController {
+public final class OverlayPanelViewController: BaseViewController, UICollectionViewDelegate {
+    struct Model {
+        struct Subtitle: Hashable {
+            let en: [String]
+            let index: Int
+            let isActive: Bool
+        }
+
+        let movieName: String
+        let imageURL: URL
+        let subtitles: [Subtitle]
+    }
+
     private enum Section {
         case header, subtitles
     }
 
     private enum Item: Hashable {
         case header(HeaderCell.Model)
-        case subtitle(SubtitleCell.Model)
-    }
-
-    private struct Model: Hashable {
-        let header: HeaderCell.Model
-        let subtitles: [SubtitleCell.Model]
+        case subtitle(Model.Subtitle)
     }
 
     private static func makeLayout() -> UICollectionViewLayout {
@@ -64,18 +72,27 @@ public final class SubtitlesOverlayViewController: BaseViewController {
         return layout
     }
 
+    private let interactor = OverlayPanelInteractor()
     private let collectionView: UICollectionView
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+    private var bag = Set<AnyCancellable>()
 
     override public init() {
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: SubtitlesOverlayViewController.makeLayout())
+        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: OverlayPanelViewController.makeLayout())
         super.init()
+
+        collectionView.delegate = self
+        interactor.loadData().store(in: &bag)
+        interactor.playingTimePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] time in
+                self.update(with: time)
+            }.store(in: &bag)
     }
 
     override public func setup() {
         view.addSubview(collectionView)
         collectionView.pinEdgesToSuperView()
-        collectionView.backgroundColor = #colorLiteral(red: 0.195160985, green: 0.2001810074, blue: 0.2427157164, alpha: 1)
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
 
@@ -87,77 +104,64 @@ public final class SubtitlesOverlayViewController: BaseViewController {
                 return cell
             case let .subtitle(model):
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: SubtitleCell.reuseIdentifier, for: ip), to: SubtitleCell.self)
-                cell.configure(model: model)
+                cell.configure(model: SubtitleCell.Model(text: WordsTokenizer.process(text: model.en), isActive: model.isActive))
                 return cell
             }
         }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let content = interactor.model.content {
+            let startSecond = content.subtitles[indexPath.row].value.start.timeInSeconds
+            interactor.play(time: startSecond)
+        }
+    }
 
+    private func update(with time: Double) {
+        guard let content = interactor.model.content else {
+            return
+        }
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.header, .subtitles])
         snapshot.appendItems(
             [
                 .header(
                     HeaderCell.Model(
-                        imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                        movieName: "Pulp fiction"
+                        imageURL: URL(string: content.movie.photoURL).unsafelyUnwrapped,
+                        movieName: content.movie.name
                     )
                 ),
             ],
             toSection: Section.subtitles
         )
-        snapshot.appendItems(
-            [
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: WordsTokenizer.process(
-                            text: [
-                                "Why do we feel it's necessary",
-                                "to yak about bullshit in order to be comfortable",
-                            ]
-                        ),
-                        isActive: false,
-                        index: 0
-                    )
-                ),
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: WordsTokenizer.process(
-                            text: [
-                                "Uncomfortable silences. Why do we feel it's necessary to yak about bullshit in order to be comfortable?",
-                            ]
-                        ),
-                        isActive: true,
-                        index: 1
-                    )
-                ),
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: "Неловкое молчание. Почему людям обязательно нужно сморозить какую-нибудь чушь, лишь бы не почувствовать себя в своей тарелке?"
-                            .builder
-                            .font(UIFont.systemFont(ofSize: 18, weight: .semibold))
-                            .foregroundColor(.white)
-                            .result,
-                        isActive: true,
-                        index: 2
-                    )
-                ),
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: WordsTokenizer.process(
-                            text: [
-                                "Why do we feel it's necessary",
-                                "to yak about bullshit in order to be comfortable",
-                            ]
-                        ),
-                        isActive: false,
-                        index: 3
-                    )
-                ),
-            ],
-            toSection: Section.subtitles
-        )
-        dataSource.apply(snapshot)
+        let subtitlesModels = content.subtitles.enumerated().map { (i, tuple: OverlayPanelInteractor.TimeToSubtitle) -> Model.Subtitle in
+            let adjustedSec: Double = time + OverlayPanelInteractor.adjustment
+            let isActive: Bool
+            if tuple.value.end.timeInSeconds < adjustedSec {
+                isActive = false
+            } else {
+                isActive = tuple.value.start.timeInSeconds <= adjustedSec && adjustedSec <= tuple.value.end.timeInSeconds
+            }
+            return Model.Subtitle(en: tuple.value.text, index: i, isActive: isActive)
+        }
+        let subtitles = subtitlesModels.map { model -> Item in
+            .subtitle(model)
+        }
+        let activeIndex = subtitlesModels.firstIndex(where: \.isActive)
+        let activeIndexPath = activeIndex.flatMap { index in
+            IndexPath(row: index, section: 1)
+        }
+
+        snapshot.appendItems(subtitles, toSection: .subtitles)
+        dataSource.apply(snapshot, animatingDifferences: true) {
+            if let activeIndexPath = activeIndexPath {
+                self.collectionView.scrollToItem(at: activeIndexPath, at: .centeredVertically, animated: true)
+                self.lastActiveIndexPath = activeIndexPath
+            }
+        }
     }
+    
+    private var lastActiveIndexPath: IndexPath?
 }
 
 open class BaseCollectionViewCell: UICollectionViewCell {
@@ -212,9 +216,8 @@ final class HeaderCell: BaseCollectionViewCell, ReuseIdentifiable, Configurable 
 
 final class SubtitleCell: BaseCollectionViewCell, ReuseIdentifiable, Configurable {
     struct Model: Hashable {
-        let subtitle: NSAttributedString
+        let text: NSAttributedString
         let isActive: Bool
-        let index: Int
     }
 
     private let contentLabel = UILabel()
@@ -226,7 +229,7 @@ final class SubtitleCell: BaseCollectionViewCell, ReuseIdentifiable, Configurabl
     }
 
     func configure(model: Model) {
-        contentLabel.attributedText = model.subtitle
+        contentLabel.attributedText = model.text
         contentLabel.alpha = model.isActive ? 1 : 0.3
     }
 }

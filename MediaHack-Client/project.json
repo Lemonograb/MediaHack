@@ -79,7 +79,10 @@
           "target": "Networking_iOS"
         },
         {
-          "target": "SubtitlesOverlay"
+          "target": "OverlayPanel_iOS"
+        },
+        {
+            "target": "Networking_iOS"
         },
         {
           "package": "Nuke"
@@ -169,10 +172,10 @@
         }
       ]
     },
-    "SubtitlesOverlay": {
+    "OverlayPanel_iOS": {
       "type": "library.static",
       "platform": "iOS",
-      "sources": "Modules/iOS/SubtitlesOverlay",
+      "sources": "Modules/iOS/OverlayPanel",
       "requiresObjCLinking": false,
       "dependencies": [
         {

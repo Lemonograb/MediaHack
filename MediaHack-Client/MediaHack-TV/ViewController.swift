@@ -78,7 +78,7 @@ class ViewController: UIViewController {
                     self.playerView.player.play()
                 case .stop:
                     self.playerView.player.pause()
-                case .play(let sec):
+                case .play(let sec), .playAt(let sec):
                     break
                 }
             }

@@ -1,6 +1,6 @@
-import Player
+import OverlayPanel_iOS
+import Player_iOS
 import SharedCode
-import SubtitlesOverlay
 import UIKit
 
 final class AppRouter {

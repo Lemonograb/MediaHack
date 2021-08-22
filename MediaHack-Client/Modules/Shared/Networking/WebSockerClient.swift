@@ -98,6 +98,7 @@ public enum WSStatus: Codable {
         case stop
         case start
         case play
+        case playAt
     }
 
     enum PostTypeCodingError: Error {
@@ -107,6 +108,7 @@ public enum WSStatus: Codable {
     case stop
     case start
     case play(sec: Double)
+    case playAt(sec: Double)
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -122,6 +124,10 @@ public enum WSStatus: Codable {
             self = .play(sec: value)
             return
         }
+        if let value = try? values.decode(Double.self, forKey: .playAt) {
+            self = .playAt(sec: value)
+            return
+        }
         throw PostTypeCodingError.decoding("Error decode! \(dump(values))")
     }
 
@@ -134,6 +140,8 @@ public enum WSStatus: Codable {
             try container.encode("1", forKey: .start)
         case let .play(sec: sec):
             try container.encode(sec, forKey: .play)
+        case let .playAt(sec: sec):
+            try container.encode(sec, forKey: .playAt)
         }
     }
 }

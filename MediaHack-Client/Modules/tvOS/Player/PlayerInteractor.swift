@@ -40,20 +40,36 @@ final class PlayerInteractor {
         return playerModelSubject.eraseToAnyPublisher()
     }
 
-    private static let adjustment: Double = 2586.5
+    var adjustPlayerTimePublisher: AnyPublisher<CMTime, Never> {
+        return adjustedPlayerTimeSubject.eraseToAnyPublisher()
+    }
+
+    private static let adjustment: Double = 2589.5
 
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
 
     private let timeToSubtitleSubject = CurrentValueSubject<SubtitlesHolder, Never>(.init(eng: [], ru: []))
     private let playerTimeSubject = PassthroughSubject<CMTime, Never>()
+    private let adjustedPlayerTimeSubject = PassthroughSubject<CMTime, Never>()
     private var bag = Set<AnyCancellable>()
 
     init() {
-        WSManager.shared.connectToWebSocket(type: .tv, id: nil)
-//        playingStatusSubject.sink { isPlaying in
-//            WSManager.shared.sendStatus(isPlaying ? .start : .stop)
-//        }.store(in: &bag)
+        let decoder = JSONDecoder()
+        WSManager.shared.connectToWebSocket(type: .tv, id: "test")
+        WSManager.shared.receiveData(completion: { [weak self] text in
+            if
+                let data = text.data(using: .utf8),
+                let status = try? decoder.decode(WSStatus.self, from: data)
+            {
+                switch status {
+                case .start, .stop, .play:
+                    break
+                case let .playAt(sec):
+                    self?.adjustedPlayerTimeSubject.send(CMTime(seconds: sec, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
+                }
+            }
+        })
 
         playerTimeSubject.sink { time in
             WSManager.shared.sendStatus(.play(sec: time.seconds))
@@ -79,9 +95,14 @@ final class PlayerInteractor {
 
         playerTimeSubject.withLatestFrom(timeToSubtitleSubject) { time, subtitles -> PlayerModel? in
             let sec = time.seconds
+            let adjustedTime = sec + PlayerInteractor.adjustment
             guard
-                let enSubtitle = subtitles.eng.first(where: { k, v in
-                    k >= sec && sec <= v.end.timeInSeconds
+                let enSubtitle = subtitles.eng.first(where: { _, v in
+                    if v.end.timeInSeconds < adjustedTime {
+                        return false
+                    } else {
+                        return v.start.timeInSeconds <= adjustedTime && adjustedTime <= v.end.timeInSeconds
+                    }
                 })?.value
             else {
                 return nil
@@ -110,6 +131,10 @@ final class PlayerInteractor {
 
     func set(time: CMTime) {
         playerTimeSubject.send(time)
+    }
+
+    func set(playing isPlaying: Bool) {
+        WSManager.shared.sendStatus(isPlaying ? .start : .stop)
     }
 
     func overlayModel(for time: CMTime) -> OverlayPanelViewController.Model? {

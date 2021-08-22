@@ -22,6 +22,12 @@ public final class PlayerViewController: BaseViewController {
             .sink { [unowned self] model in
                 self.updatePlayer(with: model)
             }.store(in: &bag)
+        
+        interactor.adjustPlayerTimePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] time in
+                self.playerView?.player.seek(to: time)
+            }.store(in: &bag)
 
         interactor.loadData().store(in: &bag)
 
@@ -90,6 +96,8 @@ public final class PlayerViewController: BaseViewController {
             return
         }
         playerView.togglePlaying()
+        interactor.set(playing: playerView.isPlaying)
+        
         let blurEffect = UIBlurEffect(style: .regular)
         let blurView = UIVisualEffectView(effect: blurEffect)
         shadowView?.removeFromSuperview()
