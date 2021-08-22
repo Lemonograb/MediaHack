@@ -5,9 +5,10 @@
 //  Created by Vitalii Stikhurov on 21.08.2021.
 //
 
-import UIKit
 import Combine
-import Player
+import Networking
+import Player_iOS
+import UIKit
 
 class MainScreenVC: UIViewController {
     private var bag = Set<AnyCancellable>()
@@ -30,7 +31,7 @@ class MainScreenVC: UIViewController {
             .store(in: &bag)
     }
 
-    private func setupViews(movies: [CinemaListElement]) {
+    private func setupViews(movies: [Movie]) {
         view.addSubview(scrollView)
         scrollView.pinEdgesToSuperView()
 //        scrollView.
@@ -48,18 +49,18 @@ class MainScreenVC: UIViewController {
             stack.addArrangedSubview(label.padding(.init(top: 0, left: 16, bottom: 0, right: 16)))
         }
         do {
-            let views =  movies.map({ element -> UIView in
+            let views = movies.map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
                     self?.openFilm(movie: element)
                 }
                 return view
-            })
+            }
             let carusel = CaruselView(itemsView: views)
             stack.addArrangedSubview(carusel)
         }
         do {
-            let carusel = CaruselView(itemsView: ["космос", "любовь", "карьера", "традиции", "животные", "криминал"].map({tag(tag: $0)}))
+            let carusel = CaruselView(itemsView: ["космос", "любовь", "карьера", "традиции", "животные", "криминал"].map { tag(tag: $0) })
             stack.addArrangedSubview(carusel)
         }
         do {
@@ -72,7 +73,7 @@ class MainScreenVC: UIViewController {
             stack.setCustomSpacing(0, after: stack.arrangedSubviews.last!)
         }
         do {
-            let carusel = CaruselView(itemsView: ["1", "2", "3", "4", "5"].map({themeCard(id: $0)}))
+            let carusel = CaruselView(itemsView: ["1", "2", "3", "4", "5"].map { themeCard(id: $0) })
             stack.addArrangedSubview(carusel)
         }
         do {
@@ -85,13 +86,13 @@ class MainScreenVC: UIViewController {
             stack.setCustomSpacing(0, after: stack.arrangedSubviews.last!)
         }
         do {
-            let views =  movies.map({ element -> UIView in
+            let views = movies.map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
                     self?.openFilm(movie: element)
                 }
                 return view
-            })
+            }
             let carusel = CaruselView(itemsView: views)
             stack.addArrangedSubview(carusel)
         }
@@ -105,13 +106,13 @@ class MainScreenVC: UIViewController {
             stack.setCustomSpacing(0, after: stack.arrangedSubviews.last!)
         }
         do {
-            let views =  movies.map({ element -> UIView in
+            let views = movies.map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
                     self?.openFilm(movie: element)
                 }
                 return view
-            })
+            }
             let carusel = CaruselView(itemsView: views)
             stack.addArrangedSubview(carusel)
         }
@@ -145,7 +146,7 @@ class MainScreenVC: UIViewController {
         return label
     }
 
-    private func movieView(element: CinemaListElement) -> UIView {
+    private func movieView(element: Movie) -> UIView {
         let wrapper = UIView()
         let imageView = UIImageView(urlString: element.photoURL)
         let title = UILabel()
@@ -189,29 +190,14 @@ class MainScreenVC: UIViewController {
         return wrapper
     }
 
-    private func openFilm(movie: CinemaListElement) {
+    private func openFilm(movie: Movie) {}
 
-    }
+    private func openTag(tag: String) {}
 
-    private func openTag(tag: String) {
+    private func openTheme(themeID: String) {}
 
-    }
-
-    private func openTheme(themeID: String) {
-
-    }
-
-    private func loadMovies() -> AnyPublisher<[CinemaListElement], Error> {
-        let session = URLSession.shared
-        let url = URL(string: "http://178.154.197.24/cinemaList").unsafelyUnwrapped
-        let decoder = JSONDecoder()
-
-        return session
-            .dataTaskPublisher(for: url)
-            .tryMap { data, _ in
-                try decoder.decode([CinemaListElement].self, from: data)
-            }
-            .eraseToAnyPublisher()
+    private func loadMovies() -> AnyPublisher<[Movie], Error> {
+        return API.getMovies()
     }
 }
 
@@ -223,7 +209,7 @@ extension UIImageView {
         request.httpMethod = "GET"
 
         let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { [weak self] (data, response, error) -> Void in
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { [weak self] data, _, error -> Void in
             if let error = error {
                 print(error)
             } else {
@@ -243,7 +229,7 @@ extension UIView {
     func padding(_ inset: UIEdgeInsets) -> UIView {
         let view = UIView()
         view.addSubview(self)
-        self.pinEdgesToSuperView(edges: inset)
+        pinEdgesToSuperView(edges: inset)
         return view
     }
 }

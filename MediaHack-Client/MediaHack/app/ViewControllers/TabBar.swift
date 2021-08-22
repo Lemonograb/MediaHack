@@ -5,8 +5,8 @@
 //  Created by Vitalii Stikhurov on 22.08.2021.
 //
 
+import OverlayPanel_iOS
 import UIKit
-import SubtitlesOverlay
 
 class NavigationMenuBaseController: UITabBarController {
     var tabBarHeight: CGFloat = 96.0
@@ -14,12 +14,12 @@ class NavigationMenuBaseController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loadTabBar()
+        loadTabBar()
     }
 
     func loadTabBar() {
-        self.viewControllers = [MainViewController(), MainScreenVC(), SubtitlesOverlayViewController()]
-        self.selectedIndex = 1
+        viewControllers = [MainViewController(), MainScreenVC(), OverlayPanelViewController()]
+        selectedIndex = 2
         tabBar.isHidden = true
         tabBarView.isUserInteractionEnabled = true
         view.addSubview(tabBarView)
@@ -31,7 +31,7 @@ class NavigationMenuBaseController: UITabBarController {
     }
 
     func changeTab(tab: Int) {
-        self.selectedIndex = tab
+        selectedIndex = tab
     }
 
     func setupTabBarView(view: UIView) {

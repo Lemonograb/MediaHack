@@ -10,6 +10,8 @@ struct Movie {
 }
 
 public final class PlayerViewController: BaseViewController {
+    private let interactor = PlayerInteractor()
+
     private var playerView: PlayerView!
     private var bag = Set<AnyCancellable>()
 
@@ -25,6 +27,12 @@ public final class PlayerViewController: BaseViewController {
                 )
             )
         )
+        interactor.loadData().sink(
+            receiveCompletion: { _ in },
+            receiveValue: { model in
+                print(model)
+            }
+        ).store(in: &bag)
     }
 
     private let blurLabel = UILabel()

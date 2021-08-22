@@ -16,18 +16,40 @@ public class WSManager {
 
     public static let shared = WSManager() // создаем Синглтон
     private init() {}
+    
+    public var deviceId: String?
 
     private var webSocketTask: URLSessionWebSocketTask?
     private var clientType: ClientType = .tv
     public func connectToWebSocket(type: ClientType, id: String?) {
         cancel()
-        webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: "ws://127.0.0.1:8080/webSocket/connect?type=\(type.rawValue)&id=\(id ?? UIDevice.current.identifierForVendor?.uuidString ?? "sim")")!)
+
+        let deviceId: String
+        if let id = id {
+            deviceId = id
+        } else {
+            if let vendorId = UIDevice.current.identifierForVendor?.uuidString {
+                deviceId = vendorId
+            } else if let stored = UserDefaults.standard.string(forKey: "ws_device_id"), !stored.isEmpty {
+                deviceId = stored
+            } else {
+                let random = UUID().uuidString
+                deviceId = random
+                UserDefaults.standard.setValue(random, forKey: "ws_device_id")
+            }
+        }
+
+        self.deviceId = deviceId
+        let wsURL = URL(string: "ws://178.154.197.24:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
+
+        webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         clientType = type
         webSocketTask?.resume()
         scheduleNextPing()
     }
 
     public func cancel() {
+        sendStatus(.stop)
         webSocketTask?.cancel(with: .goingAway, reason: nil)
     }
 
@@ -44,13 +66,13 @@ public class WSManager {
     public func receiveData(completion: @escaping (String) -> Void) {
         webSocketTask?.receive { [weak self] result in
             switch result {
-            case .failure(let error):
+            case let .failure(error):
                 print("Error in receiving message: \(error)")
-            case .success(let message):
+            case let .success(message):
                 switch message {
-                case .string(let text):
+                case let .string(text):
                     completion(text)
-                case .data(let data):
+                case let .data(data):
                     completion(String(data: data, encoding: .utf8) ?? "")
                 @unknown default:
                     debugPrint("Unknown message")
@@ -61,7 +83,7 @@ public class WSManager {
     }
 
     private func ping() {
-        webSocketTask?.sendPing { (error) in
+        webSocketTask?.sendPing { error in
             if let error = error {
                 print("Ping failed: \(error)")
             }
@@ -74,17 +96,22 @@ public class WSManager {
     }
 }
 
-
 public enum WSStatus: Codable {
     private enum CodingKeys: String, CodingKey {
         case stop
         case start
         case play
+        case playAt
     }
 
     enum PostTypeCodingError: Error {
         case decoding(String)
     }
+
+    case stop
+    case start
+    case play(sec: Double)
+    case playAt(sec: Double)
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -96,8 +123,12 @@ public enum WSStatus: Codable {
             self = .start
             return
         }
-        if let value = try? values.decode(Int.self, forKey: .play) {
+        if let value = try? values.decode(Double.self, forKey: .play) {
             self = .play(sec: value)
+            return
+        }
+        if let value = try? values.decode(Double.self, forKey: .playAt) {
+            self = .playAt(sec: value)
             return
         }
         throw PostTypeCodingError.decoding("Error decode! \(dump(values))")
@@ -110,12 +141,10 @@ public enum WSStatus: Codable {
             try container.encode("0", forKey: .stop)
         case .start:
             try container.encode("1", forKey: .start)
-        case .play(sec: let sec):
+        case let .play(sec: sec):
             try container.encode(sec, forKey: .play)
+        case let .playAt(sec: sec):
+            try container.encode(sec, forKey: .playAt)
         }
     }
-
-    case stop
-    case start
-    case play(sec: Int)
 }

@@ -1,9 +1,46 @@
 import Combine
+import Networking
 import Nuke
 import SharedCode
 import UIKit
 
-public final class SubtitlesOverlayViewController: BaseViewController {
+open class FocusibleView: BaseView {
+    open override var canBecomeFocused: Bool {
+        return true
+    }
+}
+
+open class FocusibleCollectionView: UICollectionView {
+    open override var canBecomeFocused: Bool {
+        return true
+    }
+}
+
+public final class OverlayPanelViewController: BaseViewController {
+    public struct Model {
+        public struct Subtitle {
+            public init(en: Networking.Subtitle?, ru: Networking.Subtitle?, isActive: Bool) {
+                self.en = en
+                self.ru = ru
+                self.isActive = isActive
+            }
+
+            public let en: Networking.Subtitle?
+            public let ru: Networking.Subtitle?
+            public let isActive: Bool
+        }
+
+        public let movieName: String
+        public let imageURL: URL
+        public let subtitles: [Subtitle]
+
+        public init(movieName: String, imageURL: URL, subtitles: [OverlayPanelViewController.Model.Subtitle]) {
+            self.movieName = movieName
+            self.imageURL = imageURL
+            self.subtitles = subtitles
+        }
+    }
+
     private enum Section {
         case header, subtitles
     }
@@ -11,11 +48,6 @@ public final class SubtitlesOverlayViewController: BaseViewController {
     private enum Item: Hashable {
         case header(HeaderCell.Model)
         case subtitle(SubtitleCell.Model)
-    }
-
-    private struct Model: Hashable {
-        let header: HeaderCell.Model
-        let subtitles: [SubtitleCell.Model]
     }
 
     private static func makeLayout() -> UICollectionViewLayout {
@@ -64,20 +96,30 @@ public final class SubtitlesOverlayViewController: BaseViewController {
         return layout
     }
 
+    private let model: Model
     private let collectionView: UICollectionView
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
 
-    override public init() {
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: SubtitlesOverlayViewController.makeLayout())
+    public init(model: Model) {
+        self.model = model
+        self.collectionView = FocusibleCollectionView(frame: .zero, collectionViewLayout: OverlayPanelViewController.makeLayout())
         super.init()
+    }
+    
+    public override func loadView() {
+        self.view = FocusibleView()
+        super.loadView()
     }
 
     override public func setup() {
         view.addSubview(collectionView)
         collectionView.pinEdgesToSuperView()
-        collectionView.backgroundColor = #colorLiteral(red: 0.195160985, green: 0.2001810074, blue: 0.2427157164, alpha: 1)
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
+    }
+    
+    public func update() {
+        var selectedIndexPath: IndexPath?
 
         dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { cv, ip, model in
             switch model {
@@ -88,6 +130,9 @@ public final class SubtitlesOverlayViewController: BaseViewController {
             case let .subtitle(model):
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: SubtitleCell.reuseIdentifier, for: ip), to: SubtitleCell.self)
                 cell.configure(model: model)
+                if model.isActive {
+                    selectedIndexPath = ip
+                }
                 return cell
             }
         }
@@ -98,65 +143,42 @@ public final class SubtitlesOverlayViewController: BaseViewController {
             [
                 .header(
                     HeaderCell.Model(
-                        imageURL: URL(string: "https://cdn.service-kp.com/poster/item/big/392.jpg").unsafelyUnwrapped,
-                        movieName: "Pulp fiction"
+                        imageURL: model.imageURL,
+                        movieName: model.movieName
                     )
                 ),
             ],
             toSection: Section.subtitles
         )
-        snapshot.appendItems(
-            [
-                .subtitle(
+        let subtitles = model.subtitles.flatMap { subtitle -> [Item] in
+            var result: [Item] = []
+
+            if let en = subtitle.en {
+                let item = Item.subtitle(
+                    SubtitleCell.Model(subtitle: WordsTokenizer.process(text: en.text), isActive: subtitle.isActive)
+                )
+                result.append(item)
+            }
+            if let ru = subtitle.ru {
+                let item = Item.subtitle(
                     SubtitleCell.Model(
-                        subtitle: WordsTokenizer.process(
-                            text: [
-                                "Why do we feel it's necessary",
-                                "to yak about bullshit in order to be comfortable",
-                            ]
-                        ),
-                        isActive: false,
-                        index: 0
-                    )
-                ),
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: WordsTokenizer.process(
-                            text: [
-                                "Uncomfortable silences. Why do we feel it's necessary to yak about bullshit in order to be comfortable?",
-                            ]
-                        ),
-                        isActive: true,
-                        index: 1
-                    )
-                ),
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: "Неловкое молчание. Почему людям обязательно нужно сморозить какую-нибудь чушь, лишь бы не почувствовать себя в своей тарелке?"
-                            .builder
+                        subtitle: ru.text.joined(separator: "\n").builder
                             .font(UIFont.systemFont(ofSize: 18, weight: .semibold))
                             .foregroundColor(.white)
                             .result,
-                        isActive: true,
-                        index: 2
+                        isActive: subtitle.isActive
                     )
-                ),
-                .subtitle(
-                    SubtitleCell.Model(
-                        subtitle: WordsTokenizer.process(
-                            text: [
-                                "Why do we feel it's necessary",
-                                "to yak about bullshit in order to be comfortable",
-                            ]
-                        ),
-                        isActive: false,
-                        index: 3
-                    )
-                ),
-            ],
-            toSection: Section.subtitles
-        )
-        dataSource.apply(snapshot)
+                )
+                result.append(item)
+            }
+            return result
+        }
+        snapshot.appendItems(subtitles, toSection: .subtitles)
+        dataSource.apply(snapshot, animatingDifferences: true) {
+            if let ip = selectedIndexPath {
+                self.collectionView.scrollToItem(at: ip, at: .centeredVertically, animated: true)
+            }
+        }
     }
 }
 
@@ -178,6 +200,10 @@ final class HeaderCell: BaseCollectionViewCell, ReuseIdentifiable, Configurable 
     struct Model: Hashable {
         let imageURL: URL
         let movieName: String
+    }
+
+    override public var canBecomeFocused: Bool {
+        return false
     }
 
     private let imageView = UIImageView()
@@ -214,7 +240,10 @@ final class SubtitleCell: BaseCollectionViewCell, ReuseIdentifiable, Configurabl
     struct Model: Hashable {
         let subtitle: NSAttributedString
         let isActive: Bool
-        let index: Int
+    }
+
+    override public var canBecomeFocused: Bool {
+        return true
     }
 
     private let contentLabel = UILabel()

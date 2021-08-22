@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Vitalii Stikhurov on 21.08.2021.
 //
@@ -21,6 +21,7 @@ class WebSocketManager {
             var type: ClientType
             var id: String
         }
+
         var id: Key
         var socket: WebSocket
     }
@@ -30,17 +31,19 @@ class WebSocketManager {
     }
 
     func add(client: Client) {
-        client.socket.onClose.whenComplete { result in
+        client.socket.onClose.whenComplete { _ in
             self.connectedClient[client.id] = nil
         }
-        //прокидывает статус на телефон
-        client.socket.onText({ ws, text in
-            if let data = text.data(using: .utf8),
-               (try? JSONDecoder().decode(WSStatus.self, from: data)) != nil {
+        // прокидывает статус на телефон
+        client.socket.onText { _, text in
+            if
+                let data = text.data(using: .utf8),
+                (try? JSONDecoder().decode(WSStatus.self, from: data)) != nil
+            {
                 let key = Client.Key(type: client.id.type == .tv ? .phone : .tv, id: client.id.id)
                 self.connectedClient[key]?.socket.send(text)
             }
-        })
+        }
 
         connectedClient[client.id] = client
     }
@@ -56,6 +59,7 @@ public enum WSStatus: Codable {
         case stop
         case start
         case play
+        case playAt
     }
 
     enum PostTypeCodingError: Error {
@@ -72,8 +76,12 @@ public enum WSStatus: Codable {
             self = .start
             return
         }
-        if let value = try? values.decode(Int.self, forKey: .play) {
+        if let value = try? values.decode(Double.self, forKey: .play) {
             self = .play(sec: value)
+            return
+        }
+        if let value = try? values.decode(Double.self, forKey: .playAt) {
+            self = .playAt(sec: value)
             return
         }
         throw PostTypeCodingError.decoding("Error decode! \(dump(values))")
@@ -86,12 +94,15 @@ public enum WSStatus: Codable {
             try container.encode("0", forKey: .stop)
         case .start:
             try container.encode("1", forKey: .start)
-        case .play(sec: let sec):
+        case let .play(sec: sec):
             try container.encode(sec, forKey: .play)
+        case let .playAt(sec: sec):
+            try container.encode(sec, forKey: .playAt)
         }
     }
 
     case stop
     case start
-    case play(sec: Int)
+    case play(sec: Double)
+    case playAt(sec: Double)
 }

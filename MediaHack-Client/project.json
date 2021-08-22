@@ -34,6 +34,7 @@
         "properties": {
           "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
           "CFBundleIdentifier": "nan.mediahack.ios",
+          "PRODUCT_BUNDLE_IDENTIFIER": "nan.mediahack.ios",
           "CFBundleShortVersionString": "1.1.1",
           "CFBundleVersion": "3",
           "LSRequiresIPhoneOS": true,
@@ -64,7 +65,8 @@
           ],
           "NSAppTransportSecurity": {
             "NSAllowsArbitraryLoads": true
-          }
+          },
+          "NSCameraUsageDescription": "Scan QR code"
         }
       },
       "dependencies": [
@@ -72,13 +74,16 @@
           "target": "SharedCode_iOS"
         },
         {
-          "target": "Player"
+          "target": "Player_iOS"
         },
 		{
           "target": "Networking_iOS"
         },
         {
-          "target": "SubtitlesOverlay"
+          "target": "OverlayPanel_iOS"
+        },
+        {
+            "target": "Networking_iOS"
         },
         {
           "package": "Nuke"
@@ -94,6 +99,7 @@
         "properties": {
           "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
           "CFBundleIdentifier": "nan.mediahack.tv",
+          "PRODUCT_BUNDLE_IDENTIFIER": "nan.mediahack.tv",
           "CFBundleShortVersionString": "1.1.1",
           "CFBundleVersion": "3",
           "LSRequiresIPhoneOS": true,
@@ -112,6 +118,15 @@
         },
         {
           "target": "Networking_tvOS"
+        },
+        {
+            "target": "Player_tvOS"
+        },
+        {
+            "target": "OverplayPanel_tvOS"
+        },
+        {
+          "package": "Nuke"
         }
       ]
     },
@@ -133,7 +148,7 @@
       "sources": "Modules/Shared/Networking",
       "requiresObjCLinking": false
     },
-    "Player": {
+    "Player_iOS": {
       "type": "library.static",
       "platform": "iOS",
       "sources": "Modules/iOS/Player",
@@ -144,14 +159,42 @@
         }
       ]
     },
-    "SubtitlesOverlay": {
+    "Player_tvOS": {
+      "type": "library.static",
+      "platform": "tvOS",
+      "sources": "Modules/tvOS/Player",
+      "requiresObjCLinking": false,
+      "dependencies": [
+        {
+          "target": "SharedCode_tvOS"
+        },
+        {
+            "target": "OverplayPanel_tvOS"
+        }
+      ]
+    },
+    "OverlayPanel_iOS": {
       "type": "library.static",
       "platform": "iOS",
-      "sources": "Modules/iOS/SubtitlesOverlay",
+      "sources": "Modules/iOS/OverlayPanel",
       "requiresObjCLinking": false,
       "dependencies": [
         {
           "target": "SharedCode_iOS"
+        },
+        {
+          "package": "Nuke"
+        }
+      ]
+    },
+    "OverplayPanel_tvOS": {
+      "type": "library.static",
+      "platform": "tvOS",
+      "sources": "Modules/tvOS/OverlayPanel",
+      "requiresObjCLinking": false,
+      "dependencies": [
+        {
+          "target": "SharedCode_tvOS"
         },
         {
           "package": "Nuke"
