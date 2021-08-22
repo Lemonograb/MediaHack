@@ -141,21 +141,21 @@ public final class PlayerViewController: BaseViewController {
 
 // MARK: - CinemaListElement
 
-struct CinemaListElement: Codable {
-    let ruSubtitles: [Subtitle]
-    let reviews: [Review]
-    let engSubtitles: [Subtitle]
-    let name: String
-    let relevantCinemaIDS: [String]
-    let cinemaListDescription: String
-    let photoURL: String
-    let tags: [String]
-    let rating: Double
-    let id: String
-    let dictionary: [String]
-    let url: String
+public struct CinemaListElement: Codable {
+    public let ruSubtitles: [Subtitle]
+    public let reviews: [Review]
+    public let engSubtitles: [Subtitle]
+    public let name: String
+    public let relevantCinemaIDS: [String]
+    public let cinemaListDescription: String
+    public let photoURL: String
+    public let tags: [String]
+    public let rating: Double
+    public let id: String
+    public let dictionary: [String]
+    public let url: String
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case ruSubtitles, reviews, engSubtitles, name
         case relevantCinemaIDS = "relevantCinemaIds"
         case cinemaListDescription = "description"
@@ -166,19 +166,19 @@ struct CinemaListElement: Codable {
 
 // MARK: - Subtitle
 
-struct Subtitle: Codable {
-    let start, end: SubtitleTiming
-    let text: [String]
+public struct Subtitle: Codable {
+    public let start, end: SubtitleTiming
+    public let text: [String]
 }
 
 // MARK: - End
 
-struct SubtitleTiming: Codable {
+public struct SubtitleTiming: Codable {
     let timeInSeconds: Double
 }
 
 // MARK: - Review
 
-struct Review: Codable {
+public struct Review: Codable {
     let name, text, dateStr: String
 }
