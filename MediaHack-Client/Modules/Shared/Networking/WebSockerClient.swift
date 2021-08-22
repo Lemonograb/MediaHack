@@ -37,7 +37,7 @@ public class WSManager {
             }
         }
 
-        let wsURL = URL(string: "ws://127.0.0.1:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
+        let wsURL = URL(string: "ws://178.154.197.24:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
 
         webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         clientType = type

@@ -112,7 +112,7 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let content = interactor.model.content {
-            let startSecond = content.subtitles[indexPath.row].value.start.timeInSeconds
+            let startSecond = content.subtitles[indexPath.row - 1].value.start.timeInSeconds
             interactor.play(time: startSecond)
         }
     }

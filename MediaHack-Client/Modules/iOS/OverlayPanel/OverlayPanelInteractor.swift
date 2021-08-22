@@ -80,5 +80,7 @@ final class OverlayPanelInteractor {
         }.subscribe(modelSubject)
     }
 
-    func play(time: Double) {}
+    func play(time: Double) {
+        WSManager.shared.sendStatus(.playAt(sec: time - Self.adjustment))
+    }
 }
