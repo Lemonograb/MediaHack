@@ -21,8 +21,8 @@ public struct Subtitle: Codable {
 }
 
 public struct MovieSubtitles: Codable {
-    let ru: [Subtitle]
-    let en: [Subtitle]
+    public let ru: [Subtitle]
+    public let en: [Subtitle]
 
     public init(ru: [Subtitle], en: [Subtitle]) {
         self.ru = ru

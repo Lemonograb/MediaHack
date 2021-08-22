@@ -72,7 +72,7 @@ public enum WSStatus: Codable {
             self = .start
             return
         }
-        if let value = try? values.decode(Int.self, forKey: .play) {
+        if let value = try? values.decode(Double.self, forKey: .play) {
             self = .play(sec: value)
             return
         }
@@ -93,5 +93,5 @@ public enum WSStatus: Codable {
 
     case stop
     case start
-    case play(sec: Int)
+    case play(sec: Double)
 }

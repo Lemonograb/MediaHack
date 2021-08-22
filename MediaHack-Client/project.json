@@ -72,7 +72,7 @@
           "target": "SharedCode_iOS"
         },
         {
-          "target": "Player"
+          "target": "Player_iOS"
         },
 		{
           "target": "Networking_iOS"
@@ -112,6 +112,9 @@
         },
         {
           "target": "Networking_tvOS"
+        },
+        {
+            "target": "Player_tvOS"
         }
       ]
     },
@@ -133,7 +136,7 @@
       "sources": "Modules/Shared/Networking",
       "requiresObjCLinking": false
     },
-    "Player": {
+    "Player_iOS": {
       "type": "library.static",
       "platform": "iOS",
       "sources": "Modules/iOS/Player",
@@ -141,6 +144,17 @@
       "dependencies": [
         {
           "target": "SharedCode_iOS"
+        }
+      ]
+    },
+    "Player_tvOS": {
+      "type": "library.static",
+      "platform": "tvOS",
+      "sources": "Modules/tvOS/Player",
+      "requiresObjCLinking": false,
+      "dependencies": [
+        {
+          "target": "SharedCode_tvOS"
         }
       ]
     },

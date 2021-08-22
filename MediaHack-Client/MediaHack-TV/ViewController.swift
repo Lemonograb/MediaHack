@@ -92,7 +92,7 @@ class ViewController: UIViewController {
             queue: .main
         ) { [unowned self] offset in
             let sec = Int(offset.seconds)
-            WSManager.shared.sendStatus(.play(sec: sec))
+            WSManager.shared.sendStatus(.play(sec: offset.seconds))
             let label = self.labels[sec % self.labels.count]
             self.playerView.subtitlesView.text = label
         }

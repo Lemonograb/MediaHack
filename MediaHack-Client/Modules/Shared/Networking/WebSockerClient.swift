@@ -22,8 +22,22 @@ public class WSManager {
     public func connectToWebSocket(type: ClientType, id: String?) {
         cancel()
 
-        let deviceId: String = id ?? UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
-        let wsURL = URL(string: "ws://178.154.197.24:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
+        let deviceId: String
+        if let id = id {
+            deviceId = id
+        } else {
+            if let vendorId = UIDevice.current.identifierForVendor?.uuidString {
+                deviceId = vendorId
+            } else if let stored = UserDefaults.standard.string(forKey: "ws_device_id"), !stored.isEmpty {
+                deviceId = stored
+            } else {
+                let random = UUID().uuidString
+                deviceId = random
+                UserDefaults.standard.setValue(random, forKey: "ws_device_id")
+            }
+        }
+
+        let wsURL = URL(string: "ws://127.0.0.1:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
 
         webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         clientType = type
@@ -32,6 +46,7 @@ public class WSManager {
     }
 
     public func cancel() {
+        sendStatus(.stop)
         webSocketTask?.cancel(with: .goingAway, reason: nil)
     }
 
@@ -88,7 +103,7 @@ public enum WSStatus: Codable {
     enum PostTypeCodingError: Error {
         case decoding(String)
     }
-    
+
     case stop
     case start
     case play(sec: Double)
