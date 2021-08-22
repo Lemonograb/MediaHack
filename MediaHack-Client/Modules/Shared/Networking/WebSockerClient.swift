@@ -21,7 +21,11 @@ public class WSManager {
     private var clientType: ClientType = .tv
     public func connectToWebSocket(type: ClientType, id: String?) {
         cancel()
-        webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: "ws://127.0.0.1:8080/webSocket/connect?type=\(type.rawValue)&id=\(id ?? UIDevice.current.identifierForVendor?.uuidString ?? "sim")")!)
+
+        let deviceId: String = id ?? UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+        let wsURL = URL(string: "ws://178.154.197.24:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
+
+        webSocketTask = URLSession.shared.webSocketTask(with: wsURL)
         clientType = type
         webSocketTask?.resume()
         scheduleNextPing()
@@ -44,13 +48,13 @@ public class WSManager {
     public func receiveData(completion: @escaping (String) -> Void) {
         webSocketTask?.receive { [weak self] result in
             switch result {
-            case .failure(let error):
+            case let .failure(error):
                 print("Error in receiving message: \(error)")
-            case .success(let message):
+            case let .success(message):
                 switch message {
-                case .string(let text):
+                case let .string(text):
                     completion(text)
-                case .data(let data):
+                case let .data(data):
                     completion(String(data: data, encoding: .utf8) ?? "")
                 @unknown default:
                     debugPrint("Unknown message")
@@ -61,7 +65,7 @@ public class WSManager {
     }
 
     private func ping() {
-        webSocketTask?.sendPing { (error) in
+        webSocketTask?.sendPing { error in
             if let error = error {
                 print("Ping failed: \(error)")
             }
@@ -74,7 +78,6 @@ public class WSManager {
     }
 }
 
-
 public enum WSStatus: Codable {
     private enum CodingKeys: String, CodingKey {
         case stop
@@ -85,6 +88,10 @@ public enum WSStatus: Codable {
     enum PostTypeCodingError: Error {
         case decoding(String)
     }
+    
+    case stop
+    case start
+    case play(sec: Double)
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -96,7 +103,7 @@ public enum WSStatus: Codable {
             self = .start
             return
         }
-        if let value = try? values.decode(Int.self, forKey: .play) {
+        if let value = try? values.decode(Double.self, forKey: .play) {
             self = .play(sec: value)
             return
         }
@@ -110,12 +117,8 @@ public enum WSStatus: Codable {
             try container.encode("0", forKey: .stop)
         case .start:
             try container.encode("1", forKey: .start)
-        case .play(sec: let sec):
+        case let .play(sec: sec):
             try container.encode(sec, forKey: .play)
         }
     }
-
-    case stop
-    case start
-    case play(sec: Int)
 }
