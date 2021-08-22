@@ -110,6 +110,23 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
         }
     }
     
+    private var gotCode = false
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard !gotCode else {
+            return
+        }
+        gotCode = true
+        let c = ScannerViewController()
+        present(c, animated: true)
+        c.onCode = { wsId in
+            if UUID(uuidString: wsId) != nil {
+                self.interactor.startWS(id: wsId)
+            }
+            c.dismiss(animated: true, completion: nil)
+        }
+    }
+
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let content = interactor.model.content {
             let startSecond = content.subtitles[indexPath.row - 1].value.start.timeInSeconds
@@ -160,7 +177,7 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
             }
         }
     }
-    
+
     private var lastActiveIndexPath: IndexPath?
 }
 
@@ -231,5 +248,102 @@ final class SubtitleCell: BaseCollectionViewCell, ReuseIdentifiable, Configurabl
     func configure(model: Model) {
         contentLabel.attributedText = model.text
         contentLabel.alpha = model.isActive ? 1 : 0.3
+    }
+}
+
+import AVFoundation
+class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+    var captureSession: AVCaptureSession!
+    var previewLayer: AVCaptureVideoPreviewLayer!
+    var onCode: ((String) -> Void)?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = UIColor.black
+        captureSession = AVCaptureSession()
+
+        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
+        let videoInput: AVCaptureDeviceInput
+
+        do {
+            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+        } catch {
+            return
+        }
+
+        if captureSession.canAddInput(videoInput) {
+            captureSession.addInput(videoInput)
+        } else {
+            failed()
+            return
+        }
+
+        let metadataOutput = AVCaptureMetadataOutput()
+
+        if captureSession.canAddOutput(metadataOutput) {
+            captureSession.addOutput(metadataOutput)
+
+            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+            metadataOutput.metadataObjectTypes = [.qr]
+        } else {
+            failed()
+            return
+        }
+
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.frame = view.layer.bounds
+        previewLayer.videoGravity = .resizeAspectFill
+        view.layer.addSublayer(previewLayer)
+
+        captureSession.startRunning()
+    }
+
+    func failed() {
+        let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
+        captureSession = nil
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if captureSession?.isRunning == false {
+            captureSession.startRunning()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if captureSession?.isRunning == true {
+            captureSession.stopRunning()
+        }
+    }
+
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        captureSession.stopRunning()
+
+        if let metadataObject = metadataObjects.first {
+            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+            guard let stringValue = readableObject.stringValue else { return }
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            found(code: stringValue)
+        }
+
+        dismiss(animated: true)
+    }
+
+    func found(code: String) {
+        onCode?(code)
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
 }

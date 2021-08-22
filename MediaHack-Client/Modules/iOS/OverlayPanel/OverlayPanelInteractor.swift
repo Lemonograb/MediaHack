@@ -32,9 +32,9 @@ final class OverlayPanelInteractor {
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playingTimeSubject = PassthroughSubject<Double, Never>()
 
-    init() {
+    func startWS(id: String) {
         let decoder = JSONDecoder()
-        WSManager.shared.connectToWebSocket(type: .phone, id: "test")
+        WSManager.shared.connectToWebSocket(type: .phone, id: id)
         WSManager.shared.receiveData(completion: { [weak self] text in
             if
                 let data = text.data(using: .utf8),

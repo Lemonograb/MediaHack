@@ -16,6 +16,8 @@ public class WSManager {
 
     public static let shared = WSManager() // создаем Синглтон
     private init() {}
+    
+    public var deviceId: String?
 
     private var webSocketTask: URLSessionWebSocketTask?
     private var clientType: ClientType = .tv
@@ -37,6 +39,7 @@ public class WSManager {
             }
         }
 
+        self.deviceId = deviceId
         let wsURL = URL(string: "ws://178.154.197.24:8080/webSocket/connect?type=\(type.rawValue)&id=\(deviceId)").unsafelyUnwrapped
 
         webSocketTask = URLSession.shared.webSocketTask(with: wsURL)

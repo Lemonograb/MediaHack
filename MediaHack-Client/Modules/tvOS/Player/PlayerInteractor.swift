@@ -44,11 +44,16 @@ final class PlayerInteractor {
         return adjustedPlayerTimeSubject.eraseToAnyPublisher()
     }
 
+    var qrCodePublisher: AnyPublisher<UIImage, Never> {
+        return qrCodeSubject.eraseToAnyPublisher()
+    }
+
     private static let adjustment: Double = 2589.5
 
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
 
+    private let qrCodeSubject = PassthroughSubject<UIImage, Never>()
     private let timeToSubtitleSubject = CurrentValueSubject<SubtitlesHolder, Never>(.init(eng: [], ru: []))
     private let playerTimeSubject = PassthroughSubject<CMTime, Never>()
     private let adjustedPlayerTimeSubject = PassthroughSubject<CMTime, Never>()
@@ -56,7 +61,7 @@ final class PlayerInteractor {
 
     init() {
         let decoder = JSONDecoder()
-        WSManager.shared.connectToWebSocket(type: .tv, id: "test")
+        WSManager.shared.connectToWebSocket(type: .tv, id: nil)
         WSManager.shared.receiveData(completion: { [weak self] text in
             if
                 let data = text.data(using: .utf8),
@@ -109,6 +114,12 @@ final class PlayerInteractor {
             }
             return PlayerModel(enSubtitle: WordsTokenizer.process(text: enSubtitle.text))
         }.compactMap { $0 }.subscribe(playerModelSubject).store(in: &bag)
+    }
+    
+    func requestQRCode() {
+        if let id = WSManager.shared.deviceId, let image = generateQRCode(from: id) {
+            qrCodeSubject.send(image)
+        }
     }
 
     func loadData() -> AnyCancellable {
@@ -205,6 +216,21 @@ final class PlayerInteractor {
             imageURL: URL(string: content.movie.photoURL).unsafelyUnwrapped,
             subtitles: subtitles
         )
+    }
+
+    private func generateQRCode(from string: String) -> UIImage? {
+        let data = string.data(using: String.Encoding.ascii)
+
+        if let filter = CIFilter(name: "CIQRCodeGenerator") {
+            filter.setValue(data, forKey: "inputMessage")
+            let transform = CGAffineTransform(scaleX: 10, y: 10)
+
+            if let output = filter.outputImage?.transformed(by: transform) {
+                return UIImage(ciImage: output)
+            }
+        }
+
+        return nil
     }
 }
 

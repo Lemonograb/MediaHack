@@ -5,12 +5,19 @@ import SharedCode
 import UIKit
 
 public final class PlayerViewController: BaseViewController {
+    private let qrCodeImageView = UIImageView()
     private let interactor = PlayerInteractor()
     private var playerView: PlayerView!
     private var bag = Set<AnyCancellable>()
     private var playerObserverToken: Any?
 
     override public func setup() {
+        qrCodeImageView.isHidden = true
+        view.addSubview(qrCodeImageView)
+        
+        qrCodeImageView.pin(.leading).to(view).const(32).equal()
+        qrCodeImageView.pin(.bottom).to(view).const(-32).equal()
+
         interactor.modelPublisher
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] model in
@@ -22,14 +29,29 @@ public final class PlayerViewController: BaseViewController {
             .sink { [unowned self] model in
                 self.updatePlayer(with: model)
             }.store(in: &bag)
-        
+
         interactor.adjustPlayerTimePublisher
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] time in
                 self.playerView?.player.seek(to: time)
             }.store(in: &bag)
 
+        interactor.qrCodePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] image in
+                self.qrCodeImageView.image = image
+                UIView.animate(withDuration: 0.3) {
+                    self.qrCodeImageView.isHidden = false
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                    UIView.animate(withDuration: 0.3) {
+                        self.qrCodeImageView.isHidden = true
+                    }
+                }
+            }.store(in: &bag)
+
         interactor.loadData().store(in: &bag)
+        interactor.requestQRCode()
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePlayerTap))
         tapRecognizer.allowedPressTypes = [NSNumber(value: UIPress.PressType.playPause.rawValue)]
@@ -60,7 +82,7 @@ public final class PlayerViewController: BaseViewController {
                 )
             )
         )
-        view.addSubview(playerView)
+        view.insertSubview(playerView, at: 0)
         playerView.pinEdgesToSuperView()
 
         playerObserverToken = playerView.player.addPeriodicTimeObserver(
@@ -97,7 +119,7 @@ public final class PlayerViewController: BaseViewController {
         }
         playerView.togglePlaying()
         interactor.set(playing: playerView.isPlaying)
-        
+
         let blurEffect = UIBlurEffect(style: .regular)
         let blurView = UIVisualEffectView(effect: blurEffect)
         shadowView?.removeFromSuperview()

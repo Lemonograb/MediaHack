@@ -65,7 +65,8 @@
           ],
           "NSAppTransportSecurity": {
             "NSAllowsArbitraryLoads": true
-          }
+          },
+          "NSCameraUsageDescription": "Scan QR code"
         }
       },
       "dependencies": [
