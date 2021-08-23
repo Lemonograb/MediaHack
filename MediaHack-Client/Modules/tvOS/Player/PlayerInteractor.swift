@@ -52,7 +52,7 @@ final class PlayerInteractor {
         return qrCodeSubject.eraseToAnyPublisher()
     }
 
-    private static let adjustment: Double = 2589.5
+    private static let adjustment: Double = 0
 
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
@@ -141,7 +141,7 @@ final class PlayerInteractor {
             }
         }
         .map { movie, subtitles -> Model in
-            Model(error: nil, content: Model.Content(playerURL: trailerURL, movie: movie, subtitles: subtitles))
+            Model(error: nil, content: Model.Content(playerURL: URL(string: movie.url)!, movie: movie, subtitles: subtitles))
         }
         .catch { (e: Error) -> Just<Model> in
             let model = Model(error: e, content: nil)
@@ -188,7 +188,7 @@ final class PlayerInteractor {
 
         func ruSubtitle(for en: Networking.Subtitle) -> Networking.Subtitle? {
             return all.ru.first { _, v in
-                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.2
+                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.25
             }?.value
         }
 
@@ -243,4 +243,4 @@ final class PlayerInteractor {
     }
 }
 
-private let trailerURL = URL(string: "https://strm.yandex.ru/vh-ott-converted/ott-content/530389814-4a54e1d887da77c3ab345f7635ca9b59/master.m3u8?from=ott-kp&hash=b60bc9cbe1e6783ff44e51c6568b8386&vsid=b9690d561690dbd1eff4bfe5c79a1b9304a4d904a019xWEBx6710x1629612671&video_content_id=4a54e1d887da77c3ab345f7635ca9b59&session_data=1&preview=1&t=1629612671617").unsafelyUnwrapped
+private let trailerURL = URL(string: "https://hulucdn.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTc1Mjc1NyZoPXV1NkdhbjRXWko3Skl2ZklOU3RaTVEmZT0xNjI5ODM5MTU3/5/d0/P30e5RYq9PKCDTAVJ.mp4/master-v1a1.m3u8?loc=nl").unsafelyUnwrapped

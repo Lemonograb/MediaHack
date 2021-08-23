@@ -16,7 +16,7 @@ final class OverlayPanelInteractor {
         var content: Content?
     }
 
-    static let adjustment: Double = 2589.5
+    static let adjustment: Double = 0
 
     var model: Model {
         return modelSubject.value
@@ -54,6 +54,7 @@ final class OverlayPanelInteractor {
                     self?.playingTimeSubject.send(sec)
                 case .cancel:
                     self?.vc?.navigationController?.popViewController(animated: true)
+                    WSManager.shared.cancel()
                 }
             }
         })
