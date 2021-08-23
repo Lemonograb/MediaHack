@@ -105,15 +105,15 @@ public final class PlayerViewController: BaseViewController {
         playerView.player.addPeriodicTimeObserver(
             forInterval: CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC)),
             queue: .main
-        ) { [unowned self] offset in
+        ) { [weak self] offset in
             let time = offset.seconds
-            guard let entry = findSubtitle(for: time, in: movie) else {
+            guard let entry = self?.findSubtitle(for: time, in: movie) else {
                 print("skipped", time)
                 return
             }
 
             let text = WordsTokenizer.process(text: entry.text)
-            self.playerView.subtitlesView.text = text
+            self?.playerView.subtitlesView.text = text
         }
         playerView.subtitlesView.isHidden = false
         DispatchQueue.main.async { [self] in
