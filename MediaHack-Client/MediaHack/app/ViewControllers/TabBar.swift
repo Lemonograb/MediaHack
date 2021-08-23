@@ -69,10 +69,12 @@ class NavigationMenuBaseController: UITabBarController {
                     self.present(codeVc, animated: true)
                     codeVc.onCode = { code in
                         let overlayVC = OverlayPanelViewController(wsID: code)
-                        self.viewControllers?.append(overlayVC)
-                        self.overlayVC = overlayVC
-                        self.selectedIndex = 2
-                        codeVc.dismiss(animated: true, completion: nil)
+//                        self.viewControllers?.append(overlayVC)
+//                        self.overlayVC = overlayVC
+//                        self.selectedIndex = 2
+                        codeVc.dismiss(animated: true, completion: ({
+                            viewControllers?[1].navigationController?.pushViewController(overlayVC, animated: true)
+                        }))
                     }
                 }
             } else {

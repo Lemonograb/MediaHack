@@ -102,6 +102,7 @@ public enum WSStatus: Codable {
         case start
         case play
         case playAt
+        case cancel
     }
 
     enum PostTypeCodingError: Error {
@@ -112,6 +113,7 @@ public enum WSStatus: Codable {
     case start
     case play(sec: Double)
     case playAt(sec: Double)
+    case cancel
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -123,6 +125,12 @@ public enum WSStatus: Codable {
             self = .start
             return
         }
+
+        if (try? values.decode(String.self, forKey: .cancel)) != nil {
+            self = .cancel
+            return
+        }
+
         if let value = try? values.decode(Double.self, forKey: .play) {
             self = .play(sec: value)
             return
@@ -145,6 +153,8 @@ public enum WSStatus: Codable {
             try container.encode(sec, forKey: .play)
         case let .playAt(sec: sec):
             try container.encode(sec, forKey: .playAt)
+        case .cancel:
+            try container.encode("2", forKey: .cancel)
         }
     }
 }

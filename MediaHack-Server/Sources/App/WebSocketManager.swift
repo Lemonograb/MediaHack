@@ -33,6 +33,16 @@ class WebSocketManager {
     func add(client: Client) {
         client.socket.onClose.whenComplete { _ in
             self.connectedClient[client.id] = nil
+            if client.id.type == .tv {
+                let closedKey = Client.Key(type: .phone, id: client.id.id)
+                guard let data = try? JSONEncoder().encode(WSStatus.cancel),
+                      let str = data.str else { return }
+                self.connectedClient[closedKey]?.socket.send(str)
+                _ = self.connectedClient[closedKey]?.socket.close().always({ _ in
+                    self.connectedClient[closedKey] = nil
+                })
+            }
+
         }
         // прокидывает статус на телефон
         client.socket.onText { _, text in
@@ -60,6 +70,7 @@ public enum WSStatus: Codable {
         case start
         case play
         case playAt
+        case cancel
     }
 
     enum PostTypeCodingError: Error {
@@ -74,6 +85,10 @@ public enum WSStatus: Codable {
         }
         if (try? values.decode(String.self, forKey: .start)) != nil {
             self = .start
+            return
+        }
+        if (try? values.decode(String.self, forKey: .cancel)) != nil {
+            self = .cancel
             return
         }
         if let value = try? values.decode(Double.self, forKey: .play) {
@@ -98,11 +113,20 @@ public enum WSStatus: Codable {
             try container.encode(sec, forKey: .play)
         case let .playAt(sec: sec):
             try container.encode(sec, forKey: .playAt)
+        case .cancel:
+            try container.encode("2", forKey: .cancel)
         }
     }
 
     case stop
     case start
+    case cancel
     case play(sec: Double)
     case playAt(sec: Double)
+}
+
+extension Data {
+    var str: String? {
+        String(data: self, encoding: .utf8)
+    }
 }

@@ -49,11 +49,11 @@ public final class PlayerViewController: BaseViewController {
                 UIView.animate(withDuration: 0.3) {
                     self.qrCodeImageView.isHidden = false
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                    UIView.animate(withDuration: 0.3) {
-                        self.qrCodeImageView.isHidden = true
-                    }
-                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+//                    UIView.animate(withDuration: 0.3) {
+//                        self.qrCodeImageView.isHidden = true
+//                    }
+//                }
             }.store(in: &bag)
 
         interactor.loadData().store(in: &bag)

@@ -77,7 +77,7 @@ final class PlayerInteractor {
                     self?.playingStatusSubject.send(true)
                 case .stop:
                     self?.playingStatusSubject.send(false)
-                case .play:
+                case .play, .cancel:
                     break
                 case let .playAt(sec):
                     self?.adjustedPlayerTimeSubject.send(CMTime(seconds: sec, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))

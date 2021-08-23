@@ -84,13 +84,13 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
         self.interactor = OverlayPanelInteractor(wsID: wsID)
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: OverlayPanelViewController.makeLayout())
         super.init()
-
+        interactor.vc = self
         collectionView.delegate = self
         interactor.loadData().store(in: &bag)
         interactor.playingTimePublisher
             .receive(on: DispatchQueue.main)
-            .sink { [unowned self] time in
-                self.update(with: time)
+            .sink { [weak self] time in
+                self?.update(with: time)
             }.store(in: &bag)
         interactor.definitionResult
             .receive(on: DispatchQueue.main)
@@ -105,6 +105,13 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
 
     override public func setup() {
         view.addSubview(collectionView)
+        let backButton = UIImageView(image: .init(named: "ic_arrow"))
+        view.addSubview(backButton)
+        backButton.pinEdges(to: view.safeAreaLayoutGuide, top: 8, left: 8, bottom: .nan, right: .nan)
+        backButton.addTapHandler { [unowned self] in
+            navigationController?.popViewController(animated: true)
+            WSManager.shared.cancel()
+        }
         collectionView.pinEdgesToSuperView()
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
