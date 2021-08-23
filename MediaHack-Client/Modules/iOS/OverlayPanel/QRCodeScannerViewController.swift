@@ -80,8 +80,6 @@ public final class QRCodeScannerViewController: UIViewController, AVCaptureMetad
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             found(code: stringValue)
         }
-
-        dismiss(animated: true)
     }
 
     func found(code: String) {

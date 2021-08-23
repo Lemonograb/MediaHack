@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import Networking
+import UIKit
 
 final class OverlayPanelInteractor {
     typealias TimeToSubtitle = (key: Double, value: Networking.Subtitle)
@@ -33,6 +34,8 @@ final class OverlayPanelInteractor {
         return definitionResultSubject.eraseToAnyPublisher()
     }
 
+    var vc: UIViewController?
+
     private(set) var isPlaying = false
 
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
@@ -53,6 +56,8 @@ final class OverlayPanelInteractor {
                 case let .play(sec):
                     self?.isPlaying = true
                     self?.playingTimeSubject.send(sec)
+                case .cancel:
+                    self?.vc?.navigationController?.popViewController(animated: true)
                 }
             }
         })
