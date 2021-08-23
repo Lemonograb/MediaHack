@@ -20,7 +20,7 @@ class MainScreenVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "MainBackground")
 
-        loadMovies()
+        API.getMovies()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { c in
                 if case let .failure(err) = c {
@@ -192,18 +192,14 @@ class MainScreenVC: UIViewController {
     }
 
     private func openFilm(movie: Movie, relevant: [Movie]) {
-        let vc = MovieCard()
-        vc.movie = movie
-        navigationController?.pushViewController(vc, animated: true)
+//        let vc = MovieCard()
+//        vc.movie = movie
+//        navigationController?.pushViewController(vc, animated: true)
     }
 
     private func openTag(tag: String) {}
 
     private func openTheme(themeID: String) {}
-
-    private func loadMovies() -> AnyPublisher<[Movie], Error> {
-        return API.getMovies()
-    }
 }
 
 extension UIImageView {

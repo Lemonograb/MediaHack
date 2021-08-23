@@ -35,6 +35,9 @@ final class OverlayPanelInteractor {
     }
 
     var vc: UIViewController?
+
+    private(set) var isPlaying = false
+
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playingTimeSubject = PassthroughSubject<Double, Never>()
     private let definitionResultSubject = PassthroughSubject<[String], Never>()
@@ -51,6 +54,7 @@ final class OverlayPanelInteractor {
                 case .start, .stop, .playAt:
                     break
                 case let .play(sec):
+                    self?.isPlaying = true
                     self?.playingTimeSubject.send(sec)
                 case .cancel:
                     self?.vc?.navigationController?.popViewController(animated: true)
@@ -92,14 +96,29 @@ final class OverlayPanelInteractor {
 
     func play(time: Double) {
         WSManager.shared.sendStatus(.playAt(sec: time - Self.adjustment))
+        isPlaying = true
+    }
+
+    func pausePlay() {
+        WSManager.shared.sendStatus(.stop)
+        isPlaying = false
+    }
+
+    func togglePlay() {
+        isPlaying ? pausePlay() : continuePlay()
+        isPlaying.toggle()
+        print("togglePlay", "=>", isPlaying)
     }
 
     func continuePlay() {
         WSManager.shared.sendStatus(.start)
+        isPlaying = true
     }
 
+    private var bag = Set<AnyCancellable>()
     func define(word: String) -> AnyPublisher<[String], Never> {
-        WSManager.shared.sendStatus(.stop)
+        pausePlay()
+        print("define", word)
         return API.define(word: word)
             .replaceError(with: [])
             .eraseToAnyPublisher()

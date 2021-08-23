@@ -47,12 +47,17 @@ final class SubtitleCell: BaseCollectionViewCell, ReuseIdentifiable, Configurabl
             tooltip.layoutIfNeeded()
             tooltip.alpha = 0
             tooltip.frame.origin.x = location.x - (tooltip.bounds.size.width / 2)
+            tooltip.frame.origin.x = max(tooltip.frame.origin.x, 0)
+            tooltip.frame.origin.x = min(tooltip.frame.origin.x, contentView.frame.maxX)
+
             tooltip.frame.origin.y = location.y - tooltip.bounds.height
+            tooltip.frame.origin.y = min(tooltip.frame.origin.y, 0)
+
             UIView.animate(withDuration: 0.3) {
                 tooltip.alpha = 1
             }
-            tooltip.onWordAdded = { [unowned self] in
-                self.removeDefinition()
+            tooltip.onWordAdded = { [weak self] in
+                _ = self?.removeDefinition()
             }
             self.tooltip = tooltip
         }

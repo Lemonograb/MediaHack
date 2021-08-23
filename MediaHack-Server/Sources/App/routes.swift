@@ -12,7 +12,7 @@ enum ServerError: Error {
 
 func routes(_ app: Application) throws {
     let webSocketManager = WebSocketManager(eventLoop: app.eventLoopGroup.next())
-    var maxTransReq = 30
+    var maxTransReq = 300
 
     app.get { _ in
         "It works!"
@@ -84,32 +84,18 @@ func routes(_ app: Application) throws {
 
     app.get("translate") { req -> EventLoopFuture<String> in
         struct TranslationResp: Decodable {
-            struct Result: Decodable {
-                struct LexicalEntries: Decodable {
-                    struct Inflection: Decodable {
-                        var id: String
-                    }
-
-                    struct Entries: Decodable {
-                        struct Sense: Decodable {
-                            struct Trancslation: Decodable {
-                                var text: String
-                            }
-
-                            var translations: [Trancslation]?
-                        }
-
-                        var senses: [Sense]
-                    }
-
-                    var entries: [Entries]?
-                    var inflectionOf: [Inflection]?
-                }
-
-                var lexicalEntries: [LexicalEntries]
+            struct Translation: Codable {
+                let text: String?
             }
 
-            var results: [Result]
+            var translations: [Translation]
+        }
+
+        struct RequestModel: Encodable {
+            let sourceLanguageCode = "en"
+            let targetLanguageCode = "ru"
+            let texts: [String]
+            let folderId = "b1gpfip2u14eblsvi1ff"
         }
 
         guard
@@ -130,44 +116,30 @@ func routes(_ app: Application) throws {
         } else {
             mx.signal()
         }
-        
-        maxTransReq -= 1
-        return req.client.get("https://od-api.oxforddictionaries.com/api/v2/lemmas/en/\(lower)", headers: .init([("app_id", "d1735332"), ("app_key", "8a9c930b46824fc858db48ff23d63be6")]))
-            .flatMapThrowing { res in
-                try res.content.decode(TranslationResp.self)
-            }
-            .map {
-                $0.results.first?.lexicalEntries.first?.inflectionOf?.first?.id ?? ""
-            }
-            .flatMap { wordId in
-                req.client.get("https://od-api.oxforddictionaries.com/api/v2/translations/en/ru/\(wordId)", headers: .init([("app_id", "ed4dc9b2"), ("app_key", "4a868ed2184b8072a76fc30db09d79d6")]))
-                    .flatMapThrowing { res in
-                        try res.content.decode(TranslationResp.self)
-                    }
-                    .map { resp in
-                        let allEntries: [String] = resp.results
-                            .flatMap(\.lexicalEntries)
-                            .compactMap(\.entries)
-                            .flatMap { $0 }
-                            .flatMap(\.senses)
-                            .compactMap(\.translations)
-                            .flatMap { $0 }
-                            .map(\.text)
 
-                        guard let data = try? JSONEncoder().encode(allEntries) else {
-                            return ""
-                        }
-                        let waitResult = mx.wait(timeout: DispatchTime.now() + .milliseconds(250))
-                        let response = String(data: data, encoding: .utf8).unsafelyUnwrapped
-                        
-                        if case .timedOut = waitResult {
-                            return response
-                        } else {
-                            definitionCache[lower] = response
-                            mx.signal()
-                            return response
-                        }
-                    }
+        maxTransReq -= 1
+        return req.client.post(
+            "https://translate.api.cloud.yandex.net/translate/v2/translate",
+            headers: .init([("Authorization", "Api-Key AQVN3x7yQM_ddfl9oOAWF2SMni4CiPkHUTYIMQzV")])
+        ) { req in
+            let model = RequestModel(texts: [lower])
+            try req.content.encode(model, as: .json)
+        }.flatMapThrowing { res in
+            try res.content.decode(TranslationResp.self)
+        }.map { resp in
+            guard let data = try? JSONEncoder().encode(resp.translations.compactMap(\.text)) else {
+                return ""
             }
+            let waitResult = mx.wait(timeout: DispatchTime.now() + .milliseconds(250))
+            let response = String(data: data, encoding: .utf8).unsafelyUnwrapped
+
+            if case .timedOut = waitResult {
+                return response
+            } else {
+                definitionCache[lower] = response
+                mx.signal()
+                return response
+            }
+        }
     }
 }

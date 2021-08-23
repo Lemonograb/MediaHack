@@ -62,19 +62,12 @@ class NavigationMenuBaseController: UITabBarController {
         home.addTapHandler { [unowned self] in
             let currentIndex = self.selectedIndex
             if currentIndex == 1 {
-                if self.overlayVC != nil {
-                    self.selectedIndex = 2
-                } else {
-                    let codeVc = QRCodeScannerViewController()
-                    self.present(codeVc, animated: true)
-                    codeVc.onCode = { code in
-                        let overlayVC = OverlayPanelViewController(wsID: code)
-//                        self.viewControllers?.append(overlayVC)
-//                        self.overlayVC = overlayVC
-//                        self.selectedIndex = 2
-                        codeVc.dismiss(animated: true, completion: ({
-                            viewControllers?[1].navigationController?.pushViewController(overlayVC, animated: true)
-                        }))
+                let codeVc = QRCodeScannerViewController()
+                self.present(codeVc, animated: true)
+                codeVc.onCode = { code in
+                    let overlayVC = OverlayPanelViewController(wsID: code)
+                    codeVc.dismiss(animated: true) {
+                        viewControllers?[1].navigationController?.pushViewController(overlayVC, animated: true)
                     }
                 }
             } else {
