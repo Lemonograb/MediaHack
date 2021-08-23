@@ -14,7 +14,7 @@ public final class PlayerViewController: BaseViewController {
     override public func setup() {
         qrCodeImageView.isHidden = true
         view.addSubview(qrCodeImageView)
-        
+
         qrCodeImageView.pin(.leading).to(view).const(32).equal()
         qrCodeImageView.pin(.bottom).to(view).const(-32).equal()
 
@@ -29,7 +29,7 @@ public final class PlayerViewController: BaseViewController {
             .sink { [unowned self] model in
                 self.updatePlayer(with: model)
             }.store(in: &bag)
-        
+
         interactor.playingStatusPublisher
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] shouldPlay in
@@ -48,11 +48,6 @@ public final class PlayerViewController: BaseViewController {
                 self.qrCodeImageView.image = image
                 UIView.animate(withDuration: 0.3) {
                     self.qrCodeImageView.isHidden = false
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                    UIView.animate(withDuration: 0.3) {
-                        self.qrCodeImageView.isHidden = true
-                    }
                 }
             }.store(in: &bag)
 

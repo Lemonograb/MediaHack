@@ -77,7 +77,7 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     private var bag = Set<AnyCancellable>()
 
-    private var lastActiveIndexPath: IndexPath?
+    private(set) var lastActiveIndexPath: IndexPath?
     private unowned var cellRequestedDefinition: SubtitleCell?
 
     public init(wsID: String) {
@@ -118,6 +118,9 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: SubtitleCell.reuseIdentifier, for: ip), to: SubtitleCell.self)
                 cell.configure(model: SubtitleCell.Model(text: WordsTokenizer.process(text: model.en), isActive: model.isActive))
                 cell.onWordSelected = { [unowned self] word in
+                    guard !word.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
+                        return
+                    }
                     if let prev = self.cellRequestedDefinition, prev !== cell {
                         _ = prev.removeDefinition()
                     }
@@ -136,18 +139,22 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
                 return cell
             }
         }
-        view.addGestureRecognizer { [unowned self] (_: UITapGestureRecognizer) in
-            if let cell = cellRequestedDefinition, cell.removeDefinition() {
-                self.interactor.continuePlay()
-                self.cellRequestedDefinition = nil
-            }
-        }
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let content = interactor.model.content {
-            let startSecond = content.subtitles[indexPath.row - 1].value.start.timeInSeconds
-            interactor.play(time: startSecond)
+            if
+                let model = dataSource.itemIdentifier(for: indexPath),
+                case let .subtitle(subtitle) = model,
+                subtitle.isActive {
+                if !interactor.isPlaying, let cell = cellRequestedDefinition, cell.removeDefinition() {
+                    self.cellRequestedDefinition = nil
+                }
+                interactor.togglePlay()
+            } else {
+                let startSecond = content.subtitles[indexPath.row - 1].value.start.timeInSeconds
+                interactor.play(time: startSecond)
+            }
         }
     }
 
