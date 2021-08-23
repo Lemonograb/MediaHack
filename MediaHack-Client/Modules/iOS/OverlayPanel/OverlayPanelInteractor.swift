@@ -57,8 +57,10 @@ final class OverlayPanelInteractor {
                     self?.isPlaying = true
                     self?.playingTimeSubject.send(sec)
                 case .cancel:
-                    self?.vc?.navigationController?.popViewController(animated: true)
-                    WSManager.shared.cancel()
+                    DispatchQueue.main.async {
+                        self?.vc?.navigationController?.popViewController(animated: true)
+                        WSManager.shared.cancel()
+                    }
                 }
             }
         })
