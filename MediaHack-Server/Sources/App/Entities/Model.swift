@@ -225,7 +225,7 @@ let cinimas: [Cinema] = [
     ),
     Cinema(
         id: "7",
-        name: "Тролли. Мировой тур 3D",
+        name: "Тролли",
         url: "https://43645b24-1d0c-4447-ad7d-b1fbbfe77210.ams-static-04.cdntogo.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTQxODEwMyZoPUxUMDgtSTJ2eGg4RUx4TW9kZUk5aFEmZT0xNjI5NTA0NTAz/5/fa/TllNYF2Y76RycryJR.mp4/master-v1a1.m3u8",
         photoUrl: "https://cdn.service-kp.com/poster/item/big/65713.jpg",
         description: """
@@ -254,7 +254,7 @@ let cinimas: [Cinema] = [
     ),
     Cinema(
         id: "8",
-        name: "Невозможные животные",
+        name: "Животные",
         url: "https://43645b24-1d0c-4447-ad7d-b1fbbfe77210.ams-static-04.cdntogo.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTQxODEwMyZoPUxUMDgtSTJ2eGg4RUx4TW9kZUk5aFEmZT0xNjI5NTA0NTAz/5/fa/TllNYF2Y76RycryJR.mp4/master-v1a1.m3u8",
         photoUrl: "https://cdn.service-kp.com/poster/item/big/73678.jpg",
         description: """
