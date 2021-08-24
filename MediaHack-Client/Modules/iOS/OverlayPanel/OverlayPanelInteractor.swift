@@ -16,7 +16,7 @@ final class OverlayPanelInteractor {
         var content: Content?
     }
 
-    static let adjustment: Double = 0
+    static let adjustment: Double = 2589.5
 
     var model: Model {
         return modelSubject.value

@@ -155,7 +155,7 @@ public final class OverlayPanelViewController: BaseViewController {
 
             if let en = subtitle.en {
                 let item = Item.subtitle(
-                    SubtitleCell.Model(subtitle: WordsTokenizer.process(text: en.text), isActive: subtitle.isActive)
+                    SubtitleCell.Model(subtitle: WordsTokenizer.processTV(text: en.text), isActive: subtitle.isActive)
                 )
                 result.append(item)
             }
@@ -163,7 +163,7 @@ public final class OverlayPanelViewController: BaseViewController {
                 let item = Item.subtitle(
                     SubtitleCell.Model(
                         subtitle: ru.text.joined(separator: "\n").builder
-                            .font(UIFont.systemFont(ofSize: 18, weight: .semibold))
+                            .font(UIFont.systemFont(ofSize: 60, weight: .semibold))
                             .foregroundColor(.white)
                             .result,
                         isActive: subtitle.isActive

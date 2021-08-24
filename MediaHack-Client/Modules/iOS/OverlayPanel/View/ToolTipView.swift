@@ -55,7 +55,7 @@ final class ToolTipView: BaseView {
             .foregroundColor(.white).result
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        touchContainer.addGestureRecognizer(tap)
+        addGestureRecognizer(tap)
     }
 
     override func draw(_ rect: CGRect) {

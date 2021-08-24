@@ -8,7 +8,9 @@
 import UIKit
 import Networking
 import Player_iOS
+import Combine
 import Nuke
+import SharedCode
 
 class MovieCard: UIViewController {
     enum ViewState {
@@ -19,6 +21,8 @@ class MovieCard: UIViewController {
     let infoStackView = UIStackView()
     let dictStackView = UIStackView()
     let scrollView = UIScrollView()
+    private var bag = Set<AnyCancellable>()
+
     var viewState: ViewState! {
         didSet {
             DispatchQueue.main.async { [unowned self] in
@@ -132,7 +136,19 @@ class MovieCard: UIViewController {
             stack.alignment = .fill
             dictStackView.spacing = 16
             movie.dictionary.forEach {
-                dictStackView.addArrangedSubview(wordRowView(word: $0))
+                dictStackView.addArrangedSubview(Self.wordRowView(word: $0) { word in
+                    API.define(word: word)
+                        .sink(receiveCompletion: {_ in }, receiveValue: ({ def in
+                            DefinitionHandler.add(word: word, def: def)
+                            DispatchQueue.main.async {
+                                let vc = WordVC()
+                                vc.word = (word, def.first ?? "")
+                                self.present(vc, animated: true, completion: nil)
+                            }
+                        }))
+                        .store(in: &self.bag)
+
+                })
             }
 
             let buttonText = UILabel(text: "Добавить в словарь", font: .systemFont(ofSize: 20), color: .black)
@@ -148,6 +164,15 @@ class MovieCard: UIViewController {
             let wrapperwrapper = UIView()
             wrapperwrapper.addSubview(wrapper)
             wrapper.pinEdgesToSuperView(edges: .init(top: 0, left: 16, bottom: 0, right: 16))
+            wrapperwrapper.addTapHandler {
+                self.movie.dictionary.forEach({ word in
+                    API.define(word: word)
+                        .sink(receiveCompletion: {_ in }, receiveValue: ({ def in
+                            DefinitionHandler.add(word: word, def: def)
+                        }))
+                        .store(in: &self.bag)
+                })
+            }
             dictStackView.addArrangedSubview(wrapperwrapper)
         }
 
@@ -222,11 +247,11 @@ class MovieCard: UIViewController {
         return wrapper
     }
 
-    func wordRowView(word: String) -> UIView {
+    static func wordRowView(word: String, onTap: @escaping (String) -> Void) -> UIView {
         let row = UIView()
         let wordView = UILabel(text: word, font: .systemFont(ofSize: 15), color: .white)
         let separator = UIView()
-        let icon = UIImageView(image: .init(named: "ic_chart-fill"))
+        let icon = UIImageView(image: .init(named: "Right_Light_pink"))
         separator.pin(.height).const(1).equal()
         separator.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.06)
         row.addSubview(wordView)
@@ -238,7 +263,9 @@ class MovieCard: UIViewController {
         icon.pin(.left).to(wordView, .right).const(8).equal()
         separator.pinEdgesToSuperView(edges: .init(top: .nan, left: 16, bottom: 0, right: 16))
         separator.pin(.top).to(wordView, .bottom).const(12).equal()
-
+        row.addTapHandler {
+            onTap(word)
+        }
         return row
     }
 

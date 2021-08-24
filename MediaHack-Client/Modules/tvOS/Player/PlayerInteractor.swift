@@ -52,7 +52,7 @@ final class PlayerInteractor {
         return qrCodeSubject.eraseToAnyPublisher()
     }
 
-    private static let adjustment: Double = 0
+    private static let adjustment: Double = 2589.5
 
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
@@ -125,7 +125,7 @@ final class PlayerInteractor {
             else {
                 return nil
             }
-            return PlayerModel(enSubtitle: WordsTokenizer.process(text: enSubtitle.text))
+            return PlayerModel(enSubtitle: WordsTokenizer.processTV(text: enSubtitle.text))
         }.compactMap { $0 }.subscribe(playerModelSubject).store(in: &bag)
     }
 
@@ -163,7 +163,7 @@ final class PlayerInteractor {
     }
 
     func overlayModel(for time: CMTime) -> OverlayPanelViewController.Model? {
-        let sec = time.seconds
+        let sec = time.seconds + Self.adjustment
         let all = timeToSubtitleSubject.value
         guard
             let content = model.content
