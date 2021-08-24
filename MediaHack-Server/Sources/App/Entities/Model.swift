@@ -48,7 +48,7 @@ let cinimas: [Cinema] = [
     Cinema(
         id: "1",
         name: "Криминальное чтиво",
-        url: "https://hulucdn.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTc1Mjc1NyZoPXV1NkdhbjRXWko3Skl2ZklOU3RaTVEmZT0xNjI5ODM5MTU3/5/d0/P30e5RYq9PKCDTAVJ.mp4/master-v1a1.m3u8?loc=nl",
+        url: "https://strm.yandex.ru/vh-ott-converted/ott-content/530389814-4a54e1d887da77c3ab345f7635ca9b59/master.m3u8?from=ott-kp&hash=b60bc9cbe1e6783ff44e51c6568b8386&vsid=b9690d561690dbd1eff4bfe5c79a1b9304a4d904a019xWEBx6710x1629612671&video_content_id=4a54e1d887da77c3ab345f7635ca9b59&session_data=1&preview=1&t=1629612671617",
         photoUrl: "https://cdn.service-kp.com/poster/item/big/392.jpg",
         description: "Двое бандитов Винсент Вега и Джулс Винфилд ведут философские беседы в перерывах между разборками и решением проблем с должниками криминального босса Марселласа Уоллеса. В первой истории Винсент проводит незабываемый вечер с женой Марселласа Мией. Во второй рассказывается о боксёре Бутче Кулидже, купленном Уоллесом, чтобы сдать бой. В третьей истории Винсент и Джулс по нелепой случайности попадают в неприятности.",
         ruSubtitles: [],

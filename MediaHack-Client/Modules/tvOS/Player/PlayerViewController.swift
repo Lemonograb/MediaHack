@@ -88,6 +88,7 @@ public final class PlayerViewController: BaseViewController {
         ) { [unowned self] offset in
             self.interactor.set(time: offset)
         }
+        playerView.player.seek(to: CMTime.init(value: 25, timescale: CMTimeScale(NSEC_PER_SEC)))
         playerView.player.play()
     }
 
