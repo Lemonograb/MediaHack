@@ -192,9 +192,9 @@ class MainScreenVC: UIViewController {
     }
 
     private func openFilm(movie: Movie, relevant: [Movie]) {
-//        let vc = MovieCard()
-//        vc.movie = movie
-//        navigationController?.pushViewController(vc, animated: true)
+        let vc = MovieCard()
+        vc.movie = movie
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     private func openTag(tag: String) {}

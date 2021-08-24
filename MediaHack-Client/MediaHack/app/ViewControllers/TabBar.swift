@@ -7,6 +7,7 @@
 
 import OverlayPanel_iOS
 import UIKit
+import SharedCode
 
 class NavigationMenuBaseController: UITabBarController {
     var tabBarHeight: CGFloat = 96.0
@@ -22,7 +23,7 @@ class NavigationMenuBaseController: UITabBarController {
         let mainNav = UINavigationController(rootViewController: MainScreenVC())
         mainNav.isNavigationBarHidden = true
 
-        viewControllers = [MainViewController(), mainNav]
+        viewControllers = [MainViewController(), mainNav, DictionaryVC()]
         selectedIndex = 1
         tabBar.isHidden = true
         tabBarView.isUserInteractionEnabled = true
@@ -77,8 +78,8 @@ class NavigationMenuBaseController: UITabBarController {
         }
 
         dict.addTapHandler { [weak self] in
-            print("todo dictionary")
-            // self?.selectedIndex = 2
+            (self?.viewControllers?[2] as? DictionaryVC)?.words = DefinitionHandler.definitions
+             self?.selectedIndex = 2
         }
     }
 }
