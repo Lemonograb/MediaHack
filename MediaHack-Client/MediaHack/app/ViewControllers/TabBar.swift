@@ -22,7 +22,7 @@ class NavigationMenuBaseController: UITabBarController {
         let mainNav = UINavigationController(rootViewController: MainScreenVC())
         mainNav.isNavigationBarHidden = true
 
-        viewControllers = [MainViewController(), mainNav]
+        viewControllers = [TikTokViewController(), mainNav]
         selectedIndex = 1
         tabBar.isHidden = true
         tabBarView.isUserInteractionEnabled = true
