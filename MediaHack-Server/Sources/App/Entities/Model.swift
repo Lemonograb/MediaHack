@@ -309,5 +309,34 @@ let cinimas: [Cinema] = [
         ],
         relevantCinemaIds: ["7", "2", "3"],
         reviews: reviews
+    ),
+    Cinema(
+        id: "10",
+        name: "С полудня до трех",
+        url: "https://43645b24-1d0c-4447-ad7d-b1fbbfe77210.ams-static-04.cdntogo.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTQxODEwMyZoPUxUMDgtSTJ2eGg4RUx4TW9kZUk5aFEmZT0xNjI5NTA0NTAz/5/fa/TllNYF2Y76RycryJR.mp4/master-v1a1.m3u8",
+        photoUrl: "https://cdn.service-kp.com/poster/item/big/73810.jpg",
+        description: """
+        Чтобы ограбить банк, банде преступников требуется еще одна лошадь. Один из бандитов по имени Дорси идет украсть лошадь, а её владелица, прекрасная молодая вдова Аманда, положила глаз на Дорси. И вместо того, чтобы грабить банк, Дорси проводит три прекрасных часа женщиной, и ждет возвращения банды. Но ограбление идет не по плану, и Дорси уезжает спасать своих криминальных товарищей, или по крайней мере так думает Аманда.
+        """,
+        ruSubtitles: [],
+        engSubtitles: [],
+        rating: 9.8,
+        tags: ["#Вестерн", "#Средний"],
+        dictionary: [
+            "Mayonnaise",
+            "You see that, young lady? Respect",
+            "Uncomfortable silences",
+            "Hate what",
+            "I don't know. That's a good question",
+            "I've seen 'em do it, man",
+            "I have character",
+            "And you know what they call a... a... a Quarter Pounder with Cheese in Paris?",
+            "Hate what",
+            "to yak about bullshit",
+            "Goddamn",
+            "We should have shotguns for this kind of deal",
+        ],
+        relevantCinemaIds: ["7", "2", "3"],
+        reviews: reviews
     )
 ]
