@@ -133,10 +133,11 @@ public final class PlayerViewController: BaseViewController {
         controller.view.addSubview(qrCodeImageView)
         qrCodeImageView.pinEdgesToSuperView(edges: .init(top: 32, left: .nan, bottom: .nan, right: 32))
         blurView.layoutIfNeeded()
-
-        UIView.animate(withDuration: 0.3) { [self] in
-            controller.update()
-            overlayViewController = controller
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3) { [self] in
+                controller.update()
+                overlayViewController = controller
+            }
         }
     }
 

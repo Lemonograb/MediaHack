@@ -192,7 +192,7 @@ final class PlayerInteractor {
 
         func ruSubtitle(for en: Networking.Subtitle) -> Networking.Subtitle? {
             return all.ru.first { _, v in
-                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.4 
+                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.5
             }?.value
         }
 
