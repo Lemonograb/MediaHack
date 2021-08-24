@@ -8,7 +8,9 @@
 import UIKit
 import Networking
 import Player_iOS
+import Combine
 import Nuke
+import SharedCode
 
 class MovieCard: UIViewController {
     enum ViewState {

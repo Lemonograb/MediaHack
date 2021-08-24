@@ -192,7 +192,7 @@ final class MovieCell: BaseCollectionViewCell, ReuseIdentifiable, Configurable {
 
     func update(with subtitle: Subtitle) {
         let text = subtitle.text
-        let tokens = WordsTokenizer.process(text: text, whiteList: Set<String>(["give", "fuck"]))
+        let tokens = WordsTokenizer.process(text: text)
         player?.subtitlesView.text = tokens
     }
 }
