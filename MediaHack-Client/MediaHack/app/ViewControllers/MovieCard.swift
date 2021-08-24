@@ -8,8 +8,7 @@
 import UIKit
 import Networking
 import Player_iOS
-import SharedCode
-import Combine
+import Nuke
 
 class MovieCard: UIViewController {
     enum ViewState {
@@ -60,7 +59,9 @@ class MovieCard: UIViewController {
             navigationController?.popViewController(animated: true)
         }
         do {
-            let imageHeder = UIImageView(urlString: movie.photoURL).fadeView()
+            let iv = UIImageView()
+            Nuke.loadImage(with: movie.photoURL, into: iv)
+            let imageHeder = iv.fadeView()
             imageHeder.pin(.height).const(428).equal()
             stack.addArrangedSubview(imageHeder)
 
@@ -198,7 +199,8 @@ class MovieCard: UIViewController {
             }
             do {
                 infoStackView.addArrangedSubview(CaruselView(itemsView: allMovies.filter({ movie.relevantCinemaIDS.contains($0.id) }).map { movie in
-                    let view = UIImageView(urlString: movie.photoURL)
+                    let view = UIImageView()
+                    Nuke.loadImage(with: movie.photoURL, into: view)
                     view.layer.cornerRadius = 8
                     view.layer.masksToBounds = true
                     view.pin(.height).const(239).equal()

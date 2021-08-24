@@ -9,6 +9,7 @@ import Combine
 import Networking
 import Player_iOS
 import UIKit
+import Nuke
 
 var allMovies: [Movie] = []
 class MainScreenVC: UIViewController {
@@ -149,7 +150,8 @@ class MainScreenVC: UIViewController {
 
     private func movieView(element: Movie) -> UIView {
         let wrapper = UIView()
-        let imageView = UIImageView(urlString: element.photoURL)
+        let imageView = UIImageView()
+        Nuke.loadImage(with: element.photoURL, into: imageView)
         let title = UILabel()
         let tags = UILabel()
         let rating = UILabel()

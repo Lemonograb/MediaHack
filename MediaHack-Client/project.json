@@ -22,6 +22,10 @@
     "Nuke": {
       "github": "kean/Nuke",
       "branch": "master"
+    },
+    "CompositionalLayoutDSL": {
+        "github": "faberNovel/CompositionalLayoutDSL",
+        "branch": "main"
     }
   },
   "targets": {
@@ -87,6 +91,9 @@
         },
         {
           "package": "Nuke"
+        },
+        {
+            "package": "CompositionalLayoutDSL"
         }
       ]
     },
