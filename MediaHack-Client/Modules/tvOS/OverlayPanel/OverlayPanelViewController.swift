@@ -152,22 +152,21 @@ public final class OverlayPanelViewController: BaseViewController {
         )
         let subtitles = model.subtitles.flatMap { subtitle -> [Item] in
             var result: [Item] = []
-
-            if let en = subtitle.en {
-                let item = Item.subtitle(
-                    SubtitleCell.Model(subtitle: WordsTokenizer.processTV(text: en.text), isActive: subtitle.isActive)
-                )
-                result.append(item)
-            }
             if let ru = subtitle.ru {
                 let item = Item.subtitle(
                     SubtitleCell.Model(
                         subtitle: ru.text.joined(separator: "\n").builder
-                            .font(UIFont.systemFont(ofSize: 60, weight: .semibold))
+                            .font(UIFont.systemFont(ofSize: 55, weight: .regular))
                             .foregroundColor(.white)
                             .result,
                         isActive: subtitle.isActive
                     )
+                )
+                result.append(item)
+            }
+            if let en = subtitle.en {
+                let item = Item.subtitle(
+                    SubtitleCell.Model(subtitle: WordsTokenizer.processTV(text: en.text), isActive: subtitle.isActive)
                 )
                 result.append(item)
             }

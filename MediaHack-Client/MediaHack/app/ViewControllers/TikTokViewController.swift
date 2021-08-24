@@ -61,6 +61,7 @@ final class TikTokViewController: BaseViewController {
         }
         super.init()
 
+        collectionView.isScrollEnabled = false
         collectionView.register(WordCell.self, forCellWithReuseIdentifier: WordCell.reuseIdentifier)
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.reuseIdentifier)
         collectionView.register(SongCell.self, forCellWithReuseIdentifier: SongCell.reuseIdentifier)

@@ -3,7 +3,7 @@ import Foundation
 public enum WordsChecker {
     public static let badWords: Set<String> = [
         "a", "the", "are",
-        "i", "im",
+        "i", "im", "is",
         "you", "youre", "they",
         "it", "its",
         "this", "that",
