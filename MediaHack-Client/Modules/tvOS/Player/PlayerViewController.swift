@@ -67,6 +67,7 @@ public final class PlayerViewController: BaseViewController {
         playerView?.removeFromSuperview()
         playerObserverToken.flatMap { token in
             playerView?.player.removeTimeObserver(token)
+            playerObserverToken = nil
         }
 
         playerView = PlayerView(
