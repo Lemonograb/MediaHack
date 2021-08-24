@@ -269,6 +269,13 @@ final class SongCell: BaseCollectionViewCell, ReuseIdentifiable, Configurable {
 
         contentLabel.numberOfLines = 0
         textLabel.numberOfLines = 0
+
+        self.addTapHandler {
+            let url = URL(string: "https://music.yandex.ru/album/88356/track/15387040").unsafelyUnwrapped
+            UIApplication.shared.open(url,
+                                      options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly : true],
+                                      completionHandler: nil)
+        }
     }
 
     func configure(model: Model) {
