@@ -51,7 +51,7 @@ class MainScreenVC: UIViewController {
             stack.addArrangedSubview(label.padding(.init(top: 0, left: 16, bottom: 0, right: 16)))
         }
         do {
-            let views = movies.map { element -> UIView in
+            let views = movies.prefix(3).map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
                     self?.openFilm(movie: element, relevant: movies)
@@ -88,7 +88,7 @@ class MainScreenVC: UIViewController {
             stack.setCustomSpacing(0, after: stack.arrangedSubviews.last!)
         }
         do {
-            let views = movies.map { element -> UIView in
+            let views = movies[3...5].map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
                     self?.openFilm(movie: element, relevant: movies)
@@ -108,7 +108,7 @@ class MainScreenVC: UIViewController {
             stack.setCustomSpacing(0, after: stack.arrangedSubviews.last!)
         }
         do {
-            let views = movies.map { element -> UIView in
+            let views = movies[6...8].map { element -> UIView in
                 let view = movieView(element: element)
                 view.addTapHandler { [weak self] in
                     self?.openFilm(movie: element, relevant: movies)

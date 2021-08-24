@@ -36,6 +36,9 @@ class DictionaryVC: UIViewController {
     }
 
     func addWords() {
+        stack.arrangedSubviews.forEach({
+            stack.removeArrangedSubview($0)
+        })
         do {
             let label = UILabel(text: "Словарь", font: .systemFont(ofSize: 23, weight: .semibold), color: .white)
             stack.addArrangedSubview(label.padding(.init(top: 0, left: 16, bottom: 0, right: 16)))

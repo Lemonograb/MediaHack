@@ -163,7 +163,7 @@ final class PlayerInteractor {
     }
 
     func overlayModel(for time: CMTime) -> OverlayPanelViewController.Model? {
-        let sec = time.seconds
+        let sec = time.seconds + Self.adjustment
         let all = timeToSubtitleSubject.value
         guard
             let content = model.content

@@ -23,7 +23,7 @@ class NavigationMenuBaseController: UITabBarController {
         let mainNav = UINavigationController(rootViewController: MainScreenVC())
         mainNav.isNavigationBarHidden = true
 
-        viewControllers = [TikTokViewController(), mainNav]
+        viewControllers = [TikTokViewController(), mainNav, DictionaryVC()]
         selectedIndex = 1
         tabBar.isHidden = true
         tabBarView.isUserInteractionEnabled = true
@@ -78,8 +78,10 @@ class NavigationMenuBaseController: UITabBarController {
         }
 
         dict.addTapHandler { [weak self] in
-            (self?.viewControllers?[2] as? DictionaryVC)?.words = DefinitionHandler.definitions
-             self?.selectedIndex = 2
+            DispatchQueue.main.async {
+                (self?.viewControllers?[2] as? DictionaryVC)?.words = DefinitionHandler.definitions
+                 self?.selectedIndex = 2
+            }
         }
     }
 }
