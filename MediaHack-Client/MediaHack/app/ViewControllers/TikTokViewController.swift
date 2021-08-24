@@ -66,6 +66,8 @@ final class TikTokViewController: BaseViewController {
         collectionView.dataSource = dataSource
     }
 
+    private var subtitles: [Subtitle] = []
+
     override func setup() {
         view.addSubview(collectionView)
         collectionView.pinEdgesToSuperView()
@@ -81,18 +83,37 @@ final class TikTokViewController: BaseViewController {
             .store(in: &bag)
     }
 
+    private func subtitle(for time: CMTime) -> Subtitle? {
+        return subtitles.first { s in
+            if s.end.timeInSeconds < time.seconds {
+                return false
+            }
+            return s.start.timeInSeconds <= time.seconds && s.end.timeInSeconds >= time.seconds
+        }
+    }
+
     private func update(with movie: Movie) {
+        API.getSubtitle(movie: movie).sink(
+            receiveCompletion: { _ in },
+            receiveValue: { [weak self] s in
+                self?.subtitles = s.en
+            }
+        ).store(in: &bag)
+
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.header])
         snapshot.appendItems([
             .word(.init(word: "Give a fuck")),
             .movie(
                 .init(
-                    url: URL(string: movie.url).unsafelyUnwrapped),
-                callback: MovieCell.Model.Callback(
-                    onTick: { time, cell in
-                        _ = (time, cell)
-                    }
+                    url: URL(string: movie.url).unsafelyUnwrapped,
+                    callback: MovieCell.Model.Callback(
+                        onTick: { [weak self] time, cell in
+                            if let s = self?.subtitle(for: time) {
+                                cell.update(with: s)
+                            }
+                        }
+                    )
                 )
             ),
             .song(.init()),
@@ -162,9 +183,17 @@ final class MovieCell: BaseCollectionViewCell, ReuseIdentifiable, Configurable {
 
         playerObserverToken = player.player.addPeriodicTimeObserver(
             forInterval: CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC)),
-            queue: .global(qos: .userInteractive)
-        ) { [weak self] _ in
+            queue: .main
+        ) { [weak self] time in
+            guard let self = self else { return }
+            model.callback.onTick(time, self)
         }
+    }
+
+    func update(with subtitle: Subtitle) {
+        let text = subtitle.text
+        let tokens = WordsTokenizer.process(text: text, whiteList: Set<String>(["give", "fuck"]))
+        player?.subtitlesView.text = tokens
     }
 }
 
