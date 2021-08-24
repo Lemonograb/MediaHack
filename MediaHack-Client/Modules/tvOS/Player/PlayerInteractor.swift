@@ -246,5 +246,3 @@ final class PlayerInteractor {
         return nil
     }
 }
-
-private let trailerURL = URL(string: "https://hulucdn.net/hls/aWQ9NTM0OTA3OzE4NDUyODMxNDE7MTIzOTkxNTQ7MTYyOTc1Mjc1NyZoPXV1NkdhbjRXWko3Skl2ZklOU3RaTVEmZT0xNjI5ODM5MTU3/5/d0/P30e5RYq9PKCDTAVJ.mp4/master-v1a1.m3u8?loc=nl").unsafelyUnwrapped

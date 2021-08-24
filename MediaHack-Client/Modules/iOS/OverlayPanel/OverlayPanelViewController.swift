@@ -86,7 +86,37 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
         super.init()
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
         collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
-        self.dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { [unowned self] cv, ip, model in
+        interactor.vc = self
+        collectionView.delegate = self
+        interactor.loadData().store(in: &bag)
+        interactor.playingTimePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] time in
+                self?.update(with: time)
+            }.store(in: &bag)
+        interactor.definitionResult
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] result in
+                if result.isEmpty {
+                    self.interactor.continuePlay()
+                } else {
+                    self.cellRequestedDefinition?.show(definition: result)
+                }
+            }.store(in: &bag)
+    }
+
+    override public func setup() {
+        view.addSubview(collectionView)
+        let backButton = UIImageView(image: .init(named: "ic_arrow"))
+        view.addSubview(backButton)
+        backButton.pinEdges(to: view.safeAreaLayoutGuide, top: 8, left: 8, bottom: .nan, right: .nan)
+        backButton.addTapHandler { [unowned self] in
+            navigationController?.popViewController(animated: true)
+            WSManager.shared.cancel()
+        }
+        collectionView.pinEdgesToSuperView()
+
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { [unowned self] cv, ip, model in
             switch model {
             case let .header(model):
                 let cell = unsafeDowncast(cv.dequeueReusableCell(withReuseIdentifier: HeaderCell.reuseIdentifier, for: ip), to: HeaderCell.self)
@@ -117,36 +147,6 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
                 return cell
             }
         }
-
-        interactor.vc = self
-        collectionView.delegate = self
-        interactor.loadData().store(in: &bag)
-        interactor.playingTimePublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] time in
-                self?.update(with: time)
-            }.store(in: &bag)
-        interactor.definitionResult
-            .receive(on: DispatchQueue.main)
-            .sink { [unowned self] result in
-                if result.isEmpty {
-                    self.interactor.continuePlay()
-                } else {
-                    self.cellRequestedDefinition?.show(definition: result)
-                }
-            }.store(in: &bag)
-    }
-
-    override public func setup() {
-        view.addSubview(collectionView)
-        let backButton = UIImageView(image: .init(named: "ic_arrow"))
-        view.addSubview(backButton)
-        backButton.pinEdges(to: view.safeAreaLayoutGuide, top: 8, left: 8, bottom: .nan, right: .nan)
-        backButton.addTapHandler { [unowned self] in
-            navigationController?.popViewController(animated: true)
-            WSManager.shared.cancel()
-        }
-        collectionView.pinEdgesToSuperView()
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -163,6 +163,10 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
             } else {
                 let startSecond = content.subtitles[indexPath.row - 1].value.start.timeInSeconds
                 interactor.play(time: startSecond)
+                
+                if let cell = cellRequestedDefinition, cell.removeDefinition() {
+                    cellRequestedDefinition = nil
+                }
             }
         }
     }

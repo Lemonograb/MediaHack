@@ -66,6 +66,7 @@ class NavigationMenuBaseController: UITabBarController {
                 self.present(codeVc, animated: true)
                 codeVc.onCode = { code in
                     let overlayVC = OverlayPanelViewController(wsID: code)
+                    overlayVC.loadViewIfNeeded()
                     codeVc.dismiss(animated: true) {
                         viewControllers?[1].navigationController?.pushViewController(overlayVC, animated: true)
                     }
