@@ -49,8 +49,8 @@ public class WSManager {
     }
 
     public func cancel() {
-        sendStatus(.stop)
         webSocketTask?.cancel(with: .goingAway, reason: nil)
+        webSocketTask = nil
     }
 
     public func sendStatus(_ status: WSStatus) {
@@ -78,6 +78,7 @@ public class WSManager {
                     debugPrint("Unknown message")
                 }
             }
+            guard self?.webSocketTask != nil else { return }
             self?.receiveData(completion: completion)
         }
     }
@@ -87,6 +88,7 @@ public class WSManager {
             if let error = error {
                 print("Ping failed: \(error)")
             }
+            guard self.webSocketTask != nil else { return }
             self.scheduleNextPing()
         }
     }

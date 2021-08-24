@@ -57,7 +57,7 @@ final class PlayerInteractor {
     private let modelSubject = CurrentValueSubject<Model, Never>(.init())
     private let playerModelSubject = PassthroughSubject<PlayerModel, Never>()
 
-    private let playingStatusSubject = PassthroughSubject<Bool, Never>()
+    private let playingStatusSubject = CurrentValueSubject<Bool, Never>(true)
     private let qrCodeSubject = PassthroughSubject<UIImage, Never>()
     private let timeToSubtitleSubject = CurrentValueSubject<SubtitlesHolder, Never>(.init(eng: [], ru: []))
     private let playerTimeSubject = PassthroughSubject<CMTime, Never>()
@@ -76,17 +76,21 @@ final class PlayerInteractor {
                 case .start:
                     self?.playingStatusSubject.send(true)
                 case .stop:
+                    WSManager.shared.sendStatus(.stop)
                     self?.playingStatusSubject.send(false)
                 case .play, .cancel:
                     break
                 case let .playAt(sec):
+                    self?.playingStatusSubject.send(true)
                     self?.adjustedPlayerTimeSubject.send(CMTime(seconds: sec, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
                 }
             }
         })
 
-        playerTimeSubject.sink { time in
-            WSManager.shared.sendStatus(.play(sec: time.seconds))
+        playerTimeSubject.sink { [unowned self] time in
+            if self.playingStatusSubject.value {
+                WSManager.shared.sendStatus(.play(sec: time.seconds))
+            }
         }.store(in: &bag)
 
         modelSubject.compactMap { m in
@@ -154,6 +158,7 @@ final class PlayerInteractor {
     }
 
     func set(playing isPlaying: Bool) {
+        playingStatusSubject.send(isPlaying)
         WSManager.shared.sendStatus(isPlaying ? .start : .stop)
     }
 
@@ -161,14 +166,13 @@ final class PlayerInteractor {
         let sec = time.seconds
         let all = timeToSubtitleSubject.value
         guard
-            let content = model.content,
-            let nearestEnIndex = all.eng.firstIndex(where: { k, v in
-                k >= sec && sec <= v.end.timeInSeconds
-            })
+            let content = model.content
         else {
             return nil
         }
-
+        let nearestEnIndex = all.eng.firstIndex(where: { k, v in
+            k <= sec && sec <= v.end.timeInSeconds
+        }) ?? 0
         let thisItem: Networking.Subtitle = all.eng[nearestEnIndex].value
         var itemsBefore: [Networking.Subtitle] = []
         var itemsAfter: [Networking.Subtitle] = []
@@ -188,7 +192,7 @@ final class PlayerInteractor {
 
         func ruSubtitle(for en: Networking.Subtitle) -> Networking.Subtitle? {
             return all.ru.first { _, v in
-                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.25
+                abs(v.start.timeInSeconds - en.start.timeInSeconds) <= 0.4 
             }?.value
         }
 

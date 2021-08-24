@@ -84,7 +84,8 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
         self.interactor = OverlayPanelInteractor(wsID: wsID)
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: OverlayPanelViewController.makeLayout())
         super.init()
-
+        collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
+        collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
         self.dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { [unowned self] cv, ip, model in
             switch model {
             case let .header(model):
@@ -146,8 +147,6 @@ public final class OverlayPanelViewController: BaseViewController, UICollectionV
             WSManager.shared.cancel()
         }
         collectionView.pinEdgesToSuperView()
-        collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseIdentifier)
-        collectionView.register(SubtitleCell.self, forCellWithReuseIdentifier: SubtitleCell.reuseIdentifier)
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

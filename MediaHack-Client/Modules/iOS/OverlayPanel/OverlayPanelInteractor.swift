@@ -51,14 +51,18 @@ final class OverlayPanelInteractor {
                 let status = try? decoder.decode(WSStatus.self, from: data)
             {
                 switch status {
-                case .start, .stop, .playAt:
+                case .start, .playAt:
                     break
+                case .stop:
+                    self?.isPlaying = false
                 case let .play(sec):
                     self?.isPlaying = true
                     self?.playingTimeSubject.send(sec)
                 case .cancel:
-                    self?.vc?.navigationController?.popViewController(animated: true)
-                    WSManager.shared.cancel()
+                    DispatchQueue.main.async {
+                        self?.vc?.navigationController?.popViewController(animated: true)
+                        WSManager.shared.cancel()
+                    }
                 }
             }
         })
@@ -96,23 +100,22 @@ final class OverlayPanelInteractor {
 
     func play(time: Double) {
         WSManager.shared.sendStatus(.playAt(sec: time - Self.adjustment))
-        isPlaying = true
+//        isPlaying = true
     }
 
     func pausePlay() {
         WSManager.shared.sendStatus(.stop)
-        isPlaying = false
+//        isPlaying = false
     }
 
     func togglePlay() {
         isPlaying ? pausePlay() : continuePlay()
-        isPlaying.toggle()
         print("togglePlay", "=>", isPlaying)
     }
 
     func continuePlay() {
         WSManager.shared.sendStatus(.start)
-        isPlaying = true
+//        isPlaying = true
     }
 
     private var bag = Set<AnyCancellable>()

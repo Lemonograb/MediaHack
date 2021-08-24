@@ -13,10 +13,6 @@ public final class PlayerViewController: BaseViewController {
 
     override public func setup() {
         qrCodeImageView.isHidden = true
-        view.addSubview(qrCodeImageView)
-
-        qrCodeImageView.pin(.leading).to(view).const(32).equal()
-        qrCodeImageView.pin(.bottom).to(view).const(-32).equal()
 
         interactor.modelPublisher
             .receive(on: DispatchQueue.main)
@@ -115,6 +111,7 @@ public final class PlayerViewController: BaseViewController {
                 overlayViewController = nil
             } completion: { _ in
                 playerView.togglePlaying()
+                self.interactor.set(playing: playerView.isPlaying)
             }
             return
         }
@@ -133,6 +130,8 @@ public final class PlayerViewController: BaseViewController {
         blurView.contentView.addSubview(controller.view)
         controller.view.backgroundColor = .clear
         controller.view.pinEdgesToSuperView()
+        controller.view.addSubview(qrCodeImageView)
+        qrCodeImageView.pinEdgesToSuperView(edges: .init(top: 32, left: .nan, bottom: .nan, right: 32))
         blurView.layoutIfNeeded()
 
         UIView.animate(withDuration: 0.3) { [self] in
