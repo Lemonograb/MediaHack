@@ -12,7 +12,7 @@
 
 ## Клиент
   Используем https://github.com/yonaskolb/XcodeGen для генерации проекта
-  <code> sudo mkdir /usr/local/xcodegen && cp -r SettingPresets /usr/local/xcodegen</code>
+  <code> sudo mkdir /usr/local/xcodegen && cp -r SettingPresets /usr/local/xcodegen && xcodegen -s project.json</code>
   В проекте добавляем схему:
   No scheme -> Manage schemes -> Autocreate schemas now -> MediaHack + MediaHack-TV
   Заменяем локалхост, если поднимали сервер в другом месте
