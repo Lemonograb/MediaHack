@@ -3,7 +3,7 @@ import Foundation
 
 public enum API {
     private static let session = URLSession.shared
-    private static let baseURL = URL(string: "http://178.154.197.24").unsafelyUnwrapped
+    private static let baseURL = URL(string: "http://127.0.0.1:8080").unsafelyUnwrapped
     private static let decoder = JSONDecoder()
 
     public static func getMovies() -> AnyPublisher<[Movie], Error> {

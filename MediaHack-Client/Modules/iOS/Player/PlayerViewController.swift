@@ -125,7 +125,7 @@ public final class PlayerViewController: BaseViewController {
 
     private func loadMovies() -> AnyPublisher<[CinemaListElement], Error> {
         let session = URLSession.shared
-        let url = URL(string: "http://178.154.197.24/cinemaList").unsafelyUnwrapped
+        let url = URL(string: "http://127.0.0.1:8080/cinemaList").unsafelyUnwrapped
         let decoder = JSONDecoder()
 
         return session

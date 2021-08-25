@@ -118,9 +118,10 @@ func routes(_ app: Application) throws {
         }
 
         maxTransReq -= 1
+        let token = String(utf8String: getenv("YA_TR_TOKEN"))
         return req.client.post(
             "https://translate.api.cloud.yandex.net/translate/v2/translate",
-            headers: .init([("Authorization", "Api-Key AQVN3x7yQM_ddfl9oOAWF2SMni4CiPkHUTYIMQzV")])
+            headers: .init([("Authorization", "Api-Key \(token)")])
         ) { req in
             let model = RequestModel(texts: [lower])
             try req.content.encode(model, as: .json)
