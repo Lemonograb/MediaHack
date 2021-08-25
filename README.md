@@ -3,7 +3,7 @@
  Предоставляе сервис - компаньон для кинопоиска, позволяющий удобно смотреть фильмы в оригинале, работать с лексикой из фильмов и музыки.
  
 ## Запуск актуального сервера (Docker)
-<code> sudo docker-compose build && sudo docker-compose up --detach app
+<code> sudo docker-compose build && sudo docker-compose up --detach app </code>
 Проксируем 8080 -> 80 по желанию
 Прокидываем токен для переводчика, YA_TR_TOKEN
 
