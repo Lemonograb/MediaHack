@@ -1,0 +1,1801 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		050BBB3952F868D5CAA0CBC3 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E04352BA702C4490F8729F1 /* AutoLayout.swift */; };
+		051065CD61C020876FF6F5A9 /* WordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5206DAA07A8957CE7ABBB916 /* WordVC.swift */; };
+		0A4A6AE4CDF6D0A7016135EA /* WordsCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CD8DB71654514C47D6CC24 /* WordsCheck.swift */; };
+		0BB3E630001C657B26010E04 /* BlurredLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D7F440379D10116E93B369 /* BlurredLabel.swift */; };
+		0DD80F07D2E094FD25D7207B /* DictionaryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B172A4EFF29D372FB88BC78 /* DictionaryVC.swift */; };
+		0E43C36BFC3B96FD8B379798 /* MovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FABEF3E462B0062B15DF36C /* MovieModel.swift */; };
+		0E8DAADFE1241D0F0DE06D8C /* WebSockerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9775B375236686BAF587E3F1 /* WebSockerClient.swift */; };
+		12179DB89B8EE87FEEFCF90E /* SubtitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39557100F91683AFC39E03DF /* SubtitlesView.swift */; };
+		13368CF477677DC2B407967C /* TikTokViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B21DA90B459D11F41A94775 /* TikTokViewController.swift */; };
+		1457C1304F005F2F60FA6F0F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27478F33AF2E9AF5F6A87576 /* API.swift */; };
+		15C318BF1B0A53057E4479A3 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9B5EEAC933643488CB93C /* BaseView.swift */; };
+		15F1E271103A32C9502DD573 /* CompositionalLayoutDSL in Frameworks */ = {isa = PBXBuildFile; productRef = BEE9BDC18701CF0A38F61676 /* CompositionalLayoutDSL */; };
+		16428BF2F3B31D0FAE4F5DEA /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3FC97F19A0BE509053D85 /* PlayerView.swift */; };
+		1C889E73AF25A64F19C67EFE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E1CB406D349A26843CF97E /* LaunchScreen.storyboard */; };
+		1E150A5757D1C7E12D953FBE /* WebSockerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9775B375236686BAF587E3F1 /* WebSockerClient.swift */; };
+		1FB4CF0B76C276A285187430 /* CaruselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A130362E915E7EF551A54 /* CaruselView.swift */; };
+		20B54B66A2765547B519FA2A /* libPlayer_tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 900BB55BA9BA2ADBF5589E44 /* libPlayer_tvOS.a */; };
+		23B0027F7477A5C4F41433E8 /* TapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48370DEA0910D00BB81CA298 /* TapHandler.swift */; };
+		254E34331116542C6B53BE52 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E04352BA702C4490F8729F1 /* AutoLayout.swift */; };
+		2B1007670F7A083D996195FC /* OverlayPanelInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0B473A1312A7908ABDD7B /* OverlayPanelInteractor.swift */; };
+		2CC5CDCF0CBF4E7AD7E7BCD2 /* SubtitleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC4D1BB4C2EA514D5C80AC0 /* SubtitleModel.swift */; };
+		2F2B93406AC900229B59817D /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DFD7DA86C3A57ACEDB7FE /* HeaderCell.swift */; };
+		33C0692D7FB1290E34D0ECDA /* OverlayPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FE1693DB8BB94612E6D872 /* OverlayPanelViewController.swift */; };
+		374F8992922554F93462882A /* WordsTokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5540787E17BB57F6F5DF69 /* WordsTokenizer.swift */; };
+		397EE8E322E67E8C616B2A85 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FBF9B92659A4D39791B907 /* StringBuilder.swift */; };
+		3CEE4D4CA22B462DBBA5B73F /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 816B4BDA5145F0D08ED05E7C /* Nuke */; };
+		424547B261909C6256A9DAB0 /* libNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 509F625444594F58EB02C310 /* libNetworking.a */; };
+		446DD7D41A5A98BA31981C40 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761F1A5AD035418A4D2D464 /* WithLatestFrom.swift */; };
+		49B45557C9EEB55BE1C56EC4 /* MainScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97E512F9A95A6D30460C56C /* MainScreenVC.swift */; };
+		4BD662760B7EA7DE9E82D22E /* libNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 509F625444594F58EB02C310 /* libNetworking.a */; };
+		4C6F2FD03DF6496FDCDEE37E /* WordsTokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5540787E17BB57F6F5DF69 /* WordsTokenizer.swift */; };
+		54BC57600C6661310F417773 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B107B2A4D56154545659FD0 /* BaseViewController.swift */; };
+		5580D28BE18DC243B3827482 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5CC686307B1CBD27FA4AA5 /* CollectionView.swift */; };
+		574EDD6918A652F5443C7BE9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4009BE610F3049B59AE37B89 /* PlayerView.swift */; };
+		5827929B5B6E12AF725AF594 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67AAE7938A094136C712080 /* TabBar.swift */; };
+		5E111A6768C24CAC640D4FD4 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2F86891BC124DD6313463D /* ShadowView.swift */; };
+		5E55CF57AB913865FCA059A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A058E0AB0FE361B2F6489A34 /* AppDelegate.swift */; };
+		634861F35A78FD0F76A19CDE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2BFDBB9563A4817A12D748 /* ViewController.swift */; };
+		660A8725A841C4F0EB8C0B59 /* SubtitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B756E996A4C506403F0454 /* SubtitleCell.swift */; };
+		6F1F33C34563CAC4BE98159B /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA5909C92F22B371887B3B2 /* Device.swift */; };
+		702F23069A8C4392E074E866 /* SubtitleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC4D1BB4C2EA514D5C80AC0 /* SubtitleModel.swift */; };
+		7672FDF985206D393802E68E /* libSharedCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA8E5C1856052A9C820D17F8 /* libSharedCode.a */; };
+		76A5D63536362C0385BA16E6 /* PlayerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63168D50B438498999331B33 /* PlayerInteractor.swift */; };
+		81D6A7CD8CF7AA2AB59D5307 /* UIImage+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5603394583F96EDB9714397E /* UIImage+Size.swift */; };
+		81F719F39496BD7FFC579BC0 /* libNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25F2A27C7CDB245EC10DFE66 /* libNetworking.a */; };
+		82486A2F283FE8E744284AFA /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321496730BFF865633984CF /* AppRouter.swift */; };
+		82938304D5E977E11469B3AB /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9B5EEAC933643488CB93C /* BaseView.swift */; };
+		88F366FA4FC86C6902693EB2 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75EEE13E481826488BDA983 /* AppRouter.swift */; };
+		905E53CBE76C81AFCEDF02DA /* QRCodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7321B6077FE53B09FC5E3EF4 /* QRCodeScannerViewController.swift */; };
+		929787FDFB26DD16F168686E /* PlayerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8DE5893E95713D6F2C967B /* PlayerInteractor.swift */; };
+		93BE78C40BE079FCDABC9E8D /* WordsCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CD8DB71654514C47D6CC24 /* WordsCheck.swift */; };
+		9447CE76FB65A6B361C10405 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA537242999F0AC9086F0D78 /* Assets.xcassets */; };
+		94E2B38EFF84A6686081A15C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E69EFB5E3F6985CB764114A /* AppDelegate.swift */; };
+		9E603EAC8F0002781A480BE5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27478F33AF2E9AF5F6A87576 /* API.swift */; };
+		A0603404AC39F1FA5FF27FCB /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B19ABE30C492E25F80FC862 /* BaseCollectionViewCell.swift */; };
+		A6FE7C505D85248A70A83AF1 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3A0FC8EBA0614BD0E820F2 /* PlayerViewController.swift */; };
+		A9266B9485A20E10F25E68C3 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B107B2A4D56154545659FD0 /* BaseViewController.swift */; };
+		B039E83A7B38D6DBB1AF8389 /* DefinitionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A75C01F4C0C8E1EB14384C /* DefinitionHandler.swift */; };
+		B2A8445E1A49C2D43F34B75E /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761F1A5AD035418A4D2D464 /* WithLatestFrom.swift */; };
+		B30DBE8C79B5098DFAA576DF /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA5909C92F22B371887B3B2 /* Device.swift */; };
+		B63EA40954B042284CDDF80F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BFFF529F46B5787F478A5 /* MainViewController.swift */; };
+		B845666956D1B351A83F65E0 /* UIView+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9CCEC94EAA01CDC047BF86 /* UIView+Image.swift */; };
+		B868D89067E4A63E5C50D9EA /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = F0FA5AF43D11197FC8686321 /* Nuke */; };
+		BF45014022D8771C8D8DE3ED /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334A4CDC5089F11590AC9FA /* PlayerViewController.swift */; };
+		BFEE13939912FA849756218E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB3B3F8343C65B8FFCE0BCCA /* LaunchScreen.storyboard */; };
+		C4FBB9E471185822BDEDDBAD /* libOverlayPanel_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3884F3130F4B0080D362A2E /* libOverlayPanel_iOS.a */; };
+		C87C10F69541571B14B23F4A /* libOverplayPanel_tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E844A04A3967CBF9F900935F /* libOverplayPanel_tvOS.a */; };
+		C94DC2F71B2BC1CDEA241422 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5CC686307B1CBD27FA4AA5 /* CollectionView.swift */; };
+		D1BB0CD10E63A81FC90FC26A /* OverlayPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBBB725F8B36A96AB2A17FA /* OverlayPanelViewController.swift */; };
+		D45E314846FE2C68905C0508 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B19ABE30C492E25F80FC862 /* BaseCollectionViewCell.swift */; };
+		D9F3D904674F3CD0D0C3A4AC /* ToolTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA82AD3BD367A56F92742166 /* ToolTipView.swift */; };
+		DA3BE284334DF5B044A9AC4F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681486F11275AF915ACDF1E0 /* SceneDelegate.swift */; };
+		DCBC2AEC992E5C054AC67963 /* libSharedCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD657A8F113C37FE9F5C2E3B /* libSharedCode.a */; };
+		E89E574F71D0556C77F0BE27 /* TapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48370DEA0910D00BB81CA298 /* TapHandler.swift */; };
+		E8EAC141073AF4FFE55C98FE /* DefinitionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A75C01F4C0C8E1EB14384C /* DefinitionHandler.swift */; };
+		EF1C954033C052E027A0537D /* UIImageEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEE05F788CE33C2EC3CC8BF /* UIImageEffects.swift */; };
+		F3109A0037427E0F28CCF86F /* Scaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6168F163DB9ED3A9E300F292 /* Scaner.swift */; };
+		F3FB86866876D103D1B70A52 /* libPlayer_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC229DD76C92A3C1738B265 /* libPlayer_iOS.a */; };
+		F655B7E9952DDEAF4DA3A81D /* ShadowView+BlurProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711AE63D637FBF745826E809 /* ShadowView+BlurProcess.swift */; };
+		F87310ECF27D5CB590EE4E45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D6F259BAB9824CFBE869797 /* Assets.xcassets */; };
+		FB6A4C8AE9F294731CABC5CE /* MovieCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7EEE7A6002F15106E67195 /* MovieCard.swift */; };
+		FCD9F7E287D8E75F949DDE6C /* MovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FABEF3E462B0062B15DF36C /* MovieModel.swift */; };
+		FD3AB6ADB68E91D73DA66988 /* SubtitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6972F750ABBCBAB1D3630DBC /* SubtitlesView.swift */; };
+		FDED583819A4820292A0E961 /* StringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FBF9B92659A4D39791B907 /* StringBuilder.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1B86CEB7F3F10C61102BD503 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 38ACA9DC99F63BDAB23D2BFB;
+			remoteInfo = Player_tvOS;
+		};
+		2D8383DCC6B093FEBD300AD4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EC904867167B60701C200073;
+			remoteInfo = OverlayPanel_iOS;
+		};
+		3AE7BEFD294A6E2201BBD8E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEE18FA4A250454BC812E3A2;
+			remoteInfo = OverplayPanel_tvOS;
+		};
+		485B37D7074F40A9B04B3AFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22C0207AFFF61CDED17C5DAE;
+			remoteInfo = Networking_iOS;
+		};
+		588CA351FAA436EBE8CA62B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D42B65CE87871A40128F703B;
+			remoteInfo = SharedCode_tvOS;
+		};
+		68EB4582E85BEFC68E149812 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DE1705169DEDF78FD281919;
+			remoteInfo = Player_iOS;
+		};
+		74F31A3A4A0E19536ED51974 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D76E638EF2F4A9FBDEF3AFF;
+			remoteInfo = SharedCode_iOS;
+		};
+		7DCFE03792AC065F4E6B09D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D42B65CE87871A40128F703B;
+			remoteInfo = SharedCode_tvOS;
+		};
+		9BAC7EAE2358D18396986456 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D42B65CE87871A40128F703B;
+			remoteInfo = SharedCode_tvOS;
+		};
+		CDCB3BA9E35E8B8DE15D17F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D76E638EF2F4A9FBDEF3AFF;
+			remoteInfo = SharedCode_iOS;
+		};
+		D14DDF76B8747D82AB8B5269 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D76E638EF2F4A9FBDEF3AFF;
+			remoteInfo = SharedCode_iOS;
+		};
+		E19316E56BBEAFCB4D795433 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5440C7F5E4A9F9D618A9510;
+			remoteInfo = Networking_tvOS;
+		};
+		F3B7EBFDA08FF334745EFE29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEE18FA4A250454BC812E3A2;
+			remoteInfo = OverplayPanel_tvOS;
+		};
+		F6D696A59A123C1A82723143 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8736807141C633504B3D64BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22C0207AFFF61CDED17C5DAE;
+			remoteInfo = Networking_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0B19ABE30C492E25F80FC862 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		10B756E996A4C506403F0454 /* SubtitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleCell.swift; sourceTree = "<group>"; };
+		1B172A4EFF29D372FB88BC78 /* DictionaryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryVC.swift; sourceTree = "<group>"; };
+		1C8DE5893E95713D6F2C967B /* PlayerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInteractor.swift; sourceTree = "<group>"; };
+		1D3A0FC8EBA0614BD0E820F2 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		1E2195A2ABBF5136813E997E /* MediaHack-TV.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "MediaHack-TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F7EEE7A6002F15106E67195 /* MovieCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCard.swift; sourceTree = "<group>"; };
+		1FC4D1BB4C2EA514D5C80AC0 /* SubtitleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleModel.swift; sourceTree = "<group>"; };
+		25F2A27C7CDB245EC10DFE66 /* libNetworking.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		27478F33AF2E9AF5F6A87576 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		2BF0B473A1312A7908ABDD7B /* OverlayPanelInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanelInteractor.swift; sourceTree = "<group>"; };
+		2CEE05F788CE33C2EC3CC8BF /* UIImageEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageEffects.swift; sourceTree = "<group>"; };
+		34A75C01F4C0C8E1EB14384C /* DefinitionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionHandler.swift; sourceTree = "<group>"; };
+		39557100F91683AFC39E03DF /* SubtitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitlesView.swift; sourceTree = "<group>"; };
+		3D6F259BAB9824CFBE869797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3E8753105C0A9B9DEC7C1142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4009BE610F3049B59AE37B89 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		4321496730BFF865633984CF /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		453A130362E915E7EF551A54 /* CaruselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaruselView.swift; sourceTree = "<group>"; };
+		48370DEA0910D00BB81CA298 /* TapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapHandler.swift; sourceTree = "<group>"; };
+		4BBBB725F8B36A96AB2A17FA /* OverlayPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanelViewController.swift; sourceTree = "<group>"; };
+		501DC49620096E51F0A297B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		509F625444594F58EB02C310 /* libNetworking.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5206DAA07A8957CE7ABBB916 /* WordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordVC.swift; sourceTree = "<group>"; };
+		5603394583F96EDB9714397E /* UIImage+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Size.swift"; sourceTree = "<group>"; };
+		5F71A6864F0C10621B38E539 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6168F163DB9ED3A9E300F292 /* Scaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scaner.swift; sourceTree = "<group>"; };
+		63168D50B438498999331B33 /* PlayerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInteractor.swift; sourceTree = "<group>"; };
+		681486F11275AF915ACDF1E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		6972F750ABBCBAB1D3630DBC /* SubtitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitlesView.swift; sourceTree = "<group>"; };
+		6B107B2A4D56154545659FD0 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		711AE63D637FBF745826E809 /* ShadowView+BlurProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShadowView+BlurProcess.swift"; sourceTree = "<group>"; };
+		7321B6077FE53B09FC5E3EF4 /* QRCodeScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerViewController.swift; sourceTree = "<group>"; };
+		7E04352BA702C4490F8729F1 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
+		7E5540787E17BB57F6F5DF69 /* WordsTokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsTokenizer.swift; sourceTree = "<group>"; };
+		7E69EFB5E3F6985CB764114A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7FABEF3E462B0062B15DF36C /* MovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieModel.swift; sourceTree = "<group>"; };
+		81C9B5EEAC933643488CB93C /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		900BB55BA9BA2ADBF5589E44 /* libPlayer_tvOS.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libPlayer_tvOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9775B375236686BAF587E3F1 /* WebSockerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSockerClient.swift; sourceTree = "<group>"; };
+		98E3FC97F19A0BE509053D85 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		9B21DA90B459D11F41A94775 /* TikTokViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikTokViewController.swift; sourceTree = "<group>"; };
+		A058E0AB0FE361B2F6489A34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A4D7F440379D10116E93B369 /* BlurredLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredLabel.swift; sourceTree = "<group>"; };
+		A67EECB7B9516B94670301D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AF0BFFF529F46B5787F478A5 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		B3884F3130F4B0080D362A2E /* libOverlayPanel_iOS.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libOverlayPanel_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5F8EF89AA949A30E262B60C /* MediaHack.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MediaHack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B761F1A5AD035418A4D2D464 /* WithLatestFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFrom.swift; sourceTree = "<group>"; };
+		BA537242999F0AC9086F0D78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BA8E5C1856052A9C820D17F8 /* libSharedCode.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSharedCode.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2BFDBB9563A4817A12D748 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BC2F86891BC124DD6313463D /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		BD657A8F113C37FE9F5C2E3B /* libSharedCode.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSharedCode.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2CD8DB71654514C47D6CC24 /* WordsCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsCheck.swift; sourceTree = "<group>"; };
+		C334A4CDC5089F11590AC9FA /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		C97E512F9A95A6D30460C56C /* MainScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenVC.swift; sourceTree = "<group>"; };
+		D0FE1693DB8BB94612E6D872 /* OverlayPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanelViewController.swift; sourceTree = "<group>"; };
+		D81DFD7DA86C3A57ACEDB7FE /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		DCA5909C92F22B371887B3B2 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		E2FBF9B92659A4D39791B907 /* StringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringBuilder.swift; sourceTree = "<group>"; };
+		E75EEE13E481826488BDA983 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		E844A04A3967CBF9F900935F /* libOverplayPanel_tvOS.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libOverplayPanel_tvOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA82AD3BD367A56F92742166 /* ToolTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTipView.swift; sourceTree = "<group>"; };
+		EB5CC686307B1CBD27FA4AA5 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		EE9CCEC94EAA01CDC047BF86 /* UIView+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Image.swift"; sourceTree = "<group>"; };
+		F67AAE7938A094136C712080 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		FFC229DD76C92A3C1738B265 /* libPlayer_iOS.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libPlayer_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A68426C8ED6B2D229110C993 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7672FDF985206D393802E68E /* libSharedCode.a in Frameworks */,
+				F3FB86866876D103D1B70A52 /* libPlayer_iOS.a in Frameworks */,
+				424547B261909C6256A9DAB0 /* libNetworking.a in Frameworks */,
+				C4FBB9E471185822BDEDDBAD /* libOverlayPanel_iOS.a in Frameworks */,
+				4BD662760B7EA7DE9E82D22E /* libNetworking.a in Frameworks */,
+				B868D89067E4A63E5C50D9EA /* Nuke in Frameworks */,
+				15F1E271103A32C9502DD573 /* CompositionalLayoutDSL in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0058A215CAE2814246A72C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCBC2AEC992E5C054AC67963 /* libSharedCode.a in Frameworks */,
+				81F719F39496BD7FFC579BC0 /* libNetworking.a in Frameworks */,
+				20B54B66A2765547B519FA2A /* libPlayer_tvOS.a in Frameworks */,
+				C87C10F69541571B14B23F4A /* libOverplayPanel_tvOS.a in Frameworks */,
+				3CEE4D4CA22B462DBBA5B73F /* Nuke in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		044FAD3C254DF96F2B748EAD /* MediaHack */ = {
+			isa = PBXGroup;
+			children = (
+				AA1EB8BF10EB28640CBE81E0 /* app */,
+				C04748AEFA3434F03F122D5A /* Resource */,
+			);
+			path = MediaHack;
+			sourceTree = "<group>";
+		};
+		1978C25D53321F122B98FC38 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EA82AD3BD367A56F92742166 /* ToolTipView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1BDA4FC8513CC93D3F43A8B3 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				905AFC9DEEF50362674F4112 /* Model */,
+				27478F33AF2E9AF5F6A87576 /* API.swift */,
+				9775B375236686BAF587E3F1 /* WebSockerClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		274F313E1733D0461B31C4E8 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				1BDA4FC8513CC93D3F43A8B3 /* Networking */,
+				82DDE618ED048C4A2D613B3F /* SharedCode */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		3F37BC43C39705B8AC80470E = {
+			isa = PBXGroup;
+			children = (
+				044FAD3C254DF96F2B748EAD /* MediaHack */,
+				6967F7087EB9B0A2F4CE6FC4 /* MediaHack-TV */,
+				CA9BADA642617667C38BC8AB /* Modules */,
+				D85D20ED453EDF534F6C5C30 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4B79F60C1CA627B09850D2A4 /* OverlayPanel */ = {
+			isa = PBXGroup;
+			children = (
+				D0FE1693DB8BB94612E6D872 /* OverlayPanelViewController.swift */,
+			);
+			path = OverlayPanel;
+			sourceTree = "<group>";
+		};
+		592BD3AC86996F1A817AD343 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				70D5003E9E6A31DF9294B5EA /* Views */,
+				1B172A4EFF29D372FB88BC78 /* DictionaryVC.swift */,
+				C97E512F9A95A6D30460C56C /* MainScreenVC.swift */,
+				AF0BFFF529F46B5787F478A5 /* MainViewController.swift */,
+				1F7EEE7A6002F15106E67195 /* MovieCard.swift */,
+				6168F163DB9ED3A9E300F292 /* Scaner.swift */,
+				F67AAE7938A094136C712080 /* TabBar.swift */,
+				9B21DA90B459D11F41A94775 /* TikTokViewController.swift */,
+				5206DAA07A8957CE7ABBB916 /* WordVC.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6967F7087EB9B0A2F4CE6FC4 /* MediaHack-TV */ = {
+			isa = PBXGroup;
+			children = (
+				6A0CBDB5FE00067F82440BF7 /* app */,
+				C497FC239219CFC8A3C77E2E /* Resource */,
+				3D6F259BAB9824CFBE869797 /* Assets.xcassets */,
+				EB3B3F8343C65B8FFCE0BCCA /* LaunchScreen.storyboard */,
+				BC2BFDBB9563A4817A12D748 /* ViewController.swift */,
+			);
+			path = "MediaHack-TV";
+			sourceTree = "<group>";
+		};
+		6A0CBDB5FE00067F82440BF7 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				7E69EFB5E3F6985CB764114A /* AppDelegate.swift */,
+				4321496730BFF865633984CF /* AppRouter.swift */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		70D5003E9E6A31DF9294B5EA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				453A130362E915E7EF551A54 /* CaruselView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		781E589C70E60E777BF72227 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4009BE610F3049B59AE37B89 /* PlayerView.swift */,
+				6972F750ABBCBAB1D3630DBC /* SubtitlesView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		79D8D73DCDF653A61C5AB2D9 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				4B79F60C1CA627B09850D2A4 /* OverlayPanel */,
+				850387613209B901EF111388 /* Player */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		7A40DC7ED82F4D8A38AA88DC /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				EADD290FCDF430191E68D22E /* OverlayPanel */,
+				E03858F83BB92FDE81827FBF /* Player */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		82DDE618ED048C4A2D613B3F /* SharedCode */ = {
+			isa = PBXGroup;
+			children = (
+				7E04352BA702C4490F8729F1 /* AutoLayout.swift */,
+				0B19ABE30C492E25F80FC862 /* BaseCollectionViewCell.swift */,
+				81C9B5EEAC933643488CB93C /* BaseView.swift */,
+				6B107B2A4D56154545659FD0 /* BaseViewController.swift */,
+				EB5CC686307B1CBD27FA4AA5 /* CollectionView.swift */,
+				34A75C01F4C0C8E1EB14384C /* DefinitionHandler.swift */,
+				DCA5909C92F22B371887B3B2 /* Device.swift */,
+				E2FBF9B92659A4D39791B907 /* StringBuilder.swift */,
+				48370DEA0910D00BB81CA298 /* TapHandler.swift */,
+				B761F1A5AD035418A4D2D464 /* WithLatestFrom.swift */,
+				C2CD8DB71654514C47D6CC24 /* WordsCheck.swift */,
+				7E5540787E17BB57F6F5DF69 /* WordsTokenizer.swift */,
+			);
+			path = SharedCode;
+			sourceTree = "<group>";
+		};
+		850387613209B901EF111388 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				DDB204BB29DB1A75589BC529 /* Shadow */,
+				781E589C70E60E777BF72227 /* View */,
+				63168D50B438498999331B33 /* PlayerInteractor.swift */,
+				1D3A0FC8EBA0614BD0E820F2 /* PlayerViewController.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		905AFC9DEEF50362674F4112 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7FABEF3E462B0062B15DF36C /* MovieModel.swift */,
+				1FC4D1BB4C2EA514D5C80AC0 /* SubtitleModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9748F4972A2C80858F1C076F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A4D7F440379D10116E93B369 /* BlurredLabel.swift */,
+				98E3FC97F19A0BE509053D85 /* PlayerView.swift */,
+				39557100F91683AFC39E03DF /* SubtitlesView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AA1EB8BF10EB28640CBE81E0 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				592BD3AC86996F1A817AD343 /* ViewControllers */,
+				A058E0AB0FE361B2F6489A34 /* AppDelegate.swift */,
+				E75EEE13E481826488BDA983 /* AppRouter.swift */,
+				681486F11275AF915ACDF1E0 /* SceneDelegate.swift */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		B041CE0B885EEDC23E2B9E06 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				D81DFD7DA86C3A57ACEDB7FE /* HeaderCell.swift */,
+				10B756E996A4C506403F0454 /* SubtitleCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C04748AEFA3434F03F122D5A /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				BA537242999F0AC9086F0D78 /* Assets.xcassets */,
+				5F71A6864F0C10621B38E539 /* Info.plist */,
+				49E1CB406D349A26843CF97E /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		C497FC239219CFC8A3C77E2E /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				3E8753105C0A9B9DEC7C1142 /* Info.plist */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		CA9BADA642617667C38BC8AB /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				7A40DC7ED82F4D8A38AA88DC /* iOS */,
+				274F313E1733D0461B31C4E8 /* Shared */,
+				79D8D73DCDF653A61C5AB2D9 /* tvOS */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		D85D20ED453EDF534F6C5C30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				509F625444594F58EB02C310 /* libNetworking.a */,
+				25F2A27C7CDB245EC10DFE66 /* libNetworking.a */,
+				B3884F3130F4B0080D362A2E /* libOverlayPanel_iOS.a */,
+				E844A04A3967CBF9F900935F /* libOverplayPanel_tvOS.a */,
+				FFC229DD76C92A3C1738B265 /* libPlayer_iOS.a */,
+				900BB55BA9BA2ADBF5589E44 /* libPlayer_tvOS.a */,
+				BA8E5C1856052A9C820D17F8 /* libSharedCode.a */,
+				BD657A8F113C37FE9F5C2E3B /* libSharedCode.a */,
+				1E2195A2ABBF5136813E997E /* MediaHack-TV.app */,
+				B5F8EF89AA949A30E262B60C /* MediaHack.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DDB204BB29DB1A75589BC529 /* Shadow */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F86891BC124DD6313463D /* ShadowView.swift */,
+				711AE63D637FBF745826E809 /* ShadowView+BlurProcess.swift */,
+				5603394583F96EDB9714397E /* UIImage+Size.swift */,
+				2CEE05F788CE33C2EC3CC8BF /* UIImageEffects.swift */,
+				EE9CCEC94EAA01CDC047BF86 /* UIView+Image.swift */,
+			);
+			path = Shadow;
+			sourceTree = "<group>";
+		};
+		E03858F83BB92FDE81827FBF /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				9748F4972A2C80858F1C076F /* View */,
+				1C8DE5893E95713D6F2C967B /* PlayerInteractor.swift */,
+				C334A4CDC5089F11590AC9FA /* PlayerViewController.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		EADD290FCDF430191E68D22E /* OverlayPanel */ = {
+			isa = PBXGroup;
+			children = (
+				B041CE0B885EEDC23E2B9E06 /* Cell */,
+				1978C25D53321F122B98FC38 /* View */,
+				2BF0B473A1312A7908ABDD7B /* OverlayPanelInteractor.swift */,
+				4BBBB725F8B36A96AB2A17FA /* OverlayPanelViewController.swift */,
+				7321B6077FE53B09FC5E3EF4 /* QRCodeScannerViewController.swift */,
+			);
+			path = OverlayPanel;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D76E638EF2F4A9FBDEF3AFF /* SharedCode_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 719CB885D52EB6D624A3D8EA /* Build configuration list for PBXNativeTarget "SharedCode_iOS" */;
+			buildPhases = (
+				B51B448E166188ED1E23C4AB /* Sources */,
+				458A901F246F6F72A8419052 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SharedCode_iOS;
+			productName = SharedCode_iOS;
+			productReference = BA8E5C1856052A9C820D17F8 /* libSharedCode.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		1F74505E6775DB0E2D83361A /* MediaHack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E76BF070DC363D024F516EBE /* Build configuration list for PBXNativeTarget "MediaHack" */;
+			buildPhases = (
+				06FF90C087326CE1A2DA71EB /* Sources */,
+				D1E2A6593D1F877C7203B90E /* Resources */,
+				A68426C8ED6B2D229110C993 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				909453024B3834541C89EC72 /* PBXTargetDependency */,
+				030AAADC259368BCA7B29748 /* PBXTargetDependency */,
+				FC66780ABCB1194CF16A092B /* PBXTargetDependency */,
+				66FB27ECCE4249578C76CBBD /* PBXTargetDependency */,
+				FA146738105749E7025FC040 /* PBXTargetDependency */,
+			);
+			name = MediaHack;
+			packageProductDependencies = (
+				F0FA5AF43D11197FC8686321 /* Nuke */,
+				BEE9BDC18701CF0A38F61676 /* CompositionalLayoutDSL */,
+			);
+			productName = MediaHack;
+			productReference = B5F8EF89AA949A30E262B60C /* MediaHack.app */;
+			productType = "com.apple.product-type.application";
+		};
+		22C0207AFFF61CDED17C5DAE /* Networking_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DAEE66CB899C97CD368E52E /* Build configuration list for PBXNativeTarget "Networking_iOS" */;
+			buildPhases = (
+				D513B2C44C152620EE3D5C98 /* Sources */,
+				15BFD5977003F20DE1347F02 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Networking_iOS;
+			productName = Networking_iOS;
+			productReference = 509F625444594F58EB02C310 /* libNetworking.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		38ACA9DC99F63BDAB23D2BFB /* Player_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF3707A8F9E1A7133CAE30C3 /* Build configuration list for PBXNativeTarget "Player_tvOS" */;
+			buildPhases = (
+				8DEFA36D1F71B0F5E0B9046B /* Sources */,
+				7E73FF5C8A646F6A9BDE8704 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				38C77FB5271279B292CEE882 /* PBXTargetDependency */,
+				2F02B1DD4FA94085B1957041 /* PBXTargetDependency */,
+			);
+			name = Player_tvOS;
+			productName = Player_tvOS;
+			productReference = 900BB55BA9BA2ADBF5589E44 /* libPlayer_tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		8DE1705169DEDF78FD281919 /* Player_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 456E107AE85C8D388E0F843B /* Build configuration list for PBXNativeTarget "Player_iOS" */;
+			buildPhases = (
+				F487CD26CEEBC4BFA79C85F6 /* Sources */,
+				2325C2824B82B886248DE0D2 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BEDD66419601ADCDE9CF7E06 /* PBXTargetDependency */,
+			);
+			name = Player_iOS;
+			productName = Player_iOS;
+			productReference = FFC229DD76C92A3C1738B265 /* libPlayer_iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		A9255B250A9798D38E7A2A66 /* MediaHack-TV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4C1DB5CF65AAD7CF7095CEA /* Build configuration list for PBXNativeTarget "MediaHack-TV" */;
+			buildPhases = (
+				2E9FA42540D880D14A1D511A /* Sources */,
+				A3F71A5F91527FCAF0D5A0C6 /* Resources */,
+				E0058A215CAE2814246A72C0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0D216840338A18A9247ACA1E /* PBXTargetDependency */,
+				10ABE43286E0C308330B2771 /* PBXTargetDependency */,
+				A98B2CC0D7807F65DED518EF /* PBXTargetDependency */,
+				3A3C050B0E19AEBD4AF1B222 /* PBXTargetDependency */,
+			);
+			name = "MediaHack-TV";
+			packageProductDependencies = (
+				816B4BDA5145F0D08ED05E7C /* Nuke */,
+			);
+			productName = "MediaHack-TV";
+			productReference = 1E2195A2ABBF5136813E997E /* MediaHack-TV.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D42B65CE87871A40128F703B /* SharedCode_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E7B19DD98C44E4D21440391 /* Build configuration list for PBXNativeTarget "SharedCode_tvOS" */;
+			buildPhases = (
+				26C9E5E8A44FDBA38E590D49 /* Sources */,
+				D435D4172E8416932BC40D5F /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SharedCode_tvOS;
+			productName = SharedCode_tvOS;
+			productReference = BD657A8F113C37FE9F5C2E3B /* libSharedCode.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D5440C7F5E4A9F9D618A9510 /* Networking_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C82850E9070E5D1A1B3578A2 /* Build configuration list for PBXNativeTarget "Networking_tvOS" */;
+			buildPhases = (
+				EE753E40BE59763A667556E7 /* Sources */,
+				20F7CA737BE239316E3CC299 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Networking_tvOS;
+			productName = Networking_tvOS;
+			productReference = 25F2A27C7CDB245EC10DFE66 /* libNetworking.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		DEE18FA4A250454BC812E3A2 /* OverplayPanel_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DAC2023E44ED16FFF90F61F /* Build configuration list for PBXNativeTarget "OverplayPanel_tvOS" */;
+			buildPhases = (
+				7DA20D13D3D386F744ADB865 /* Sources */,
+				7AE50E0F8D6ADB6ABD609D54 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AB20CC9348283F5B9E283C0 /* PBXTargetDependency */,
+				A8C1D157EB4B32DA5F317DAD /* PBXTargetDependency */,
+			);
+			name = OverplayPanel_tvOS;
+			packageProductDependencies = (
+				29DE74E67C8144B52CE6E36D /* Nuke */,
+			);
+			productName = OverplayPanel_tvOS;
+			productReference = E844A04A3967CBF9F900935F /* libOverplayPanel_tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		EC904867167B60701C200073 /* OverlayPanel_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22E5EA4B357C12772881EC62 /* Build configuration list for PBXNativeTarget "OverlayPanel_iOS" */;
+			buildPhases = (
+				08E22B6FE159C1704FD96F30 /* Sources */,
+				03370AA83BC8B7809021A31C /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EE233D177E1B4F59B6F90FFD /* PBXTargetDependency */,
+				51A7913D759835D01857F281 /* PBXTargetDependency */,
+			);
+			name = OverlayPanel_iOS;
+			packageProductDependencies = (
+				88957DFB04A4579CC1E50B18 /* Nuke */,
+			);
+			productName = OverlayPanel_iOS;
+			productReference = B3884F3130F4B0080D362A2E /* libOverlayPanel_iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8736807141C633504B3D64BD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					1D76E638EF2F4A9FBDEF3AFF = {
+						ProvisioningStyle = Manual;
+					};
+					1F74505E6775DB0E2D83361A = {
+						ProvisioningStyle = Manual;
+					};
+					22C0207AFFF61CDED17C5DAE = {
+						ProvisioningStyle = Manual;
+					};
+					38ACA9DC99F63BDAB23D2BFB = {
+						ProvisioningStyle = Manual;
+					};
+					8DE1705169DEDF78FD281919 = {
+						ProvisioningStyle = Manual;
+					};
+					A9255B250A9798D38E7A2A66 = {
+						ProvisioningStyle = Manual;
+					};
+					D42B65CE87871A40128F703B = {
+						ProvisioningStyle = Manual;
+					};
+					D5440C7F5E4A9F9D618A9510 = {
+						ProvisioningStyle = Manual;
+					};
+					DEE18FA4A250454BC812E3A2 = {
+						ProvisioningStyle = Manual;
+					};
+					EC904867167B60701C200073 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 51587998F8DE29E21E3DFA12 /* Build configuration list for PBXProject "MediaHack" */;
+			compatibilityVersion = "Xcode 10.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3F37BC43C39705B8AC80470E;
+			packageReferences = (
+				77C3C55DA92AF1BE96D75A84 /* XCRemoteSwiftPackageReference "CompositionalLayoutDSL" */,
+				611527EE7749E30F59F9005C /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1F74505E6775DB0E2D83361A /* MediaHack */,
+				A9255B250A9798D38E7A2A66 /* MediaHack-TV */,
+				22C0207AFFF61CDED17C5DAE /* Networking_iOS */,
+				D5440C7F5E4A9F9D618A9510 /* Networking_tvOS */,
+				EC904867167B60701C200073 /* OverlayPanel_iOS */,
+				DEE18FA4A250454BC812E3A2 /* OverplayPanel_tvOS */,
+				8DE1705169DEDF78FD281919 /* Player_iOS */,
+				38ACA9DC99F63BDAB23D2BFB /* Player_tvOS */,
+				1D76E638EF2F4A9FBDEF3AFF /* SharedCode_iOS */,
+				D42B65CE87871A40128F703B /* SharedCode_tvOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A3F71A5F91527FCAF0D5A0C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F87310ECF27D5CB590EE4E45 /* Assets.xcassets in Resources */,
+				BFEE13939912FA849756218E /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1E2A6593D1F877C7203B90E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9447CE76FB65A6B361C10405 /* Assets.xcassets in Resources */,
+				1C889E73AF25A64F19C67EFE /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		03370AA83BC8B7809021A31C /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		15BFD5977003F20DE1347F02 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		20F7CA737BE239316E3CC299 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		2325C2824B82B886248DE0D2 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		458A901F246F6F72A8419052 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		7AE50E0F8D6ADB6ABD609D54 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		7E73FF5C8A646F6A9BDE8704 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		D435D4172E8416932BC40D5F /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		06FF90C087326CE1A2DA71EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E55CF57AB913865FCA059A5 /* AppDelegate.swift in Sources */,
+				88F366FA4FC86C6902693EB2 /* AppRouter.swift in Sources */,
+				1FB4CF0B76C276A285187430 /* CaruselView.swift in Sources */,
+				0DD80F07D2E094FD25D7207B /* DictionaryVC.swift in Sources */,
+				49B45557C9EEB55BE1C56EC4 /* MainScreenVC.swift in Sources */,
+				B63EA40954B042284CDDF80F /* MainViewController.swift in Sources */,
+				FB6A4C8AE9F294731CABC5CE /* MovieCard.swift in Sources */,
+				F3109A0037427E0F28CCF86F /* Scaner.swift in Sources */,
+				DA3BE284334DF5B044A9AC4F /* SceneDelegate.swift in Sources */,
+				5827929B5B6E12AF725AF594 /* TabBar.swift in Sources */,
+				13368CF477677DC2B407967C /* TikTokViewController.swift in Sources */,
+				051065CD61C020876FF6F5A9 /* WordVC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08E22B6FE159C1704FD96F30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F2B93406AC900229B59817D /* HeaderCell.swift in Sources */,
+				2B1007670F7A083D996195FC /* OverlayPanelInteractor.swift in Sources */,
+				D1BB0CD10E63A81FC90FC26A /* OverlayPanelViewController.swift in Sources */,
+				905E53CBE76C81AFCEDF02DA /* QRCodeScannerViewController.swift in Sources */,
+				660A8725A841C4F0EB8C0B59 /* SubtitleCell.swift in Sources */,
+				D9F3D904674F3CD0D0C3A4AC /* ToolTipView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26C9E5E8A44FDBA38E590D49 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				254E34331116542C6B53BE52 /* AutoLayout.swift in Sources */,
+				D45E314846FE2C68905C0508 /* BaseCollectionViewCell.swift in Sources */,
+				15C318BF1B0A53057E4479A3 /* BaseView.swift in Sources */,
+				54BC57600C6661310F417773 /* BaseViewController.swift in Sources */,
+				5580D28BE18DC243B3827482 /* CollectionView.swift in Sources */,
+				E8EAC141073AF4FFE55C98FE /* DefinitionHandler.swift in Sources */,
+				6F1F33C34563CAC4BE98159B /* Device.swift in Sources */,
+				397EE8E322E67E8C616B2A85 /* StringBuilder.swift in Sources */,
+				23B0027F7477A5C4F41433E8 /* TapHandler.swift in Sources */,
+				446DD7D41A5A98BA31981C40 /* WithLatestFrom.swift in Sources */,
+				0A4A6AE4CDF6D0A7016135EA /* WordsCheck.swift in Sources */,
+				4C6F2FD03DF6496FDCDEE37E /* WordsTokenizer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2E9FA42540D880D14A1D511A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94E2B38EFF84A6686081A15C /* AppDelegate.swift in Sources */,
+				82486A2F283FE8E744284AFA /* AppRouter.swift in Sources */,
+				634861F35A78FD0F76A19CDE /* ViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DA20D13D3D386F744ADB865 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33C0692D7FB1290E34D0ECDA /* OverlayPanelViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DEFA36D1F71B0F5E0B9046B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76A5D63536362C0385BA16E6 /* PlayerInteractor.swift in Sources */,
+				574EDD6918A652F5443C7BE9 /* PlayerView.swift in Sources */,
+				A6FE7C505D85248A70A83AF1 /* PlayerViewController.swift in Sources */,
+				F655B7E9952DDEAF4DA3A81D /* ShadowView+BlurProcess.swift in Sources */,
+				5E111A6768C24CAC640D4FD4 /* ShadowView.swift in Sources */,
+				FD3AB6ADB68E91D73DA66988 /* SubtitlesView.swift in Sources */,
+				81D6A7CD8CF7AA2AB59D5307 /* UIImage+Size.swift in Sources */,
+				EF1C954033C052E027A0537D /* UIImageEffects.swift in Sources */,
+				B845666956D1B351A83F65E0 /* UIView+Image.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B51B448E166188ED1E23C4AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				050BBB3952F868D5CAA0CBC3 /* AutoLayout.swift in Sources */,
+				A0603404AC39F1FA5FF27FCB /* BaseCollectionViewCell.swift in Sources */,
+				82938304D5E977E11469B3AB /* BaseView.swift in Sources */,
+				A9266B9485A20E10F25E68C3 /* BaseViewController.swift in Sources */,
+				C94DC2F71B2BC1CDEA241422 /* CollectionView.swift in Sources */,
+				B039E83A7B38D6DBB1AF8389 /* DefinitionHandler.swift in Sources */,
+				B30DBE8C79B5098DFAA576DF /* Device.swift in Sources */,
+				FDED583819A4820292A0E961 /* StringBuilder.swift in Sources */,
+				E89E574F71D0556C77F0BE27 /* TapHandler.swift in Sources */,
+				B2A8445E1A49C2D43F34B75E /* WithLatestFrom.swift in Sources */,
+				93BE78C40BE079FCDABC9E8D /* WordsCheck.swift in Sources */,
+				374F8992922554F93462882A /* WordsTokenizer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D513B2C44C152620EE3D5C98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E603EAC8F0002781A480BE5 /* API.swift in Sources */,
+				0E43C36BFC3B96FD8B379798 /* MovieModel.swift in Sources */,
+				702F23069A8C4392E074E866 /* SubtitleModel.swift in Sources */,
+				0E8DAADFE1241D0F0DE06D8C /* WebSockerClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE753E40BE59763A667556E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1457C1304F005F2F60FA6F0F /* API.swift in Sources */,
+				FCD9F7E287D8E75F949DDE6C /* MovieModel.swift in Sources */,
+				2CC5CDCF0CBF4E7AD7E7BCD2 /* SubtitleModel.swift in Sources */,
+				1E150A5757D1C7E12D953FBE /* WebSockerClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F487CD26CEEBC4BFA79C85F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BB3E630001C657B26010E04 /* BlurredLabel.swift in Sources */,
+				929787FDFB26DD16F168686E /* PlayerInteractor.swift in Sources */,
+				16428BF2F3B31D0FAE4F5DEA /* PlayerView.swift in Sources */,
+				BF45014022D8771C8D8DE3ED /* PlayerViewController.swift in Sources */,
+				12179DB89B8EE87FEEFCF90E /* SubtitlesView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		030AAADC259368BCA7B29748 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DE1705169DEDF78FD281919 /* Player_iOS */;
+			targetProxy = 68EB4582E85BEFC68E149812 /* PBXContainerItemProxy */;
+		};
+		0D216840338A18A9247ACA1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D42B65CE87871A40128F703B /* SharedCode_tvOS */;
+			targetProxy = 9BAC7EAE2358D18396986456 /* PBXContainerItemProxy */;
+		};
+		10ABE43286E0C308330B2771 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D5440C7F5E4A9F9D618A9510 /* Networking_tvOS */;
+			targetProxy = E19316E56BBEAFCB4D795433 /* PBXContainerItemProxy */;
+		};
+		1AB20CC9348283F5B9E283C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D42B65CE87871A40128F703B /* SharedCode_tvOS */;
+			targetProxy = 588CA351FAA436EBE8CA62B3 /* PBXContainerItemProxy */;
+		};
+		2F02B1DD4FA94085B1957041 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DEE18FA4A250454BC812E3A2 /* OverplayPanel_tvOS */;
+			targetProxy = 3AE7BEFD294A6E2201BBD8E1 /* PBXContainerItemProxy */;
+		};
+		38C77FB5271279B292CEE882 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D42B65CE87871A40128F703B /* SharedCode_tvOS */;
+			targetProxy = 7DCFE03792AC065F4E6B09D3 /* PBXContainerItemProxy */;
+		};
+		3A3C050B0E19AEBD4AF1B222 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DEE18FA4A250454BC812E3A2 /* OverplayPanel_tvOS */;
+			targetProxy = F3B7EBFDA08FF334745EFE29 /* PBXContainerItemProxy */;
+		};
+		51A7913D759835D01857F281 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 88957DFB04A4579CC1E50B18 /* Nuke */;
+		};
+		66FB27ECCE4249578C76CBBD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EC904867167B60701C200073 /* OverlayPanel_iOS */;
+			targetProxy = 2D8383DCC6B093FEBD300AD4 /* PBXContainerItemProxy */;
+		};
+		909453024B3834541C89EC72 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D76E638EF2F4A9FBDEF3AFF /* SharedCode_iOS */;
+			targetProxy = CDCB3BA9E35E8B8DE15D17F3 /* PBXContainerItemProxy */;
+		};
+		A8C1D157EB4B32DA5F317DAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 29DE74E67C8144B52CE6E36D /* Nuke */;
+		};
+		A98B2CC0D7807F65DED518EF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 38ACA9DC99F63BDAB23D2BFB /* Player_tvOS */;
+			targetProxy = 1B86CEB7F3F10C61102BD503 /* PBXContainerItemProxy */;
+		};
+		BEDD66419601ADCDE9CF7E06 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D76E638EF2F4A9FBDEF3AFF /* SharedCode_iOS */;
+			targetProxy = 74F31A3A4A0E19536ED51974 /* PBXContainerItemProxy */;
+		};
+		EE233D177E1B4F59B6F90FFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D76E638EF2F4A9FBDEF3AFF /* SharedCode_iOS */;
+			targetProxy = D14DDF76B8747D82AB8B5269 /* PBXContainerItemProxy */;
+		};
+		FA146738105749E7025FC040 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22C0207AFFF61CDED17C5DAE /* Networking_iOS */;
+			targetProxy = F6D696A59A123C1A82723143 /* PBXContainerItemProxy */;
+		};
+		FC66780ABCB1194CF16A092B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22C0207AFFF61CDED17C5DAE /* Networking_iOS */;
+			targetProxy = 485B37D7074F40A9B04B3AFB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		49E1CB406D349A26843CF97E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				501DC49620096E51F0A297B8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		EB3B3F8343C65B8FFCE0BCCA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A67EECB7B9516B94670301D2 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		06465F2C5941BEED10D1D6CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Player-iOS";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		07362490C1ECDE1BF5CCCD45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "MediaHack-TV/Resource/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.MediaHack-TV";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		0D3F50BA4F8514D43BAD56A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.SharedCode-tvOS";
+				PRODUCT_NAME = SharedCode;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		23E24768D21D13D54BD43531 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Networking-tvOS";
+				PRODUCT_NAME = Networking;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		25CBEFC9EBAE5D826C07DD08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = MediaHack/Resource/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = nan.mediahack.ios.MediaHack;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		28E0B48AD8D35B8804795216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.SharedCode-iOS";
+				PRODUCT_NAME = SharedCode;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2A03324F24F39FBF3A8ABCF8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.OverlayPanel-iOS";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2D5042D0243F227DB4E65337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Player-iOS";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		56C0DB00BF8A4BC246820EDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.SharedCode-iOS";
+				PRODUCT_NAME = SharedCode;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7919B0147B88C552EBD560AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.OverplayPanel-tvOS";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		8C0D040338F785BEE3B12B04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Networking-iOS";
+				PRODUCT_NAME = Networking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97A11D51A4B9E4228636AF25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
+			};
+			name = Debug;
+		};
+		A0C0A7DE213C43BC6BEEB37E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Networking-iOS";
+				PRODUCT_NAME = Networking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A4EF62622B8CF078623ED013 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Player-tvOS";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		B42DA4AC235FFED709EC2BB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = MediaHack/Resource/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = nan.mediahack.ios.MediaHack;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6402FC244C773E1CC8DCDE9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
+			};
+			name = Release;
+		};
+		BC2700EBF7E42FBA42FA34BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.SharedCode-tvOS";
+				PRODUCT_NAME = SharedCode;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		DB328FB2D7A8EBCB64A811B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "MediaHack-TV/Resource/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.MediaHack-TV";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		DE8B428E16DE932E038E7C61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.OverlayPanel-iOS";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E1600DB2DB330097A3480400 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Player-tvOS";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		F0C9F494013C4673ED592E98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.OverplayPanel-tvOS";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		F9C04DC6C1A578C6103434F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "nan.mediahack.ios.Networking-tvOS";
+				PRODUCT_NAME = Networking;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DAC2023E44ED16FFF90F61F /* Build configuration list for PBXNativeTarget "OverplayPanel_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0C9F494013C4673ED592E98 /* Debug */,
+				7919B0147B88C552EBD560AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		22E5EA4B357C12772881EC62 /* Build configuration list for PBXNativeTarget "OverlayPanel_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE8B428E16DE932E038E7C61 /* Debug */,
+				2A03324F24F39FBF3A8ABCF8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		456E107AE85C8D388E0F843B /* Build configuration list for PBXNativeTarget "Player_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06465F2C5941BEED10D1D6CA /* Debug */,
+				2D5042D0243F227DB4E65337 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4DAEE66CB899C97CD368E52E /* Build configuration list for PBXNativeTarget "Networking_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C0D040338F785BEE3B12B04 /* Debug */,
+				A0C0A7DE213C43BC6BEEB37E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		51587998F8DE29E21E3DFA12 /* Build configuration list for PBXProject "MediaHack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97A11D51A4B9E4228636AF25 /* Debug */,
+				B6402FC244C773E1CC8DCDE9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		719CB885D52EB6D624A3D8EA /* Build configuration list for PBXNativeTarget "SharedCode_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28E0B48AD8D35B8804795216 /* Debug */,
+				56C0DB00BF8A4BC246820EDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9E7B19DD98C44E4D21440391 /* Build configuration list for PBXNativeTarget "SharedCode_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D3F50BA4F8514D43BAD56A4 /* Debug */,
+				BC2700EBF7E42FBA42FA34BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BF3707A8F9E1A7133CAE30C3 /* Build configuration list for PBXNativeTarget "Player_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1600DB2DB330097A3480400 /* Debug */,
+				A4EF62622B8CF078623ED013 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C82850E9070E5D1A1B3578A2 /* Build configuration list for PBXNativeTarget "Networking_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9C04DC6C1A578C6103434F7 /* Debug */,
+				23E24768D21D13D54BD43531 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E4C1DB5CF65AAD7CF7095CEA /* Build configuration list for PBXNativeTarget "MediaHack-TV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB328FB2D7A8EBCB64A811B3 /* Debug */,
+				07362490C1ECDE1BF5CCCD45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E76BF070DC363D024F516EBE /* Build configuration list for PBXNativeTarget "MediaHack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B42DA4AC235FFED709EC2BB1 /* Debug */,
+				25CBEFC9EBAE5D826C07DD08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		611527EE7749E30F59F9005C /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		77C3C55DA92AF1BE96D75A84 /* XCRemoteSwiftPackageReference "CompositionalLayoutDSL" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/faberNovel/CompositionalLayoutDSL";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		29DE74E67C8144B52CE6E36D /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 611527EE7749E30F59F9005C /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		816B4BDA5145F0D08ED05E7C /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 611527EE7749E30F59F9005C /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		88957DFB04A4579CC1E50B18 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 611527EE7749E30F59F9005C /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		BEE9BDC18701CF0A38F61676 /* CompositionalLayoutDSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77C3C55DA92AF1BE96D75A84 /* XCRemoteSwiftPackageReference "CompositionalLayoutDSL" */;
+			productName = CompositionalLayoutDSL;
+		};
+		F0FA5AF43D11197FC8686321 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 611527EE7749E30F59F9005C /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 8736807141C633504B3D64BD /* Project object */;
+}

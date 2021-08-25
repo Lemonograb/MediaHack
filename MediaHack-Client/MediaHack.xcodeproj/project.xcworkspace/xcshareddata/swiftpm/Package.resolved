@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CompositionalLayoutDSL",
+        "repositoryURL": "https://github.com/faberNovel/CompositionalLayoutDSL",
+        "state": {
+          "branch": "main",
+          "revision": "ae2b5ea0b2349f25316fe0e8429f5246839bfc9b",
+          "version": null
+        }
+      },
+      {
+        "package": "Nuke",
+        "repositoryURL": "https://github.com/kean/Nuke",
+        "state": {
+          "branch": "master",
+          "revision": "c0b32b0d7154afceb3fc08b199492f125ff4267e",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
